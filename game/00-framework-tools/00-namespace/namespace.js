@@ -14,7 +14,7 @@
 	 * Re-defining an existing path merges into it instead of replacing, so a namespace can be
 	 * extended from several files.
 	 *
-	 * @param {string} path Dotted path relative to window, e.g. "DOD.Ship".
+	 * @param {string} path Dotted path relative to window.
 	 * @param {object} [members] Properties to merge into the namespace.
 	 * @returns {object} The namespace object.
 	 */
