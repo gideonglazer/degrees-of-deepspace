@@ -1,0 +1,53 @@
+/*
+ * Colour and spacing tokens. Every other stylesheet reads from here, so a reskin should only ever
+ * mean editing this file. Custom properties resolve at computed-value time, so load order relative
+ * to the files that consume them does not matter.
+ */
+
+:root {
+	/* Surfaces, darkest to lightest */
+	--surface-void: #05070d;
+	--surface-hull: #0b111d;
+	--surface-panel: #121a2b;
+	--surface-raised: #1a2439;
+
+	/* Text */
+	--text-primary: #dbe6f5;
+	--text-muted: #8fa2bf;
+	--text-dim: #5f708c;
+
+	/* Accents */
+	--accent: #4fd6e0;
+	--accent-strong: #7ff0f8;
+	--accent-dim: #2b7f88;
+	--warning: #f0b429;
+	--danger: #e8556d;
+	--success: #57d98a;
+	--border-subtle: #1f2b42;
+	--border-strong: #2c3d5c;
+	--space-1: 0.25rem;
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-6: 1.5rem;
+	--radius: 3px;
+	--sidebar-width: 17.5rem;
+	--font-body: "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif;
+	--font-mono: ui-monospace, "SF Mono", "Cascadia Mono", consolas, monospace;
+}
+
+/* Applies when something sets data-theme="light" on <html>. Nothing does yet. */
+:root[data-theme="light"] {
+	--surface-void: #eef2f8;
+	--surface-hull: #fff;
+	--surface-panel: #e4ebf5;
+	--surface-raised: #d6e0ee;
+	--text-primary: #16202f;
+	--text-muted: #4a5a72;
+	--text-dim: #78889f;
+	--accent: #0f7c88;
+	--accent-strong: #0a5c66;
+	--accent-dim: #7fb8bf;
+	--border-subtle: #c6d2e2;
+	--border-strong: #a9b8cd;
+}

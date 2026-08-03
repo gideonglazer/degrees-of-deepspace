@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"cyrusfirheir.twee3-language-tools",
+		"dbaeumer.vscode-eslint",
+		"stylelint.vscode-stylelint",
+		"esbenp.prettier-vscode",
+		"editorconfig.editorconfig",
+		"streetsidesoftware.code-spell-checker"
+	]
+}

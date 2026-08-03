@@ -1,0 +1,21 @@
+{
+	"files.eol": "\n",
+	"twee3LanguageTools.storyformat.current": "sugarcube-2",
+	"twee3LanguageTools.sugarcube-2.features.macroTagMatching": true,
+	"twee3LanguageTools.sugarcube-2.features.selectedMacroNameHighlight": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit",
+		"source.fixAll.stylelint": "explicit"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "stylelint.vscode-stylelint"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
+	},
+	"cSpell.enabledFileTypes": {
+		"twee3-sugarcube-2": true,
+		"javascript": true,
+		"markdown": true
+	}
+}

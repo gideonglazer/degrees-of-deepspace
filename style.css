@@ -1,0 +1,8 @@
+/*
+ * Fetched at runtime by importStyles() in game/01-config/sugarcubeConfig.js rather than compiled into
+ * the HTML. Edit it and refresh the browser — no rebuild needed — which makes it a good place to
+ * iterate on visuals.
+ *
+ * A file:// page cannot fetch this, so anything the game must not look broken without belongs in
+ * modules/css/ instead.
+ */

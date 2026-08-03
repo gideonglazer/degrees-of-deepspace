@@ -1,0 +1,184 @@
+/*
+ * Baseline layout and typography, plus a dark skin for SugarCube's own chrome.
+ *
+ * Deliberately generic: no game-specific classes live here. Add your own stylesheet alongside this
+ * one as you build screens out.
+ */
+
+html {
+	background-color: var(--surface-void);
+	color-scheme: dark light;
+}
+
+body {
+	background-color: var(--surface-void);
+	color: var(--text-primary);
+	font-family: var(--font-body);
+	font-size: 16px;
+	line-height: 1.55;
+}
+
+/* SugarCube's own chrome ------------------------------------------------- */
+
+#story {
+	margin: 0 0 0 var(--sidebar-width);
+	padding: var(--space-6) var(--space-4);
+}
+
+#passages {
+	max-width: 46rem;
+	margin: 0 auto;
+}
+
+#ui-bar {
+	background-color: var(--surface-hull);
+	border-right: 1px solid var(--border-subtle);
+	width: var(--sidebar-width);
+}
+
+#ui-bar-body {
+	padding: 0 var(--space-3);
+}
+
+#ui-bar.stowed ~ #story {
+	margin-left: 3.5rem;
+}
+
+#ui-bar-tray {
+	border-bottom: 1px solid var(--border-subtle);
+}
+
+#ui-bar-toggle,
+#ui-bar-history a {
+	color: var(--accent);
+	border-color: var(--border-strong);
+}
+
+#ui-dialog-body {
+	background-color: var(--surface-panel);
+	color: var(--text-primary);
+}
+
+#ui-dialog-titlebar {
+	background-color: var(--surface-raised);
+	color: var(--text-primary);
+}
+
+/* Typography ------------------------------------------------------------- */
+
+h1,
+h2,
+h3 {
+	color: var(--accent-strong);
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	margin: 0 0 var(--space-3);
+}
+
+h1 {
+	font-size: 1.5rem;
+}
+
+h2 {
+	font-size: 1.2rem;
+}
+
+h3 {
+	font-size: 1rem;
+	text-transform: uppercase;
+	color: var(--text-muted);
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid var(--border-subtle);
+	margin: var(--space-4) 0;
+}
+
+/* Links ------------------------------------------------------------------ */
+
+a,
+.link-internal {
+	color: var(--accent);
+	text-decoration: none;
+}
+
+a:hover,
+.link-internal:hover {
+	color: var(--accent-strong);
+	text-decoration: underline;
+}
+
+a.link-broken {
+	color: var(--danger);
+}
+
+/* Form controls ---------------------------------------------------------- */
+
+button,
+input,
+select,
+textarea {
+	background-color: var(--surface-raised);
+	border: 1px solid var(--border-strong);
+	border-radius: var(--radius);
+	color: var(--text-primary);
+	font-family: inherit;
+	font-size: 0.95rem;
+	padding: var(--space-1) var(--space-2);
+}
+
+button:hover:not(:disabled) {
+	border-color: var(--accent);
+	color: var(--accent-strong);
+	cursor: pointer;
+}
+
+button:disabled {
+	color: var(--text-dim);
+	cursor: not-allowed;
+}
+
+/* Error reporting -------------------------------------------------------- */
+
+.error-view {
+	background-color: var(--surface-panel);
+	border-left: 3px solid var(--danger);
+}
+
+/* Rendered by game/00-framework-tools/01-error/errors.js */
+#dod-errors {
+	background-color: var(--surface-panel);
+	border: 1px solid var(--danger);
+	border-radius: var(--radius);
+	font-family: var(--font-mono);
+	font-size: 0.85rem;
+	margin: var(--space-3) 0;
+	padding: var(--space-3);
+}
+
+#dod-errors ul {
+	margin: var(--space-2) 0 0;
+	padding-left: var(--space-4);
+}
+
+/* Narrow screens --------------------------------------------------------- */
+
+@media screen and (max-width: 60rem) {
+	#story {
+		margin-left: 0;
+		padding: var(--space-4) var(--space-3);
+	}
+
+	#ui-bar {
+		width: 100%;
+		max-width: none;
+		position: static;
+		border-right: 0;
+		border-bottom: 1px solid var(--border-subtle);
+	}
+
+	#ui-bar.stowed ~ #story {
+		margin-left: 0;
+	}
+}

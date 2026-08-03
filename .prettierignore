@@ -1,0 +1,7 @@
+package.json
+package-lock.json
+devTools
+
+# Build output
+Degrees of Deepspace*.html
+dist

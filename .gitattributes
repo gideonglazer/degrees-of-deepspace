@@ -1,0 +1,9 @@
+# enforce proper line endings on commit
+*.sh	text eol=lf
+*.js	text eol=lf
+*.cjs	text eol=lf
+*.mjs	text eol=lf
+*.css	text eol=lf
+*.twee	text eol=lf
+*.yml	text eol=lf
+*.txt	text eol=lf

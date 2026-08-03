@@ -1,0 +1,46 @@
+# A gitignore file specifies intentionally untracked files that Git
+# should ignore. Files already tracked by Git are not affected!!
+## The `git add` command can be used to add ignored files with the
+## -f (force) option.
+## Consult `git help gitignore` and `git help add` for more info.
+
+# Compiled game htmls.
+Degrees of Deepspace*.html
+
+# Distributable builds
+/dist/*
+
+# Archives
+*.7z
+*.zip
+*.rar
+*.tar
+*.gz
+*.xz
+
+# Node directories and dependencies
+node_modules/
+
+# Operating System files
+.DS_Store
+Desktop.ini
+Thumbs.db
+
+# Hidden, temporary, and logging files
+.*
+*~
+*.tmp
+*.log
+
+# Save files
+*.save
+
+# Keep tooling dotfiles tracked
+!.browserslistrc
+!.editorconfig
+!.eslintrc.cjs
+!.gitattributes
+!.gitignore
+!.prettierignore
+!.prettierrc.json
+!.vscode

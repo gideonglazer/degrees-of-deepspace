@@ -1,0 +1,21 @@
+# Macro definitions for the Twee 3 Language Tools VS Code extension.
+#
+# The extension only knows SugarCube's built-in macros. Anything you define with DefineMacro or
+# DefineMacroS needs an entry here, otherwise it gets flagged as an unrecognised macro in every
+# passage that uses it.
+#
+# Format, with the parameters block optional:
+#
+#   sugarcube-2:
+#     macro:
+#       myMacro:
+#         name: myMacro
+#         description: What it does.
+#         container: false        # true for macros with a matching <</myMacro>>
+#         parameters:
+#           - text &+ number      # one entry per accepted signature
+#
+# See https://github.com/cyrusfirheir/twee3-language-tools for the full schema.
+
+sugarcube-2:
+    macro: {}
