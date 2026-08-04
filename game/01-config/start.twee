@@ -10,4 +10,12 @@
 :: StoryTitle
 Degrees of Deepspace
 
-:: Start
+:: Start [nosave]
+<<initGameSettings>>\
+<div class="cc-disclaimer"><p>Degrees of Deepspace is a work of fiction intended for mature audiences aged 18 and older. It is inspired by the RPG game “Degrees of Lewdity” created by Vrelnir. This game contains adult themes, psychological tension, and depictions of fictional non-consensual scenarios.</p><p>All characters and events portrayed are entirely fictional and involve no real individuals. The story does not condone or promote real-world violence, abuse, or harm of any kind. All love interests and some NPCs in this game belong to Paper Games and Infold's Love and Deepspace team, and this project is a non-commercial passion project with no affiliation to or endorsement from the original creators.</p></div>\
+<<gameSettings>>
+
+:: Intro [nosave]
+Coming soon...
+
+[[Back to creator|Start]]

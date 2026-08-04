@@ -18,4 +18,28 @@
 # See https://github.com/cyrusfirheir/twee3-language-tools for the full schema.
 
 sugarcube-2:
-    macro: {}
+    macro:
+        ccRadios:
+            name: ccRadios
+            description: Renders labelled radiobuttons from a Constants.character catalogue.
+            parameters:
+                - text &+ text
+		ccCheck:
+            name: ccCheck
+            description: Renders a checkbox bound to a boolean story variable.
+            parameters:
+                - text
+                - text |+ text
+        ccPanelSwitch:
+            name: ccPanelSwitch
+            description: Switches the Start-page creator tab and re-renders the panel.
+            parameters:
+                - text
+        ccLiListbox:
+            name: ccLiListbox
+            description: Renders the love-interest dropdown bound to $liFocus.
+            parameters: []
+        ccLiNameRadios:
+            name: ccLiNameRadios
+            description: Renders Display Name locale radios for the focused love interest.
+            parameters: []

@@ -1,0 +1,254 @@
+/**
+ * Static catalogues for the character creator. Stored under Constants.character and read via C().
+ * Values are the saved identifiers; labels are what the UI shows.
+ */
+
+(function () {
+	"use strict";
+
+	/**
+	 * @param {string} value
+	 * @param {string} label
+	 * @param {string} [tone] Visual tone class key: masc | femme | neutral | default
+	 * @param {string} [color] Optional hex/css colour for the label text
+	 * @returns {{value: string, label: string, tone?: string, color?: string}}
+	 */
+	function opt(value, label, tone, color) {
+		const entry = { value, label };
+		if (tone) entry.tone = tone;
+		if (color) entry.color = color;
+		return entry;
+	}
+
+	ConstantsLoader.add("character", {
+		genders: [
+			opt("male", "Male", "masc"),
+			opt("female", "Female", "femme"),
+			opt("nonbinary", "Nonbinary", "neutral"),
+			opt("transMasc", "Trans Masc", "masc"),
+			opt("transFemme", "Trans Femme", "femme"),
+			opt("fluid", "Fluid", "neutral"),
+		],
+
+		clothingPrefs: [opt("masculine", "Masculine", "masc"), opt("feminine", "Feminine", "femme"), opt("neutral", "Neutral", "neutral")],
+
+		ages: [opt("younger", "Younger"), opt("older", "Older")],
+
+		heights: [opt("petite", "Petite"), opt("small", "Small"), opt("average", "Average"), opt("tall", "Tall"), opt("veryTall", "Very Tall")],
+
+		hairLengths: [
+			opt("short", "Short"),
+			opt("medium", "Medium"),
+			opt("long", "Long"),
+			opt("extraLong", "Extra Long"),
+			opt("shoulderLength", "Shoulder-Length"),
+			opt("chinLength", "Chin-Length"),
+		],
+
+		/** Love Interest Modifier subset — no chin/shoulder lengths. */
+		liHairLengths: [opt("short", "Short"), opt("medium", "Medium"), opt("long", "Long"), opt("extraLong", "Extra Long")],
+
+		hairStyles: [
+			opt("ponytail", "Ponytail"),
+			opt("pigtails", "Pigtails"),
+			opt("braided", "Braided"),
+			opt("pixieCut", "Pixie Cut"),
+			opt("sideSwept", "Side-Swept"),
+			opt("cropped", "Cropped"),
+			opt("tousled", "Tousled"),
+			opt("messy", "Messy"),
+			opt("wolfCut", "Wolf Cut"),
+			opt("loose", "Loose"),
+			opt("highPonytail", "High Ponytail"),
+			opt("sleek", "Sleek"),
+			opt("damp", "Damp"),
+			opt("brushed", "Brushed"),
+			opt("disheveled", "Disheveled"),
+			opt("layered", "Layered"),
+			opt("neat", "Neat"),
+			opt("undercut", "Undercut"),
+			opt("bobbed", "Bobbed"),
+			opt("halfUp", "Half-Up"),
+			opt("clipped", "Clipped"),
+			opt("curled", "Curled"),
+			opt("lowPonytail", "Low Ponytail"),
+			opt("shaggy", "Shaggy"),
+			opt("pushedBack", "Pushed Back"),
+			opt("morningMessy", "Morning Messy"),
+			opt("unwashed", "Unwashed"),
+			opt("tiedBack", "Tied Back"),
+		],
+
+		hairTypes: [opt("straight", "Straight"), opt("wavy", "Wavy"), opt("curly", "Curly"), opt("coily", "Coily")],
+
+		hairColors: [
+			opt("jetBlack", "Jet Black", null, "#1a1a1a"),
+			opt("black", "Black", null, "#2b2b2b"),
+			opt("brown", "Brown", null, "#6b4423"),
+			opt("softBrown", "Soft Brown", null, "#8b6914"),
+			opt("lightBrown", "Light Brown", null, "#a67c52"),
+			opt("chestnut", "Chestnut", null, "#954535"),
+			opt("auburn", "Auburn", null, "#922724"),
+			opt("red", "Red", null, "#c41e3a"),
+			opt("crimson", "Crimson", null, "#dc143c"),
+			opt("orange", "Orange", null, "#e07020"),
+			opt("ginger", "Ginger", null, "#d4652f"),
+			opt("copper", "Copper", null, "#b87333"),
+			opt("gold", "Gold", null, "#d4a017"),
+			opt("strawberryBlond", "Strawberry Blond", null, "#e8a87c"),
+			opt("blond", "Blond", null, "#e8d48b"),
+			opt("softBlond", "Soft Blond", null, "#f0e0a0"),
+			opt("ashyBlond", "Ashy Blond", null, "#c8c09a"),
+			opt("platinumBlond", "Platinum Blond", null, "#e8e4d0"),
+			opt("white", "White", null, "#f0f0f0"),
+			opt("snowWhite", "Snow White", null, "#ffffff"),
+			opt("platinumWhite", "Platinum White", null, "#e8e8f0"),
+			opt("gray", "Gray", null, "#9a9a9a"),
+			opt("silver", "Silver", null, "#c0c0c0"),
+			opt("green", "Green", null, "#3a8f4a"),
+			opt("mint", "Mint", null, "#7ec8a0"),
+			opt("blue", "Blue", null, "#4a7ec8"),
+			opt("deepBlue", "Deep Blue", null, "#2a4a8f"),
+			opt("lavender", "Lavender", null, "#b39ddb"),
+			opt("purple", "Purple", null, "#8e44ad"),
+			opt("pink", "Pink", null, "#e891a8"),
+			opt("softPink", "Soft Pink", null, "#f2b8c6"),
+		],
+
+		vocalTones: [
+			opt("soft", "Soft"),
+			opt("calm", "Calm"),
+			opt("sharp", "Sharp"),
+			opt("deep", "Deep"),
+			opt("bright", "Bright"),
+			opt("whispy", "Whispy"),
+			opt("raspy", "Raspy"),
+			opt("chirpy", "Chirpy"),
+			opt("cheerful", "Cheerful"),
+			opt("playful", "Playful"),
+			opt("smooth", "Smooth"),
+			opt("sultry", "Sultry"),
+			opt("velvety", "Velvety"),
+			opt("flat", "Flat"),
+			opt("hollow", "Hollow"),
+			opt("faint", "Faint"),
+			opt("lingering", "Lingering"),
+			opt("confident", "Confident"),
+			opt("childish", "Childish"),
+			opt("cute", "Cute"),
+			opt("cool", "Cool"),
+		],
+
+		skinTones: [
+			opt("porcelain", "Porcelain", null, "#fde6d8"),
+			opt("pale", "Pale", null, "#ffe8d6"),
+			opt("creamy", "Creamy", null, "#f6d8c6"),
+			opt("light", "Light", null, "#f2cfb7"),
+			opt("fair", "Fair", null, "#f8d7c4"),
+			opt("ivory", "Ivory", null, "#f5dac7"),
+			opt("peach", "Peach", null, "#f4b59e"),
+			opt("apricot", "Apricot", null, "#f2a77f"),
+			opt("beige", "Beige", null, "#e3bc9a"),
+			opt("warm", "Warm", null, "#e4b089"),
+			opt("tan", "Tan", null, "#cc9a7a"),
+			opt("ruddy", "Ruddy", null, "#d08a74"),
+			opt("medium", "Medium", null, "#e7b799"),
+			opt("honey", "Honey", null, "#d9a068"),
+			opt("golden", "Golden", null, "#d7a26a"),
+			opt("copper", "Copper", null, "#b06b42"),
+			opt("olive", "Olive", null, "#c6a27a"),
+			opt("brown", "Brown", null, "#8a5a44"),
+			opt("mocha", "Mocha", null, "#7b4937"),
+			opt("umber", "Umber", null, "#6b4b3b"),
+			opt("deep", "Deep", null, "#5b3a2c"),
+			opt("dark", "Dark", null, "#7b4b3a"),
+			opt("ebony", "Ebony", null, "#4a2e25"),
+		],
+
+		eyeShapes: [
+			opt("round", "Round"),
+			opt("almond", "Almond"),
+			opt("sharp", "Sharp"),
+			opt("downturned", "Downturned"),
+			opt("upturned", "Upturned"),
+			opt("hooded", "Hooded"),
+			opt("narrow", "Narrow"),
+		],
+
+		bodyShapes: [
+			opt("slender", "Slender"),
+			opt("curvy", "Curvy"),
+			opt("soft", "Soft"),
+			opt("skinny", "Skinny"),
+			opt("toned", "Toned"),
+			opt("athletic", "Athletic"),
+			opt("stocky", "Stocky"),
+			opt("delicate", "Delicate"),
+			opt("balanced", "Balanced"),
+			opt("lean", "Lean"),
+			opt("muscular", "Muscular"),
+			opt("elegant", "Elegant"),
+		],
+
+		faceShapes: [
+			opt("round", "Round"),
+			opt("oval", "Oval"),
+			opt("heart", "Heart"),
+			opt("square", "Square"),
+			opt("diamond", "Diamond"),
+			opt("long", "Long"),
+		],
+
+		eyeColors: [
+			opt("black", "Black", null, "#1a1a1a"),
+			opt("darkBrown", "Dark Brown", null, "#3d2314"),
+			opt("brown", "Brown", null, "#6b4423"),
+			opt("red", "Red", null, "#c41e3a"),
+			opt("wineRed", "Wine Red", null, "#722f37"),
+			opt("orange", "Orange", null, "#e07020"),
+			opt("amber", "Amber", null, "#ffbf00"),
+			opt("honey", "Honey", null, "#ebc070"),
+			opt("gold", "Gold", null, "#d4a017"),
+			opt("oliveGreen", "Olive Green", null, "#6b8e23"),
+			opt("green", "Green", null, "#3a8f4a"),
+			opt("mint", "Mint", null, "#7ec8a0"),
+			opt("cyan", "Cyan", null, "#4ecdc4"),
+			opt("paleBlue", "Pale Blue", null, "#a8d4f0"),
+			opt("blue", "Blue", null, "#4a7ec8"),
+			opt("darkBlue", "Dark Blue", null, "#1e3a6e"),
+			opt("slate", "Slate", null, "#708090"),
+			opt("gray", "Gray", null, "#9a9a9a"),
+			opt("silver", "Silver", null, "#c0c0c0"),
+			opt("opal", "Opal", null, "#a8c8d8"),
+			opt("white", "White", null, "#f0f0f0"),
+			opt("lavender", "Lavender", null, "#b39ddb"),
+			opt("purple", "Purple", null, "#8e44ad"),
+			opt("violet", "Violet", null, "#7b68ee"),
+			opt("pink", "Pink", null, "#e891a8"),
+			opt("hazel", "Hazel", null, "#8e7618"),
+		],
+
+		defaults: {
+			gender: "female",
+			clothingPref: "feminine",
+			age: "younger",
+			height: "small",
+			hair: {
+				length: "long",
+				style: "loose",
+				type: "straight",
+				color: "brown",
+			},
+			vocalTone: "calm",
+			skinTone: "fair",
+			eyeShape: "almond",
+			bodyShape: "balanced",
+			faceShape: "oval",
+			freckles: false,
+			heterochromia: true,
+			eyeColor: "gold",
+			eyeColorLeft: "gold",
+			eyeColorRight: "gold",
+		},
+	});
+})();

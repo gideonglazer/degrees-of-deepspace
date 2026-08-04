@@ -1,0 +1,204 @@
+:: Game Settings Widgets [widget]
+
+<<widget "initGameSettings">><<run Player.ensure()>><<run LoveInterests.ensure()>><<run Options.ensure()>><<run Options.applyTypography()>><<if ndef $ccPanel>><<set $ccPanel to "creator">><</if>><<set $gameVersion to StartConfig.version>><<run jQuery("#passages").addClass("cc-wide")>><</widget>>
+
+<<widget "gameSettings">><div class="cc"><div class="cc-shell"><div class="cc-tabs" role="tablist"><<button "Character Creator">><<ccPanelSwitch "creator">><</button>><<button "Love Interest Modifier">><<ccPanelSwitch "loveInterest">><</button>><<button "General">><<ccPanelSwitch "general">><</button>><<button "Themes">><<ccPanelSwitch "themes">><</button>></div><div id="ccPanel" class="cc-panel" role="tabpanel"><<ccPanel>></div></div><div id="ccActions" class="cc-actions"><<ccActions>></div></div><<run GameSettings.bindShell()>><</widget>>
+
+<<widget "ccPanel">><<switch $ccPanel>><<case "loveInterest">><<ccLoveInterest>><<case "general">><<ccGeneral>><<case "themes">><<ccThemes>><<default>><<ccSelf>><</switch>><</widget>>
+
+<<widget "ccActions">><span id="ccBeginWrap"><<button "Begin">><<goto "Intro">><</button>></span><<run GameSettings.styleBegin()>><</widget>>
+
+<<widget "ccSelf">><div class="cc-columns">\
+<div class="cc-column"><h2 class="cc-heading">Self</h2>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Gender</legend>\
+<<ccRadios "$player.gender" "genders">>\
+</fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Preferred Clothing</legend>\
+<<ccRadios "$player.clothingPref" "clothingPrefs">>\
+</fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Age</legend>\
+<<ccRadios "$player.age" "ages">>\
+</fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Height</legend>\
+<<ccRadios "$player.height" "heights">>\
+</fieldset>\
+</div>\
+<div class="cc-column"><h2 class="cc-heading">Tones</h2>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Vocal Tone</legend><<ccRadios "$player.vocalTone" "vocalTones">></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Skin Tone</legend><<ccRadios "$player.skinTone" "skinTones">></fieldset>\
+</div>\
+</div>\
+\
+<h2 class="cc-heading">Hair Details</h2>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Hair Length</legend>\
+<<ccRadios "$player.hair.length" "hairLengths">>\
+</fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Hair Style</legend>\
+<<ccRadios "$player.hair.style" "hairStyles">>\
+</fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Hair Type</legend>\
+<<ccRadios "$player.hair.type" "hairTypes">>\
+</fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Hair Color</legend>\
+<<ccRadios "$player.hair.color" "hairColors">>\
+</fieldset>\
+\
+<div class="cc-columns">\
+<div class="cc-column"><h2 class="cc-heading">Shapes</h2>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Eye Shape</legend><<ccRadios "$player.eyeShape" "eyeShapes">></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Body Shape</legend><<ccRadios "$player.bodyShape" "bodyShapes">></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Face Shape</legend><<ccRadios "$player.faceShape" "faceShapes">></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Freckles</legend><<ccCheck "$player.freckles">></fieldset>\
+</div>\
+<div class="cc-column"><h2 class="cc-heading">Eye Color</h2>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Heterochromia</legend><<ccCheck "$player.heterochromia">></fieldset>\
+<div id="ccEyeColors"><<ccEyeColors>></div>\
+</div>\
+</div><</widget>>
+
+<<widget "ccEyeColors">><<if $player.heterochromia>>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Eye Color (Left)</legend><<ccRadios "$player.eyeColorLeft" "eyeColors">></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Eye Color (Right)</legend><<ccRadios "$player.eyeColorRight" "eyeColors">></fieldset>\
+<<else>>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Eye Color</legend><<ccRadios "$player.eyeColor" "eyeColors">></fieldset>\
+<</if>><</widget>>
+
+<<widget "ccLoveInterest">><div class="cc-li">\
+<div class="cc-li-jump"><span class="cc-li-label">Jump to a specific love interest:</span> <<ccLiListbox>></div>\
+\
+<div id="ccLiEditor" class="cc-li-editor"><<ccLiEditor>></div>\
+</div><</widget>>
+
+<<widget "ccLiEditor">><<set _li to LoveInterests.get($liFocus)>><<if !_li>>\
+<p class="cc-li-empty">No love interests are available yet.</p>\
+<<else>>\
+<h2 id="ccLiName" class="cc-heading cc-li-name"><<= LoveInterests.displayTitle($liFocus)>></h2>\
+<div class="cc-li-nav"><<link "Previous">><<run LoveInterests.stepFocus(-1)>><<replace "#ccLiEditor">><<ccLiEditor>><</replace>><<run GameSettings.syncLiListbox()>><</link>> | <<link "Next">><<run LoveInterests.stepFocus(1)>><<replace "#ccLiEditor">><<ccLiEditor>><</replace>><<run GameSettings.syncLiListbox()>><</link>></div>\
+\
+<div class="cc-columns">\
+<div class="cc-column">\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Display Name</legend><<ccLiNameRadios>></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Gender</legend><<ccRadios "$loveInterests[$liFocus].gender" "genders">></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Height</legend><<ccRadios "$loveInterests[$liFocus].height" "heights">></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Skin Tone</legend><<ccRadios "$loveInterests[$liFocus].skinTone" "skinTones">></fieldset>\
+</div>\
+<div class="cc-column">\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Hair Length</legend><<ccRadios "$loveInterests[$liFocus].hair.length" "liHairLengths">></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Hair Style</legend><<ccRadios "$loveInterests[$liFocus].hair.style" "hairStyles">></fieldset>\
+</div>\
+</div>\
+<</if>><</widget>>
+
+<<widget "ccGeneral">><div id="ccGeneral" class="cc-general">\
+<div class="settingsGrid">\
+<div class="settingsHeader options">Date Format</div>\
+<div class="settingsToggleItemWide">\
+<label><<radiobutton "$options.dateFormat" "DD/MM/YYYY" autocheck>> DD/MM/YYYY</label> | \
+<label><<radiobutton "$options.dateFormat" "YYYY/MM/DD" autocheck>> YYYY/MM/DD</label> | \
+<label><<radiobutton "$options.dateFormat" "MM/DD/YYYY" autocheck>> MM/DD/YYYY</label>\
+</div>\
+</div>\
+\
+<hr>\
+\
+<div class="settingsGrid">\
+<div class="settingsHeader options">Temperature</div>\
+<div class="settingsToggleItemWide">\
+<label><<radiobutton "$options.temperature" "fahrenheit" autocheck>> Fahrenheit (°F)</label> | \
+<label><<radiobutton "$options.temperature" "celsius" autocheck>> Celsius (°C)</label>\
+</div>\
+</div>\
+\
+<hr>\
+\
+<div class="settingsGrid">\
+<div class="settingsHeader options">Time Format</div>\
+<div class="settingsToggleItemWide">\
+<label><<radiobutton "$options.timeFormat" "12" autocheck>> 12-Hour</label> | \
+<label><<radiobutton "$options.timeFormat" "24" autocheck>> 24-Hour</label>\
+</div>\
+</div>\
+\
+<hr>\
+\
+<div class="settingsGrid">\
+<div class="settingsHeader options">Sidebar</div>\
+<div class="settingsToggleItemWide">\
+<<ccCheck "$options.sidebarHints" "Enable Sidebar Hints and Tips">>\
+<div class="small-description">When enabled, contextual hints and tips can appear in the sidebar during play.</div>\
+</div>\
+</div>\
+</div><</widget>>
+
+<<widget "ccThemes">><div id="ccThemes" class="cc-themes">\
+<div class="cc-themes-toolbar"><<button "Save Current As Default">><<run Options.saveCurrentAsDefault()>><</button>> <<button "Reset Defaults">><<run Options.resetDefaults()>><</button>></div>\
+\
+<div class="settingsGrid">\
+<div class="settingsHeader options">Theme</div>\
+<div class="settingsToggleItemWide"><span class="gold">Style:</span> \
+<label><input type="radio" name="theme" value="system-default"> Default</label> | \
+<label><input type="radio" name="theme" value="dark"> Dark</label> | \
+<label><input type="radio" name="theme" value="arctic"> Nord</label> | \
+<label><input type="radio" name="theme" value="zen"> Zenburn</label> | \
+<label><input type="radio" name="theme" value="monokai"> Monokai</label> | \
+<label><input type="radio" name="theme" value="storm"> Storm</label> | \
+<label><input type="radio" name="theme" value="latte"> Catppuccin Latte</label> | \
+<label><input type="radio" name="theme" value="frappe"> Catppuccin Frappé</label> | \
+<label><input type="radio" name="theme" value="macchiato"> Catppuccin Macchiato</label> | \
+<label><input type="radio" name="theme" value="mocha"> Catppuccin Mocha</label> | \
+<label><input type="radio" name="theme" value="pink-cream"> Pink Cream</label> | \
+<label><input type="radio" name="theme" value="dark-gothic"> Dark Gothic</label> | \
+<label><input type="radio" name="theme" value="manor-gold"> Manor Gold</label> | \
+<label><input type="radio" name="theme" value="ocean-mist"> Ocean Mist</label> | \
+<label><input type="radio" name="theme" value="forest"> Forest</label>\
+<div class="small-description">Selected styles cannot currently be saved as the 'default' option, though they will carry over to new saves.</div>\
+</div>\
+</div>\
+\
+<hr>\
+\
+<div class="settingsGrid">\
+<div class="settingsHeader options">Line Height</div>\
+<div class="settingsRow">\
+<div class="settingsToggleItem">Passage: <<listbox "$options.passageLineHeight" autoselect>><<option "Default" undefined>><<option "1" 1>><<option "1.25" 1.25>><<option "1.5" 1.5>><<option "1.75" 1.75>><<option "2" 2>><</listbox>></div>\
+<div class="settingsToggleItem">Overlay: <<listbox "$options.overlayLineHeight" autoselect>><<option "Default" undefined>><<option "1" 1>><<option "1.25" 1.25>><<option "1.5" 1.5>><<option "1.75" 1.75>><<option "2" 2>><</listbox>></div>\
+<div class="settingsToggleItem">Sidebar: <<listbox "$options.sidebarLineHeight" autoselect>><<option "Default" undefined>><<option "1" 1>><<option "1.25" 1.25>><<option "1.5" 1.5>><<option "1.75" 1.75>><<option "2" 2>><</listbox>></div>\
+</div>\
+</div>\
+\
+<hr>\
+\
+<div class="settingsGrid">\
+<div class="settingsHeader options">Font Size</div>\
+<div class="settingsRow">\
+<div class="settingsToggleItem">Passage: <<listbox "$options.passageFontSize" autoselect>><<option "Default" undefined>><<option "10px" 10>><<option "12px" 12>><<option "14px" 14>><<option "16px" 16>><<option "18px" 18>><<option "20px" 20>><</listbox>></div>\
+<div class="settingsToggleItem">Overlay: <<listbox "$options.overlayFontSize" autoselect>><<option "Default" undefined>><<option "10px" 10>><<option "12px" 12>><<option "14px" 14>><<option "16px" 16>><<option "18px" 18>><<option "20px" 20>><</listbox>></div>\
+<div class="settingsToggleItem">Sidebar: <<listbox "$options.sidebarFontSize" autoselect>><<option "Default" undefined>><<option "12px" 12>><<option "14px" 14>><<option "16px" 16>><<option "18px" 18>><<option "20px" 20>><</listbox>></div>\
+</div>\
+</div>\
+\
+<hr>\
+\
+<div class="settingsGrid">\
+<div class="settingsHeader options">Font Style</div>\
+<div class="settingsToggleItemWide">\
+<label><<radiobutton "$options.font" "" autocheck>> Use system default</label><br>\
+<span class="gold">Sans-serif:</span> <label class="Arial"><<radiobutton "$options.font" "Arial" autocheck>> Arial</label> | <label class="Verdana"><<radiobutton "$options.font" "Verdana" autocheck>> Verdana</label><br>\
+<span class="gold">Serif:</span> <label class="TimesNewRoman"><<radiobutton "$options.font" "TimesNewRoman" autocheck>> Times New Roman</label> | <label class="Georgia"><<radiobutton "$options.font" "Georgia" autocheck>> Georgia</label> | <label class="Garamond"><<radiobutton "$options.font" "Garamond" autocheck>> Garamond</label><br>\
+<span class="gold">Monospace:</span> <label class="CourierNew"><<radiobutton "$options.font" "CourierNew" autocheck>> Courier New</label> | <label class="LucidaConsole"><<radiobutton "$options.font" "LucidaConsole" autocheck>> Lucida Console</label> | <label class="Monaco"><<radiobutton "$options.font" "Monaco" autocheck>> Monaco</label><br>\
+<span class="gold">Accessibility:</span> <label class="OpenDyslexicMono"><<radiobutton "$options.font" "OpenDyslexicMono" autocheck>> OpenDyslexic Mono</label> | <label class="ComicSans"><<radiobutton "$options.font" "ComicSans" autocheck>> Comic Sans</label> | <label class="Lexend"><<radiobutton "$options.font" "Lexend" autocheck>> Lexend</label>\
+</div>\
+</div>\
+\
+<hr>\
+\
+<div class="settingsGrid">\
+<div class="settingsHeader options">Text Animations</div>\
+<div class="settingsToggleItemWide">\
+<<ccCheck "$options.textAnimsAll" "Uncheck to disable all text animations">><br>\
+<<ccCheck "$options.textAnimsDrunk">> <span id="prevDrunk" class="drunk-text">Drunk sway</span><br>\
+<<ccCheck "$options.textAnimsHeat">> <span id="prevHeat" class="jitter-text">Heat/rut jitter</span><br>\
+<<ccCheck "$options.textAnimsHypno">> <span id="prevHypno" class="hypno-text">Hypnosis spiral</span>\
+</div>\
+</div>\
+</div><<run GameSettings.bindThemes()>><</widget>>

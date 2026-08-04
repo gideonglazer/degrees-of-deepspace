@@ -1,30 +1,95 @@
 /*
- * Colour and spacing tokens. Every other stylesheet reads from here, so a reskin should only ever
- * mean editing this file. Custom properties resolve at computed-value time, so load order relative
- * to the files that consume them does not matter.
+ * Theme palettes (ported from Degrees of Lewdity) plus DoD semantic token bridge.
+ * Preference is applied as data-theme on <html> by Theme.setPreference().
+ * Default preference is Catppuccin Mocha (mocha).
  */
 
+/** Variables **/
 :root {
-	/* Surfaces, darkest to lightest */
-	--surface-void: #05070d;
-	--surface-hull: #0b111d;
-	--surface-panel: #121a2b;
-	--surface-raised: #1a2439;
+	/* Primary Colours
+	These are the primary greyscale colours used in the default theme
+	--000 representing the lightest white and foreground
+	--900 representing the darkest black and background
+	The rest represent colours in the range of greyscale from light to dark ala Tailwind Naming Conventions
+	*/
+	--000: #eee;
+	--100: #ddd;
+	--150: #ccc;
+	--200: #bbb;
+	--300: #aaa;
+	--400: #999;
+	--500: #888;
+	--600: #777;
+	--700: #666;
+	--750: #444;
+	--800: #333;
+	--850: #222;
+	--900: #111;
 
-	/* Text */
-	--text-primary: #dbe6f5;
-	--text-muted: #8fa2bf;
-	--text-dim: #5f708c;
+	/* Accent Colours */
+	--red: #ec3535;
+	--pink: #e40081;
+	--pink-secondary: #d67caf;
+	--purple: #80f;
+	--purple-secondary: #aa4bc8;
+	--blue: #4372ff;
+	--blue-secondary: #559bc0;
+	--teal: #08c1c1;
+	--green: #38b20a;
+	--green-secondary: #7caf7c;
+	--lime: #44e342;
+	--orange: #f28500;
+	--brown: #4c2217;
+	--black: #929292;
+	--yellow: #ffd700;
+	--gold: gold;
+	--silver: silver;
 
-	/* Accents */
-	--accent: #4fd6e0;
-	--accent-strong: #7ff0f8;
-	--accent-dim: #2b7f88;
-	--warning: #f0b429;
-	--danger: #e8556d;
-	--success: #57d98a;
-	--border-subtle: #1f2b42;
-	--border-strong: #2c3d5c;
+	/* Status Specific */
+	--lewd: #e04880;
+	--defiant: #d20000;
+	--meek: #c44b8b;
+	--brat: #b75d41;
+	--relaxed: #63719c;
+	--anxious: #973253;
+	--veteran: #956bb4;
+	--methodical: #ce7993;
+	--scarred: #d8621f;
+	--tattooed: #266568;
+	--manager: #7094b5;
+
+	/* Utility */
+	--link: #5888dd;
+	--link-hover: #8af;
+	--danger: #c62b2b;
+
+	/* Tooltip */
+	--tooltip-background: #1a1919;
+	--tooltip-border: #b0b0b4;
+
+	/*
+	 * Degrees of Deepspace semantic tokens, bridged to DoL greyscale/accent vars so every
+	 * [data-theme] palette restyles the whole UI without duplicating rules.
+	 */
+	--surface-void: var(--900);
+	--surface-hull: var(--850);
+	--surface-panel: var(--800);
+	--surface-raised: var(--750);
+	--text-primary: var(--000);
+	--text-muted: var(--300);
+	--text-dim: var(--500);
+	--accent: var(--link);
+	--accent-strong: var(--link-hover);
+	--accent-dim: var(--teal);
+	--warning: var(--gold);
+	--success: var(--green);
+	--border-subtle: var(--750);
+	--border-strong: var(--700);
+	--fieldset-border: rgb(219 230 245 / 55%);
+	--control-accent: #3b82f6;
+	--tone-femme: #e891a8;
+	--tone-masc: #8eb6e8;
+	--tone-neutral: #e8d48b;
 	--space-1: 0.25rem;
 	--space-2: 0.5rem;
 	--space-3: 0.75rem;
@@ -36,18 +101,771 @@
 	--font-mono: ui-monospace, "SF Mono", "Cascadia Mono", consolas, monospace;
 }
 
-/* Applies when something sets data-theme="light" on <html>. Nothing does yet. */
-:root[data-theme="light"] {
-	--surface-void: #eef2f8;
-	--surface-hull: #fff;
-	--surface-panel: #e4ebf5;
-	--surface-raised: #d6e0ee;
-	--text-primary: #16202f;
-	--text-muted: #4a5a72;
-	--text-dim: #78889f;
-	--accent: #0f7c88;
-	--accent-strong: #0a5c66;
-	--accent-dim: #7fb8bf;
-	--border-subtle: #c6d2e2;
-	--border-strong: #a9b8cd;
+/** Palettes **/
+
+[data-theme="light"] {
+	--900: hsl(218deg 27% 92%);
+	--850: hsl(218deg 27% 92%);
+	--800: hsl(218deg 27% 92%);
+	--750: hsl(219deg 28% 88%);
+	--700: hsl(219deg 5% 66%);
+	--600: hsl(219deg 5% 56%);
+	--500: hsl(219deg 5% 45%);
+	--400: hsl(220deg 4% 40%);
+	--300: hsl(220deg 4% 35%);
+	--200: hsl(220deg 16% 36%);
+	--150: hsl(220deg 17% 32%);
+	--100: hsl(222deg 16% 28%);
+	--000: hsl(220deg 16% 22%);
+	--blue: hsl(213deg 32% 52%);
+	--blue-secondary: hsl(210deg 34% 63%);
+	--teal: hsl(179deg 25% 65%);
+	--black: hsl(0deg 0% 46%);
+	--yellow: hsl(44deg 68% 47%);
+	--red: hsl(354deg 42% 56%);
+	--pink: hsl(311deg 40% 56%);
+	--pink-secondary: hsl(311deg 20% 63%);
+	--purple: #80f;
+	--purple-secondary: #aa4bc8;
+	--green: hsl(92deg 28% 50%);
+	--green-secondary: hsl(92deg 28% 65%);
+	--lime: hsl(92deg 66% 30%);
+	--orange: hsl(14deg 51% 63%);
+	--brown: #4c2217;
+	--gold: hsl(30deg 50% 50%);
+	--silver: silver;
+	--lewd: #e04880;
+	--defiant: #d20000;
+	--meek: #c44b8b;
+	--brat: #b75d41;
+	--relaxed: #63719c;
+	--anxious: #973253;
+	--veteran: #956bb4;
+	--methodical: #ce7993;
+	--scarred: #d8621f;
+	--tattooed: #266568;
+	--link: hsl(213deg 32% 52%);
+	--link-hover: hsl(213deg 32% 45%);
+	--tooltip-border: #1a1919;
+	--tooltip-background: #b0b0b4;
 }
+
+[data-theme="zen"] {
+	/* Base Colours */
+	--000: hsl(60deg 20% 86%);
+	--100: hsl(60deg 9% 81.4%);
+	--150: hsl(60deg 5% 75.1%);
+	--200: hsl(60deg 3% 66%);
+	--300: hsl(0deg 0% 56%);
+	--400: hsl(0deg 0% 53%);
+	--500: hsl(0deg 0% 47%);
+	--600: hsl(0deg 0% 44%);
+	--700: hsl(0deg 0% 37%);
+	--750: hsl(0deg 0% 31%);
+	--800: hsl(0deg 0% 29%);
+	--850: hsl(0deg 0% 25%);
+	--900: hsl(0deg 0% 22%);
+
+	/* Accent Colours */
+	--red: hsl(0deg 36% 69%);
+	--pink: hsl(320deg 55% 76%);
+	--teal: hsl(183deg 26% 59%);
+	--blue: hsl(213deg 32% 52%);
+	--blue-secondary: hsl(210deg 34% 63%);
+	--black: hsl(0deg 0% 46%);
+	--yellow: hsl(40deg 71% 73%);
+	--pink-secondary: hsl(311deg 20% 63%);
+	--purple: hsl(272deg 45% 50%);
+	--purple-secondary: hsl(286deg 39% 60%);
+	--green: hsl(92deg 28% 50%);
+	--green-secondary: hsl(92deg 28% 65%);
+	--lime: hsl(92deg 66% 30%);
+	--orange: hsl(24deg 56% 72%);
+	--brown: hsl(12deg 34% 19%);
+	--gold: hsl(43deg 43% 74%);
+	--silver: hsl(60deg 0% 75%);
+
+	/* Status Specific */
+	--lewd: hsl(320deg 55% 76%);
+	--defiant: hsl(0deg 32% 56%);
+	--meek: hsl(327deg 30% 56%);
+	--brat: hsl(14deg 51% 63%);
+	--relaxed: hsl(182deg 22% 53%);
+	--anxious: hsl(340deg 50% 39%);
+	--veteran: #956bb4;
+	--methodical: #ce7993;
+	--scarred: #d8621f;
+	--tattooed: #266568;
+	--manager: #7094b5;
+
+	/* Utility */
+	--link: hsl(201deg 38% 75%);
+	--link-hover: hsl(213deg 32% 52%);
+	--danger: #a74b4b;
+
+	/* Tooltip */
+	--tooltip-background: hsl(0deg 0% 37%);
+	--tooltip-border: hsl(60deg 5% 75.1%);
+}
+
+[data-theme="arctic"] {
+	--000: hsl(218deg 27% 94%);
+	--100: hsl(218deg 27% 92%);
+	--150: hsl(219deg 28% 88%);
+	--200: hsl(219deg 27% 85%);
+	--300: hsl(217deg 15% 75%);
+	--400: hsl(217deg 13% 68%);
+	--500: hsl(217deg 15% 68%);
+	--600: hsl(217deg 13% 50%);
+	--700: hsl(220deg 16% 40%);
+	--750: hsl(220deg 17% 35%);
+	--800: hsl(222deg 16% 30%);
+	--850: hsl(222deg 16% 28%);
+	--900: hsl(220deg 16% 22%);
+
+	/* Accent Colours */
+	--red: hsl(354deg 42% 56%);
+	--pink: hsl(326deg 60% 55%);
+	--pink-secondary: hsl(326deg 52% 66%);
+	--purple: hsl(272deg 40% 50%);
+	--purple-secondary: hsl(272deg 40% 63%);
+	--blue: hsl(193deg 43% 67%);
+	--blue-secondary: hsl(210deg 34% 63%);
+	--teal: hsl(179deg 25% 65%);
+	--green: hsl(92deg 28% 65%);
+	--green-secondary: hsl(120deg 24% 59%);
+	--lime: hsl(119deg 30% 60%);
+	--orange: hsl(14deg 51% 63%);
+	--brown: hsl(12deg 34% 19%);
+	--black: hsl(217deg 15% 68%);
+	--yellow: hsl(40deg 71% 73%);
+	--gold: hsl(34deg 71% 73%);
+	--silver: hsl(217deg 15% 75%);
+
+	/* Status Specific */
+	--lewd: hsl(338deg 50% 58%);
+	--defiant: hsl(354deg 62% 56%);
+	--meek: hsl(328deg 41% 63%);
+	--brat: hsl(14deg 38% 70%);
+	--relaxed: hsl(225deg 22% 50%);
+	--anxious: hsl(340deg 60% 39%);
+	--veteran: hsl(275deg 33% 56%);
+	--methodical: hsl(342deg 46% 64%);
+	--scarred: hsl(22deg 75% 48%);
+	--tattooed: hsl(183deg 36% 38%);
+	--manager: #7094b5;
+
+	/* Utility */
+	--link: hsl(213deg 53% 66%);
+	--link-hover: hsl(213deg 32% 45%);
+	--danger: #f76969;
+
+	/* Tooltip */
+	--tooltip-background: hsl(220deg 17% 35%);
+	--tooltip-border: hsl(219deg 27% 85%);
+}
+
+[data-theme="monokai"] {
+	--000: hsl(60deg 30% 96%);
+	--100: hsl(50deg 6% 84%);
+	--150: hsl(50deg 6% 74%);
+	--200: hsl(50deg 6% 64%);
+	--300: hsl(50deg 6% 51%);
+	--400: hsl(50deg 11% 41%);
+	--500: hsl(50deg 11% 41%);
+	--600: hsl(50deg 11% 41%);
+	--700: hsl(55deg 11% 22%);
+	--750: hsl(24deg 9% 18%);
+	--800: hsl(24deg 9% 15%);
+	--850: hsl(24deg 9% 13%);
+	--900: hsl(24deg 8% 12%);
+
+	/* Accent Colours */
+	--red: hsl(338deg 95% 56%);
+	--pink: hsl(305deg 98% 68%);
+	--pink-secondary: #d67caf;
+	--purple: hsl(261deg 80% 65%);
+	--purple-secondary: hsl(261deg 100% 75%);
+	--blue: hsl(190deg 51% 50%);
+	--blue-secondary: #559bc0;
+	--teal: hsl(172deg 71% 78%);
+	--green: hsl(75deg 67% 38%);
+	--green-secondary: hsl(75deg 67% 48%);
+	--lime: hsl(75deg 70% 58%);
+	--orange: hsl(27deg 96% 55%);
+	--brown: hsl(12deg 54% 19%);
+	--black: hsl(50deg 6% 51%);
+	--yellow: hsl(54deg 70% 68%);
+	--gold: hsl(46deg 71% 68%);
+	--silver: silver;
+
+	/* Status Specific */
+	--lewd: hsl(323deg 98% 68%);
+	--defiant: #d20000;
+	--meek: #c44b8b;
+	--brat: #b75d41;
+	--relaxed: #63719c;
+	--anxious: #973253;
+	--veteran: #956bb4;
+	--methodical: #ce7993;
+	--scarred: #d8621f;
+	--tattooed: #266568;
+	--manager: #7094b5;
+
+	/* Utility */
+	--link: hsl(261deg 100% 75%);
+	--link-hover: hsl(261deg 100% 70%);
+	--danger: #f76969;
+
+	/* Tooltip */
+	--tooltip-background: hsl(24deg 9% 13%);
+	--tooltip-border: hsl(50deg 6% 64%);
+}
+
+[data-theme="storm"] {
+	--000: hsl(227deg 35% 71%);
+	--100: hsl(226deg 30% 67%);
+	--150: hsl(226deg 25% 64%);
+	--200: hsl(226deg 20% 59%);
+	--300: hsl(226deg 16% 53%);
+	--400: hsl(226deg 14% 48%);
+	--500: hsl(227deg 15% 42%);
+	--600: hsl(228deg 16% 37%);
+	--700: hsl(228deg 16% 31%);
+	--750: hsl(229deg 16% 26%);
+	--800: hsl(229deg 17% 20%);
+	--850: hsl(232deg 18% 17%);
+	--900: hsl(235deg 19% 13%);
+
+	/* Accent Colours */
+	--red: hsl(349deg 89% 72%);
+	--pink: hsl(305deg 98% 68%);
+	--pink-secondary: #d67caf;
+	--purple: hsl(261deg 85% 79%);
+	--purple-secondary: hsl(261deg 100% 75%);
+	--blue: hsl(218deg 45% 47%);
+	--blue-secondary: hsl(221deg 89% 75%);
+	--teal: hsl(202deg 100% 75%);
+	--green: hsl(89deg 32% 38%);
+	--green-secondary: hsl(171deg 32% 29%);
+	--lime: hsl(89deg 51% 61%);
+	--orange: hsl(22deg 100% 70%);
+	--brown: hsl(22deg 59% 37%);
+	--black: hsl(50deg 6% 51%);
+	--yellow: hsl(54deg 70% 68%);
+	--gold: hsl(36deg 66% 64%);
+	--silver: silver;
+
+	/* Status Specific */
+	--lewd: hsl(323deg 98% 68%);
+	--defiant: hsl(0deg 100% 35%);
+	--meek: hsl(328deg 51% 53%);
+	--brat: hsl(14deg 48% 49%);
+	--relaxed: hsl(225deg 32% 50%);
+	--anxious: hsl(340deg 60% 39%);
+	--veteran: hsl(275deg 33% 56%);
+	--methodical: hsl(342deg 36% 54%);
+	--scarred: hsl(22deg 65% 48%);
+	--tattooed: hsl(183deg 56% 32%);
+	--manager: #7094b5;
+
+	/* Utility */
+	--link: hsl(218deg 66% 61%);
+	--link-hover: hsl(223deg 100% 77%);
+	--danger: #a74b4b;
+
+	/* Tooltip */
+	--tooltip-background: hsl(24deg 9% 13%);
+	--tooltip-border: hsl(50deg 6% 64%);
+}
+
+[data-theme="latte"] {
+	--000: hsl(234deg 16% 35%);
+	--100: hsl(233deg 13% 41%);
+	--150: hsl(233deg 10% 47%);
+	--200: hsl(232deg 10% 53%);
+	--300: hsl(231deg 10% 59%);
+	--400: hsl(228deg 11% 65%);
+	--500: hsl(228deg 11% 65%);
+	--600: hsl(228deg 11% 65%);
+	--700: hsl(227deg 12% 71%);
+	--750: hsl(225deg 14% 77%);
+	--800: hsl(223deg 16% 83%);
+	--850: hsl(220deg 22% 92%);
+	--900: hsl(220deg 23% 95%);
+
+	/* Accent Colours */
+	--red: hsl(347deg 87% 44%);
+	--pink: hsl(316deg 73% 69%);
+	--pink-secondary: hsl(0deg 60% 67%);
+	--purple: hsl(231deg 97% 72%);
+	--purple-secondary: hsl(266deg 85% 58%);
+	--blue: hsl(220deg 91% 54%);
+	--blue-secondary: hsl(197deg 97% 46%);
+	--teal: hsl(183deg 74% 35%);
+	--green: hsl(109deg 58% 40%);
+	--green-secondary: hsl(109deg 70% 70%);
+	--lime: hsl(119deg 74% 57%);
+	--orange: hsl(22deg 99% 52%);
+	--brown: hsl(355deg 76% 59%);
+	--black: hsl(233deg 13% 41%);
+	--yellow: hsl(35deg 77% 49%);
+	--gold: hsl(35deg 77% 49%);
+	--silver: hsl(233deg 13% 41%);
+
+	/* Status Specific */
+	--lewd: hsl(0deg 60% 67%);
+	--defiant: hsl(347deg 87% 44%);
+	--meek: hsl(316deg 73% 69%);
+	--brat: hsl(22deg 99% 52%);
+	--relaxed: hsl(220deg 91% 54%);
+	--anxious: hsl(355deg 76% 59%);
+	--veteran: hsl(266deg 85% 58%);
+	--methodical: hsl(11deg 59% 67%);
+	--scarred: hsl(22deg 99% 52%);
+	--tattooed: hsl(197deg 97% 46%);
+	--manager: hsl(189deg 70% 42%);
+
+	/* Utility */
+	--link: hsl(220deg 91% 54%);
+	--link-hover: hsl(197deg 97% 46%);
+	--danger: #c62b2b;
+
+	/* Tooltip */
+	--tooltip-background: hsl(220deg 22% 92%);
+	--tooltip-border: hsl(227deg 12% 71%);
+
+	/* Icons shadow */
+	--background: hsl(0deg 0% 0% / 30%);
+}
+
+[data-theme="frappe"] {
+	--000: hsl(227deg 70% 87%);
+	--100: hsl(227deg 44% 80%);
+	--150: hsl(228deg 29% 73%);
+	--200: hsl(228deg 22% 66%);
+	--300: hsl(227deg 17% 58%);
+	--400: hsl(229deg 13% 52%);
+	--500: hsl(229deg 13% 52%);
+	--600: hsl(229deg 13% 52%);
+	--700: hsl(228deg 13% 44%);
+	--750: hsl(227deg 15% 37%);
+	--800: hsl(230deg 16% 30%);
+	--850: hsl(231deg 19% 20%);
+	--900: hsl(229deg 19% 23%);
+
+	/* Accent Colours */
+	--red: hsl(359deg 68% 71%);
+	--pink: hsl(316deg 73% 84%);
+	--pink-secondary: hsl(0deg 59% 84%);
+	--purple: hsl(239deg 66% 84%);
+	--purple-secondary: hsl(277deg 59% 76%);
+	--blue: hsl(222deg 74% 74%);
+	--blue-secondary: hsl(189deg 48% 73%);
+	--teal: hsl(172deg 39% 65%);
+	--green: hsl(96deg 44% 68%);
+	--green-secondary: hsl(105deg 80% 80%);
+	--lime: hsl(120deg 80% 75%);
+	--orange: hsl(20deg 79% 70%);
+	--brown: hsl(358deg 66% 76%);
+	--black: hsl(228deg 29% 73%);
+	--yellow: hsl(40deg 62% 73%);
+	--gold: hsl(40deg 62% 73%);
+	--silver: hsl(227deg 44% 80%);
+
+	/* Status Specific */
+	--lewd: hsl(0deg 59% 84%);
+	--defiant: hsl(359deg 68% 71%);
+	--meek: hsl(316deg 73% 84%);
+	--brat: hsl(20deg 79% 70%);
+	--relaxed: hsl(222deg 74% 74%);
+	--anxious: hsl(358deg 66% 76%);
+	--veteran: hsl(277deg 59% 76%);
+	--methodical: hsl(10deg 57% 88%);
+	--scarred: hsl(20deg 79% 70%);
+	--tattooed: hsl(189deg 48% 73%);
+	--manager: hsl(199deg 55% 69%);
+
+	/* Utility */
+	--link: hsl(222deg 74% 74%);
+	--link-hover: hsl(189deg 48% 73%);
+	--danger: #f76969;
+
+	/* Tooltip */
+	--tooltip-background: hsl(231deg 19% 20%);
+	--tooltip-border: hsl(228deg 13% 44%);
+}
+
+[data-theme="macchiato"] {
+	--000: hsl(227deg 68% 88%);
+	--100: hsl(228deg 39% 80%);
+	--150: hsl(227deg 27% 72%);
+	--200: hsl(228deg 20% 65%);
+	--300: hsl(228deg 15% 57%);
+	--400: hsl(230deg 12% 49%);
+	--500: hsl(230deg 12% 49%);
+	--600: hsl(230deg 12% 49%);
+	--700: hsl(230deg 14% 41%);
+	--750: hsl(231deg 16% 34%);
+	--800: hsl(230deg 19% 26%);
+	--850: hsl(233deg 23% 15%);
+	--900: hsl(232deg 23% 18%);
+
+	/* Accent Colours */
+	--red: hsl(351deg 74% 73%);
+	--pink: hsl(316deg 74% 85%);
+	--pink-secondary: hsl(0deg 58% 86%);
+	--purple: hsl(234deg 82% 85%);
+	--purple-secondary: hsl(267deg 83% 80%);
+	--blue: hsl(220deg 83% 75%);
+	--blue-secondary: hsl(189deg 59% 73%);
+	--teal: hsl(171deg 47% 69%);
+	--green: hsl(105deg 48% 72%);
+	--green-secondary: hsl(105deg 80% 80%);
+	--lime: hsl(120deg 80% 75%);
+	--orange: hsl(21deg 86% 73%);
+	--brown: hsl(355deg 71% 77%);
+	--black: hsl(227deg 27% 72%);
+	--yellow: hsl(40deg 70% 78%);
+	--gold: hsl(40deg 70% 78%);
+	--silver: hsl(228deg 39% 80%);
+
+	/* Status Specific */
+	--lewd: hsl(0deg 58% 86%);
+	--defiant: hsl(351deg 74% 73%);
+	--meek: hsl(316deg 74% 85%);
+	--brat: hsl(21deg 86% 73%);
+	--relaxed: hsl(220deg 83% 75%);
+	--anxious: hsl(355deg 71% 77%);
+	--veteran: hsl(267deg 83% 80%);
+	--methodical: hsl(10deg 58% 90%);
+	--scarred: hsl(21deg 86% 73%);
+	--tattooed: hsl(189deg 59% 73%);
+	--manager: hsl(199deg 66% 69%);
+
+	/* Utility */
+	--link: hsl(220deg 83% 75%);
+	--link-hover: hsl(189deg 59% 73%);
+	--danger: #f76969;
+
+	/* Tooltip */
+	--tooltip-background: hsl(233deg 23% 15%);
+	--tooltip-border: hsl(230deg 14% 41%);
+}
+
+[data-theme="mocha"] {
+	--000: hsl(226deg 64% 88%);
+	--100: hsl(227deg 35% 80%);
+	--150: hsl(228deg 24% 72%);
+	--200: hsl(228deg 17% 64%);
+	--300: hsl(230deg 13% 55%);
+	--400: hsl(231deg 11% 47%);
+	--500: hsl(231deg 11% 47%);
+	--600: hsl(231deg 11% 47%);
+	--700: hsl(233deg 12% 39%);
+	--750: hsl(234deg 13% 31%);
+	--800: hsl(237deg 16% 23%);
+	--850: hsl(240deg 21% 12%);
+	--900: hsl(240deg 21% 15%);
+
+	/* Accent Colours */
+	--red: hsl(343deg 81% 75%);
+	--pink: hsl(316deg 72% 86%);
+	--pink-secondary: hsl(0deg 59% 88%);
+	--purple: hsl(232deg 97% 85%);
+	--purple-secondary: hsl(267deg 84% 81%);
+	--blue: hsl(217deg 92% 76%);
+	--blue-secondary: hsl(189deg 71% 73%);
+	--teal: hsl(170deg 57% 73%);
+	--green: hsl(115deg 54% 76%);
+	--green-secondary: hsl(100deg 80% 80%);
+	--lime: hsl(120deg 80% 75%);
+	--orange: hsl(23deg 92% 75%);
+	--brown: hsl(350deg 65% 77%);
+	--black: hsl(228deg 24% 72%);
+	--yellow: hsl(41deg 86% 83%);
+	--gold: hsl(41deg 86% 83%);
+	--silver: hsl(227deg 35% 80%);
+
+	/* Status Specific */
+	--lewd: hsl(0deg 59% 88%);
+	--defiant: hsl(343deg 81% 75%);
+	--meek: hsl(316deg 72% 86%);
+	--brat: hsl(23deg 92% 75%);
+	--relaxed: hsl(217deg 92% 76%);
+	--anxious: hsl(350deg 65% 77%);
+	--veteran: hsl(267deg 84% 81%);
+	--methodical: hsl(10deg 56% 91%);
+	--scarred: hsl(23deg 92% 75%);
+	--tattooed: hsl(189deg 71% 73%);
+	--manager: hsl(199deg 76% 69%);
+
+	/* Utility */
+	--link: hsl(217deg 92% 76%);
+	--link-hover: hsl(189deg 71% 73%);
+	--danger: #f76969;
+
+	/* Tooltip */
+	--tooltip-background: hsl(240deg 21% 12%);
+	--tooltip-border: hsl(233deg 12% 39%);
+}
+
+/* Character Collection / OC Index palettes */
+
+[data-theme="pink-cream"] {
+	/*
+	 * Soft cream surfaces with defined rose chrome. Greyscale is inverted for a light
+	 * theme: --000 is deep rose text, --900 is the page cream.
+	 */
+	--000: #8a3450;
+	--100: #9a4560;
+	--150: #a85470;
+	--200: #b86882;
+	--300: #c47a92;
+	--400: #d090a4;
+	--500: #dca8b8;
+	--600: #e8c0cc;
+	--700: #d47890;
+	--750: #f9e4ea;
+	--800: #fff0f4;
+	--850: #fce8ee;
+	--900: #fff8fa;
+	--red: #c44569;
+	--pink: #d06080;
+	--pink-secondary: #e898ac;
+	--purple: #b07090;
+	--purple-secondary: #d098b0;
+	--blue: #a07090;
+	--blue-secondary: #c090a8;
+	--teal: #a88898;
+	--green: #a88090;
+	--green-secondary: #c8a0b0;
+	--lime: #c898a0;
+	--orange: #d48878;
+	--brown: #a87070;
+	--black: #b86882;
+	--yellow: #d4a090;
+	--gold: #c45c78;
+	--silver: #e0a8b8;
+	--lewd: #d06080;
+	--defiant: #c44569;
+	--meek: #d098b0;
+	--brat: #d48878;
+	--relaxed: #a07090;
+	--anxious: #c44569;
+	--veteran: #b07090;
+	--methodical: #e8a8b8;
+	--scarred: #d48878;
+	--tattooed: #a88898;
+	--manager: #a07090;
+	--link: #c45c78;
+	--link-hover: #8a3450;
+	--danger: #b03858;
+	--tooltip-background: #fff0f4;
+	--tooltip-border: #d47890;
+	--fieldset-border: #d47890;
+	--control-accent: #c45c78;
+	--tone-femme: #c45c78;
+	--tone-masc: #8a6080;
+	--tone-neutral: #c48870;
+	--border-subtle: #e8b0c0;
+	--border-strong: #d47890;
+}
+
+[data-theme="dark-gothic"] {
+	--000: #e8d5e0;
+	--100: #d8c4d4;
+	--150: #c8b4c8;
+	--200: #b8a4bc;
+	--300: #a894b0;
+	--400: #9080a0;
+	--500: #786c8c;
+	--600: #605878;
+	--700: #484464;
+	--750: #2f2f4a;
+	--800: #252540;
+	--850: #16162a;
+	--900: #1a1a2e;
+	--red: #e07090;
+	--pink: #e8a0c0;
+	--pink-secondary: #f0c0d8;
+	--purple: #9b59b6;
+	--purple-secondary: #c39bd3;
+	--blue: #7a9fd0;
+	--blue-secondary: #a0c0e8;
+	--teal: #70c0b8;
+	--green: #80c090;
+	--green-secondary: #a0d8b0;
+	--lime: #b0e080;
+	--orange: #e0a070;
+	--brown: #c09080;
+	--black: #a894b0;
+	--yellow: #e0d090;
+	--gold: #c39bd3;
+	--silver: #d0c4d8;
+	--lewd: #e8a0c0;
+	--defiant: #e07090;
+	--meek: #f0c0d8;
+	--brat: #e0a070;
+	--relaxed: #7a9fd0;
+	--anxious: #e07090;
+	--veteran: #9b59b6;
+	--methodical: #f0c0d8;
+	--scarred: #e0a070;
+	--tattooed: #70c0b8;
+	--manager: #7a9fd0;
+	--link: #c39bd3;
+	--link-hover: #9b59b6;
+	--danger: #e07090;
+	--tooltip-background: #16162a;
+	--tooltip-border: #484464;
+}
+
+[data-theme="manor-gold"] {
+	--000: #f5e6d0;
+	--100: #ebd8bc;
+	--150: #e0caa8;
+	--200: #d4bc94;
+	--300: #c8ae80;
+	--400: #b09868;
+	--500: #988250;
+	--600: #806c40;
+	--700: #5c4830;
+	--750: #4a3528;
+	--800: #3d2b1f;
+	--850: #24140c;
+	--900: #2c1810;
+	--red: #d08070;
+	--pink: #e0a090;
+	--pink-secondary: #ecc0b0;
+	--purple: #b090a8;
+	--purple-secondary: #c8a8c0;
+	--blue: #90a8c0;
+	--blue-secondary: #b0c0d4;
+	--teal: #90b8a8;
+	--green: #98b880;
+	--green-secondary: #b0d098;
+	--lime: #c0d080;
+	--orange: #d4a574;
+	--brown: #b8860b;
+	--black: #c8ae80;
+	--yellow: #e8d090;
+	--gold: #d4a574;
+	--silver: #dec5a8;
+	--lewd: #e0a090;
+	--defiant: #d08070;
+	--meek: #ecc0b0;
+	--brat: #d4a574;
+	--relaxed: #90a8c0;
+	--anxious: #d08070;
+	--veteran: #b090a8;
+	--methodical: #ecc0b0;
+	--scarred: #d4a574;
+	--tattooed: #90b8a8;
+	--manager: #90a8c0;
+	--link: #d4a574;
+	--link-hover: #b8860b;
+	--danger: #d08070;
+	--tooltip-background: #24140c;
+	--tooltip-border: #5c4830;
+}
+
+[data-theme="ocean-mist"] {
+	--000: #d4e9f7;
+	--100: #b0d4f1;
+	--150: #98c4e4;
+	--200: #80b4d8;
+	--300: #68a4cc;
+	--400: #5088b0;
+	--500: #3c6c94;
+	--600: #2c5478;
+	--700: #1e3c5c;
+	--750: #243848;
+	--800: #1b2838;
+	--850: #091420;
+	--900: #0d1b2a;
+	--red: #e08090;
+	--pink: #e0a0b8;
+	--pink-secondary: #f0c0d0;
+	--purple: #a090d0;
+	--purple-secondary: #c0b0e8;
+	--blue: #64b5f6;
+	--blue-secondary: #90caf9;
+	--teal: #4dd0e1;
+	--green: #80cbc4;
+	--green-secondary: #a0e0d8;
+	--lime: #aed581;
+	--orange: #ffb74d;
+	--brown: #bcaaa4;
+	--black: #68a4cc;
+	--yellow: #ffe082;
+	--gold: #90caf9;
+	--silver: #b0d4f1;
+	--lewd: #e0a0b8;
+	--defiant: #e08090;
+	--meek: #f0c0d0;
+	--brat: #ffb74d;
+	--relaxed: #64b5f6;
+	--anxious: #e08090;
+	--veteran: #a090d0;
+	--methodical: #f0c0d0;
+	--scarred: #ffb74d;
+	--tattooed: #4dd0e1;
+	--manager: #64b5f6;
+	--link: #64b5f6;
+	--link-hover: #90caf9;
+	--danger: #e08090;
+	--tooltip-background: #091420;
+	--tooltip-border: #1e3c5c;
+}
+
+[data-theme="forest"] {
+	--000: #d5e8d0;
+	--100: #b5d5af;
+	--150: #a0c898;
+	--200: #8cbc84;
+	--300: #78b070;
+	--400: #609458;
+	--500: #487840;
+	--600: #345c30;
+	--700: #284028;
+	--750: #354835;
+	--800: #2d3e2d;
+	--850: #142014;
+	--900: #1b2e1b;
+	--red: #e08070;
+	--pink: #e0a898;
+	--pink-secondary: #f0c8b8;
+	--purple: #a090b8;
+	--purple-secondary: #c0b0d0;
+	--blue: #80a8c0;
+	--blue-secondary: #a0c0d4;
+	--teal: #80c0a8;
+	--green: #81c784;
+	--green-secondary: #a5d6a7;
+	--lime: #aed581;
+	--orange: #d4a574;
+	--brown: #a89070;
+	--black: #78b070;
+	--yellow: #dce775;
+	--gold: #a5d6a7;
+	--silver: #b5d5af;
+	--lewd: #e0a898;
+	--defiant: #e08070;
+	--meek: #f0c8b8;
+	--brat: #d4a574;
+	--relaxed: #80a8c0;
+	--anxious: #e08070;
+	--veteran: #a090b8;
+	--methodical: #f0c8b8;
+	--scarred: #d4a574;
+	--tattooed: #80c0a8;
+	--manager: #80a8c0;
+	--link: #81c784;
+	--link-hover: #a5d6a7;
+	--danger: #e08070;
+	--tooltip-background: #142014;
+	--tooltip-border: #284028;
+}
+
+/** End of Palettes **/

@@ -8,12 +8,13 @@
 html {
 	background-color: var(--surface-void);
 	color-scheme: dark light;
+	font-family: var(--font-body);
 }
 
 body {
 	background-color: var(--surface-void);
 	color: var(--text-primary);
-	font-family: var(--font-body);
+	font-family: inherit;
 	font-size: 16px;
 	line-height: 1.55;
 }
@@ -52,6 +53,50 @@ body {
 #ui-bar-history a {
 	color: var(--accent);
 	border-color: var(--border-strong);
+}
+
+#ui-bar hr {
+	border-color: var(--border-subtle);
+}
+
+#ui-bar-tray button {
+	background-color: transparent;
+	border: 1.5px solid var(--border-strong);
+	color: var(--text-primary);
+}
+
+#ui-bar-tray button:hover:not(:disabled) {
+	background-color: var(--surface-raised);
+	border-color: var(--accent);
+	color: var(--accent-strong);
+}
+
+#ui-bar-tray button:disabled {
+	background-color: transparent;
+	border-color: var(--border-subtle);
+	color: var(--text-dim);
+}
+
+#menu ul {
+	border: 1.5px solid var(--border-strong);
+	border-radius: var(--radius);
+	overflow: hidden;
+}
+
+#menu li:not(:first-child) {
+	border-top: 1px solid var(--border-subtle);
+}
+
+#menu li a {
+	background-color: transparent;
+	border-color: transparent;
+	color: var(--text-primary);
+}
+
+#menu li a:hover {
+	background-color: var(--surface-raised);
+	border-color: var(--accent);
+	color: var(--accent-strong);
 }
 
 #ui-dialog-body {

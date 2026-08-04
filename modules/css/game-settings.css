@@ -1,0 +1,358 @@
+/*
+ * Game settings: fieldset panels, tab chrome, and option grids.
+ * Tokens come from theme.css; this file only owns settings-specific layout.
+ */
+
+/* Widen the passage for the three-column Appearance panel */
+#passages.cc-wide {
+	max-width: 72rem;
+}
+
+.cc {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.cc-disclaimer {
+	color: var(--text-primary);
+	font-size: 0.95rem;
+	line-height: 1.55;
+	margin: 0 0 var(--space-4);
+}
+
+.cc-disclaimer p {
+	margin: 0 0 var(--space-3);
+}
+
+.cc-disclaimer p:last-child {
+	margin-bottom: 0;
+}
+
+.cc-shell {
+	background-color: var(--surface-hull);
+	border: 1px solid var(--border-strong);
+	border-radius: var(--radius);
+	padding: var(--space-4);
+}
+
+.cc-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+	margin-bottom: var(--space-4);
+	padding-bottom: var(--space-3);
+	border-bottom: 1px solid var(--border-subtle);
+}
+
+.cc-tabs button,
+.cc-tab {
+	background-color: var(--surface-raised);
+	border: 1px solid var(--border-strong);
+	border-radius: var(--radius);
+	color: var(--text-primary);
+	cursor: pointer;
+	font-size: 0.95rem;
+	padding: var(--space-2) var(--space-3);
+}
+
+.cc-tabs button:hover,
+.cc-tab:hover {
+	border-color: var(--text-muted);
+}
+
+.cc-tabs button.is-active,
+.cc-tab.is-active {
+	border-color: var(--warning);
+	color: var(--warning);
+}
+
+.cc-heading {
+	color: var(--warning);
+	font-size: 1.25rem;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	margin: var(--space-4) 0 var(--space-4);
+	text-align: center;
+	text-transform: none;
+}
+
+.cc-heading:first-child {
+	margin-top: 0;
+}
+
+.cc-fieldset {
+	background-color: transparent;
+	border: 1.5px solid var(--fieldset-border);
+	border-radius: var(--radius);
+	margin: 0 0 var(--space-4);
+	min-width: 0;
+	padding: var(--space-3) var(--space-3) var(--space-2);
+}
+
+.cc-legend {
+	color: var(--text-primary);
+	font-size: 0.95rem;
+	padding: 0 var(--space-2);
+	text-align: center;
+}
+
+.cc-options {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2) var(--space-3);
+	align-items: center;
+}
+
+.cc-option {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	color: var(--text-primary);
+	cursor: pointer;
+	font-size: 0.95rem;
+	margin: 0;
+	white-space: nowrap;
+}
+
+.cc-option input[type="radio"],
+.cc-option input[type="checkbox"] {
+	/* stylelint-disable-next-line plugin/no-unsupported-browser-features -- custom radio chrome */
+	appearance: none;
+	/* stylelint-disable-next-line plugin/no-unsupported-browser-features -- Safari */
+	-webkit-appearance: none;
+	background-color: transparent;
+	border: 1.5px solid var(--text-primary);
+	border-radius: 50%;
+	box-shadow: none;
+	cursor: pointer;
+	flex: 0 0 auto;
+	height: 0.95rem;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	width: 0.95rem;
+}
+
+.cc-option input[type="checkbox"] {
+	border-radius: var(--radius);
+}
+
+.cc-option input[type="radio"]:checked,
+.cc-option input[type="checkbox"]:checked {
+	border-color: var(--text-primary);
+}
+
+.cc-option input[type="radio"]:checked::after {
+	background-color: var(--control-accent);
+	border-radius: 50%;
+	content: "";
+	height: 0.45rem;
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 0.45rem;
+}
+
+.cc-option input[type="checkbox"]:checked::after {
+	color: var(--control-accent);
+	content: "✓";
+	font-size: 0.7rem;
+	font-weight: 700;
+	left: 50%;
+	line-height: 1;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.cc-option-label {
+	color: var(--text-primary);
+}
+
+.cc-tone-femme {
+	color: var(--tone-femme);
+}
+
+.cc-tone-masc {
+	color: var(--tone-masc);
+}
+
+.cc-tone-neutral {
+	color: var(--tone-neutral);
+}
+
+.cc-tone-default {
+	color: var(--text-primary);
+}
+
+.cc-swatch {
+	font-weight: 500;
+}
+
+/* Pink Cream — only readability aids; layout matches other themes via tokens */
+[data-theme="pink-cream"] .cc-swatch {
+	/* Keep light skin/hair swatches legible on blush surfaces */
+	text-shadow:
+		0 0 0.75px rgb(90 35 55 / 55%),
+		0 0.5px 0 rgb(90 35 55 / 30%);
+}
+
+.cc-columns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-4);
+}
+
+.cc-column {
+	flex: 1 1 16rem;
+	min-width: 0;
+}
+
+.cc-actions {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+}
+
+/* Love Interest Modifier */
+.cc-li-jump {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2) var(--space-3);
+	margin-bottom: var(--space-4);
+}
+
+.cc-li-label {
+	color: var(--warning);
+	font-weight: 600;
+}
+
+.cc-li-listbox select {
+	background-color: var(--surface-raised);
+	border: 1px solid var(--border-strong);
+	border-radius: var(--radius);
+	color: var(--text-primary);
+	font-size: 0.95rem;
+	min-width: 10rem;
+	padding: var(--space-1) var(--space-2);
+}
+
+.cc-li-editor {
+	border: 1px solid var(--border-strong);
+	padding: var(--space-4);
+}
+
+.cc-li-name {
+	margin-top: 0;
+}
+
+.cc-li-nav {
+	margin: 0 0 var(--space-4);
+	text-align: center;
+}
+
+.cc-li-nav a {
+	color: var(--accent);
+}
+
+.cc-li-empty {
+	color: var(--text-muted);
+	margin: 0;
+}
+
+/* General tab */
+.cc-general hr {
+	border: 0;
+	border-top: 1px solid var(--border-subtle);
+	margin: var(--space-4) 0;
+}
+
+/* Themes tab */
+.cc-themes-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+	margin-bottom: var(--space-4);
+}
+
+.settingsGrid {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	margin-bottom: var(--space-2);
+}
+
+.settingsRow {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3) var(--space-6);
+}
+
+.settingsHeader {
+	background-color: var(--surface-panel);
+	border: 1px solid var(--border-strong);
+	color: var(--gold);
+	font-size: 1.1rem;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	padding: var(--space-2) var(--space-3);
+	text-align: center;
+}
+
+.settingsToggleItem,
+.settingsToggleItemWide {
+	color: var(--text-primary);
+	line-height: 1.6;
+}
+
+.settingsToggleItem {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+}
+
+.settingsToggleItemWide label,
+.settingsToggleItem label {
+	cursor: pointer;
+	margin-right: 0.15rem;
+}
+
+.cc-themes hr {
+	border: 0;
+	border-top: 1px solid var(--border-subtle);
+	margin: var(--space-4) 0;
+}
+
+/* Shared button skins — keep these after layout so specificity stays ordered */
+.cc-begin,
+.cc-begin-disabled {
+	border-radius: var(--radius);
+	font-size: 0.95rem;
+	padding: var(--space-1) var(--space-3);
+}
+
+.cc-begin {
+	background-color: var(--surface-raised);
+	border: 1px solid var(--accent);
+	color: var(--accent-strong);
+	font-size: 1rem;
+	padding: var(--space-2) var(--space-4);
+}
+
+.cc-begin-disabled {
+	background-color: var(--surface-raised);
+	border: 1px solid var(--border-strong);
+	color: var(--text-dim);
+	opacity: 0.7;
+}
+
+@media screen and (max-width: 60rem) {
+	#passages.cc-wide {
+		max-width: 46rem;
+	}
+}
