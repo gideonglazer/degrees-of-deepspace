@@ -271,7 +271,8 @@
 	margin: var(--space-4) 0;
 }
 
-/* Themes tab */
+/* Character Creator / Themes toolbars */
+.cc-creator-toolbar,
 .cc-themes-toolbar {
 	display: flex;
 	flex-wrap: wrap;

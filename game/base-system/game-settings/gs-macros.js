@@ -150,6 +150,30 @@ defineGlobalNamespaces("GameSettings");
 	}
 
 	/**
+	 * Re-renders #ccPanel after Character Creator state changes so radios/checkboxes match.
+	 */
+	function refreshCreatorPanel() {
+		const $panel = jQuery("#ccPanel");
+		if ($panel.length) $panel.empty().wiki("<<ccPanel>>");
+	}
+
+	/**
+	 * Randomizes Character Creator fields and re-renders the panel.
+	 */
+	function randomizeCreator() {
+		Player.randomize();
+		refreshCreatorPanel();
+	}
+
+	/**
+	 * Resets Character Creator fields to defaults and re-renders the panel.
+	 */
+	function resetCreator() {
+		Player.resetToDefaults();
+		refreshCreatorPanel();
+	}
+
+	/**
 	 * Keeps the love-interest listbox in sync after Previous/Next navigation.
 	 * SugarCube listboxes use numeric <option value> indices in the DOM, so we select by roster index.
 	 */
@@ -194,6 +218,8 @@ defineGlobalNamespaces("GameSettings");
 		bindShell,
 		bindThemes,
 		styleBegin,
+		randomizeCreator,
+		resetCreator,
 		refreshEyeColors,
 		syncHeterochromia,
 		syncLiListbox,

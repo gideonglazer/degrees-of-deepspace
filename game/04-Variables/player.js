@@ -45,5 +45,70 @@ defineGlobalNamespaces("Player");
 		return vars.player;
 	}
 
-	Object.assign(Player, { createDefaults, ensure });
+	/**
+	 * Picks a random catalogue value from Constants.character[listKey].
+	 *
+	 * @param {string} listKey
+	 * @returns {string|undefined}
+	 */
+	function pickCatalogue(listKey) {
+		const options = C().character[listKey];
+		const entry = pickRandomItemInArray(options);
+		return entry ? entry.value : undefined;
+	}
+
+	/**
+	 * Overwrites `$player` cosmetics with a random pick from each character catalogue.
+	 *
+	 * @param {object} [variables] Defaults to live story variables.
+	 * @returns {object} The player object.
+	 */
+	function randomize(variables) {
+		const vars = variables || V();
+		const player = ensure(vars);
+		const eyeColor = pickCatalogue("eyeColors");
+
+		player.gender = pickCatalogue("genders");
+		player.clothingPref = pickCatalogue("clothingPrefs");
+		player.age = pickCatalogue("ages");
+		player.height = pickCatalogue("heights");
+		player.hair = {
+			length: pickCatalogue("hairLengths"),
+			style: pickCatalogue("hairStyles"),
+			type: pickCatalogue("hairTypes"),
+			color: pickCatalogue("hairColors"),
+		};
+		player.vocalTone = pickCatalogue("vocalTones");
+		player.skinTone = pickCatalogue("skinTones");
+		player.eyeShape = pickCatalogue("eyeShapes");
+		player.bodyShape = pickCatalogue("bodyShapes");
+		player.faceShape = pickCatalogue("faceShapes");
+		player.freckles = getRandomIntInclusive(0, 1) === 1;
+		player.heterochromia = getRandomIntInclusive(0, 1) === 1;
+		player.eyeColor = eyeColor;
+
+		if (player.heterochromia) {
+			player.eyeColorLeft = pickCatalogue("eyeColors");
+			player.eyeColorRight = pickCatalogue("eyeColors");
+		} else {
+			player.eyeColorLeft = eyeColor;
+			player.eyeColorRight = eyeColor;
+		}
+
+		return player;
+	}
+
+	/**
+	 * Resets `$player` cosmetics to Constants.character.defaults.
+	 *
+	 * @param {object} [variables] Defaults to live story variables.
+	 * @returns {object} The player object.
+	 */
+	function resetToDefaults(variables) {
+		const vars = variables || V();
+		vars.player = createDefaults();
+		return vars.player;
+	}
+
+	Object.assign(Player, { createDefaults, ensure, randomize, resetToDefaults });
 })();

@@ -8,7 +8,8 @@
 
 <<widget "ccActions">><span id="ccBeginWrap"><<button "Begin">><<goto "Intro">><</button>></span><<run GameSettings.styleBegin()>><</widget>>
 
-<<widget "ccSelf">><div class="cc-columns">\
+<<widget "ccSelf">><div class="cc-creator-toolbar"><<button "Randomize">><<run GameSettings.randomizeCreator()>><</button>> <<button "Default">><<run GameSettings.resetCreator()>><</button>></div>\
+<div class="cc-columns">\
 <div class="cc-column"><h2 class="cc-heading">Self</h2>\
 <fieldset class="cc-fieldset"><legend class="cc-legend">Gender</legend>\
 <<ccRadios "$player.gender" "genders">>\
