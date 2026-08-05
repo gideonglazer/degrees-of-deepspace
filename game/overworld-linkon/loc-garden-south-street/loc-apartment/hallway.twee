@@ -1,0 +1,35 @@
+:: Apartment Hallway
+<<initPlayState>>\
+<<run World.setLocation("apartment-hallway", "Garden South Street — Apartment Hallway")>>\
+You are in the hallway outside of your apartment.
+
+<<icon "apartment-door">><<link "Enter Apartment <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Apartment Living Room">><</link>>
+<<gap>>
+<<actionIcon "stairs-up">><<link "Take the stairs up <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Apartment Hallway Upper">><</link>>
+<<actionIcon "stairs-down">><<link "Take the stairs down <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Apartment Hallway Lower">><</link>>
+
+:: Apartment Hallway Upper
+<<initPlayState>>\
+<<pronouns "xavier">>\
+<<run World.setLocation("apartment-hallway-upper", "Garden South Street — Upper Hallway")>>\
+You are in the hallway on the floor above your apartment. <<Xavier>> lives on this floor.
+
+<<icon "apartment-door">><<link `"Knock on " + LoveInterests.displayName("xavier") + "'s door"`>><<goto "Xavier Door Knock">><</link>>
+<<gap>>
+<<actionIcon "stairs-down">><<link "Take the stairs down <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Apartment Hallway">><</link>>
+
+:: Xavier Door Knock
+<<initPlayState>>\
+<<pronouns "xavier">>\
+<<run World.setLocation("apartment-hallway-upper", "Garden South Street — Upper Hallway")>>\
+You knock on <<Xavier>>'s door. Looks like <<he>> isn't home right now.
+
+<<link "Step back">><<goto "Apartment Hallway Upper">><</link>>
+
+:: Apartment Hallway Lower
+<<initPlayState>>\
+<<run World.setLocation("apartment-hallway-lower", "Garden South Street — Lower Hallway")>>\
+You are in the front lobby of your apartment complex.
+
+<<actionIcon "stairs-up">><<link "Take the stairs up <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Apartment Hallway">><</link>>
+<<icon "apartment-ml-door">><<link "Leave Apartment Complex">><<goto "Garden South Street">><</link>>

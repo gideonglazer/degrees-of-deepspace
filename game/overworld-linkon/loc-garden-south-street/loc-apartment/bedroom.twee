@@ -1,19 +1,21 @@
 :: Apartment Bedroom
 <<initPlayState>>\
-<<pronouns "player">>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
 You stand in the bedroom of your apartment.
 
-<<link "Sleep in what you’re currently wearing">><<goto "Apartment Bedroom Sleep">><</link>>
+<<actionIcon "sleep-apt">><<link "Sleep in what you’re currently wearing">><<goto "Apartment Bedroom Sleep">><</link>>
 <<gap>>
-<<link "Leave Bedroom <span class='action-time'>(0:00)</span>">><<goto "Apartment Living Room">><</link>>
-<<link "Leave Apartment <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Apartment Hallway">><</link>>
+<<icon "living-room">><<link "Go to Living Room <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Apartment Living Room">><</link>>
+<<icon "kitchen">><<link "Go to Kitchen <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Apartment Kitchen">><</link>>
+<<gap>>
+<<icon "apartment-hall">><<link "Leave Apartment <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Apartment Hallway">><</link>>
+<<icon "apartment-ml-door">><<link "Leave Apartment Complex <span class='action-time'>(0:04)</span>">><<run World.advance(4)>><<goto "Garden South Street">><</link>>
+
 
 :: Apartment Bedroom Sleep
 <<initPlayState>>\
-<<pronouns "player">>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
-How long do you want to sleep?
+You climb in bed, cuddling into the plush sheets.
 
 <<for _h to 1; _h lte 10; _h++>>\
 <<capture _h>>\
@@ -21,11 +23,10 @@ How long do you want to sleep?
 <</capture>>\
 <</for>>\
 <<link "Just sleep <span class='action-time'>(??:??)</span>">><<set $sleepHours to getRandomIntInclusive(4, 8)>><<unset $sleepResult>><<goto "Apartment Bedroom Wake">><</link>> <<= Stats.effectMarkup("fatigue", "-")>>
-<<link "Never mind">><<goto "Apartment Bedroom">><</link>>
+<<link "Get out of bed">><<goto "Apartment Bedroom">><</link>>
 
 :: Apartment Bedroom Wake
 <<initPlayState>>\
-<<pronouns "player">>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
 <<if def $sleepHours>>\
 <<set $sleepResult to World.sleepFor($sleepHours)>>\

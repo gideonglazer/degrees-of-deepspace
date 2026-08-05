@@ -1,0 +1,6 @@
+:: Garden South Street
+<<initPlayState>>\
+<<run World.setLocation("garden-south-street", "Garden South Street")>>\
+You are on Garden South Street.
+
+<<icon "apartment-ml-door">><<link "Enter the apartment complex <span class='action-time'>(0:00)</span>">><<goto "Apartment Hallway Lower">><</link>>

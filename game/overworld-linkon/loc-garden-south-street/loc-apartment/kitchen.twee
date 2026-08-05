@@ -1,0 +1,10 @@
+:: Apartment Kitchen
+<<initPlayState>>\
+<<run World.setLocation("apartment-kitchen", "Garden South Street — Apartment")>>\
+You stand in the kitchen of your apartment.
+
+<<icon "living-room">><<link "Go to Living Room <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Apartment Living Room">><</link>>
+<<icon "bedroom">><<link "Go to Bedroom <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Apartment Bedroom">><</link>>
+<<gap>>
+<<icon "apartment-hall">><<link "Leave Apartment <span class='action-time'>(0:00)</span>">><<goto "Apartment Hallway">><</link>>
+<<icon "apartment-ml-door">><<link "Leave Apartment Complex <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Garden South Street">><</link>>

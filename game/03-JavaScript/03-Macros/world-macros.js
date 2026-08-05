@@ -25,6 +25,30 @@
 	});
 
 	/**
+	 * Passage option icon before a link (and before LinkNumberify's numkey).
+	 * <<icon "bedroom">> → img/location-icons/bedroom.png
+	 * <<icon "apartment-door" "gif">> → .gif in the same folder
+	 * <<actionIcon "sleep-apt">> → img/action-icons/sleep-apt.png
+	 */
+	function iconImg(folder, args) {
+		const name = args[0] != null ? String(args[0]).trim() : "";
+		if (!name) return "";
+		const safe = name.replace(/[^a-zA-Z0-9_-]/g, "");
+		if (!safe) return "";
+		const rawExt = args[1] != null ? String(args[1]).trim().replace(/^\./, "").toLowerCase() : "png";
+		const ext = rawExt === "gif" || rawExt === "webp" || rawExt === "jpg" || rawExt === "jpeg" ? rawExt : "png";
+		return `<img class="icon" src="img/${folder}/${safe}.${ext}" alt="" aria-hidden="true">`;
+	}
+
+	DefineMacroS("icon", function (args) {
+		return iconImg("location-icons", args);
+	});
+
+	DefineMacroS("actionIcon", function (args) {
+		return iconImg("action-icons", args);
+	});
+
+	/**
 	 * Vertical spacer between link groups, e.g. room actions vs leave links.
 	 * <<gap>> / <<gap "sm">> / <<gap "md">> / <<gap "lg">> — or <<gap 1>>–<<gap 3>>.
 	 */

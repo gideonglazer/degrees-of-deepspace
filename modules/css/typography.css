@@ -143,9 +143,75 @@ html.Lexend {
 	font-size: 20px;
 }
 
-/* Colour utility used by theme settings labels */
+/*
+ * Passage text colours.
+ * Accents come from theme.css tokens, so they stay readable as [data-theme] changes.
+ * Use via @@.yellow;text@@ or <<yellow>>text<</yellow>> / <<important>>…<</important>>.
+ */
+.red {
+	color: var(--red);
+}
+
+.pink {
+	color: var(--pink);
+}
+
+.purple {
+	color: var(--purple);
+}
+
+.blue {
+	color: var(--blue);
+}
+
+.teal {
+	color: var(--teal);
+}
+
+.green {
+	color: var(--green);
+}
+
+.lime {
+	color: var(--lime);
+}
+
+.orange {
+	color: var(--orange);
+}
+
+.brown {
+	color: var(--brown);
+}
+
+.yellow {
+	color: var(--yellow);
+}
+
 .gold {
 	color: var(--gold);
+}
+
+.silver {
+	color: var(--silver);
+}
+
+.black {
+	color: var(--black);
+}
+
+/* Semantic aliases for story emphasis */
+.important {
+	color: var(--gold);
+}
+
+/* Soft pink-red for cautionary story text (former bad-stat chip colour) */
+.warning {
+	color: #ff8fb8;
+}
+
+.success {
+	color: var(--success);
 }
 
 .small-description {

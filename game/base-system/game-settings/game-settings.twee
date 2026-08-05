@@ -180,7 +180,6 @@
 <label><input type="radio" name="theme" value="frappe"> Catppuccin Frappé</label> | \
 <label><input type="radio" name="theme" value="macchiato"> Catppuccin Macchiato</label> | \
 <label><input type="radio" name="theme" value="mocha"> Catppuccin Mocha</label> | \
-<label><input type="radio" name="theme" value="pink-cream"> Pink Cream</label> | \
 <label><input type="radio" name="theme" value="dark-gothic"> Dark Gothic</label> | \
 <label><input type="radio" name="theme" value="manor-gold"> Manor Gold</label> | \
 <label><input type="radio" name="theme" value="ocean-mist"> Ocean Mist</label> | \

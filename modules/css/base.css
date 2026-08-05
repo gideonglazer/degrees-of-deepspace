@@ -215,6 +215,19 @@ button:disabled {
 	padding-left: var(--space-4);
 }
 
+/* Passage option icons — native ~30–32px art, sized in em so they track text scale */
+#passages img.icon {
+	display: inline-block;
+	width: 1.875em;
+	height: 1.875em;
+	margin-right: 0.2em;
+	vertical-align: middle;
+	object-fit: contain;
+	object-position: center;
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
+}
+
 /* LinkNumberify — DoL-style keyboard link prefixes */
 #passages a.link-internal .link-num {
 	color: var(--text-muted, #9aa3b2);

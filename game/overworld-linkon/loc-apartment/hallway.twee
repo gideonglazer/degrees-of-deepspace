@@ -1,7 +1,0 @@
-:: Apartment Hallway
-<<initPlayState>>\
-<<pronouns "player">>\
-<<run World.setLocation("apartment-hallway", "Garden South Street — Apartment Hallway")>>\
-You stand in the hallway outside your apartment.
-
-<<link "Enter Apartment <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Apartment Living Room">><</link>>

@@ -6,14 +6,16 @@
 <<run World.ensure()>><<run Stats.ensure()>><<run Journal.ensure()>><<run Options.ensure()>><<run Money.get()>>\
 <<set _clockHands to World.clockHandAngles()>>\
 <<set _fullDate to World.formatDateLong()>>\
+<<set _hourHandStyle to "transform: rotate(" + _clockHands.hour + "deg)">>\
+<<set _minuteHandStyle to "transform: rotate(" + _clockHands.minute + "deg)">>\
 <div id="hud" class="hud">\
 <div class="hud-status" role="group" aria-label="Status">\
 <span class="hud-status-item hud-money"><<= Money.format(Money.get())>></span>\
 <span class="hud-status-item hud-time">\
 <span class="hud-clock" aria-hidden="true">\
 <span class="hud-clock-face">\
-<span class="hud-clock-hand hud-clock-hand-hour" style="transform: rotate(<<= _clockHands.hour>>deg);"></span>\
-<span class="hud-clock-hand hud-clock-hand-minute" style="transform: rotate(<<= _clockHands.minute>>deg);"></span>\
+<span class="hud-clock-hand hud-clock-hand-hour" @style="_hourHandStyle"></span>\
+<span class="hud-clock-hand hud-clock-hand-minute" @style="_minuteHandStyle"></span>\
 <span class="hud-clock-center"></span>\
 </span>\
 </span>\

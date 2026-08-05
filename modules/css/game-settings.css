@@ -191,14 +191,6 @@
 	font-weight: 500;
 }
 
-/* Pink Cream — only readability aids; layout matches other themes via tokens */
-[data-theme="pink-cream"] .cc-swatch {
-	/* Keep light skin/hair swatches legible on blush surfaces */
-	text-shadow:
-		0 0 0.75px rgb(90 35 55 / 55%),
-		0 0.5px 0 rgb(90 35 55 / 30%);
-}
-
 .cc-columns {
 	display: flex;
 	flex-wrap: wrap;

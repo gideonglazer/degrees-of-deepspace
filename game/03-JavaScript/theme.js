@@ -10,6 +10,8 @@ defineGlobalNamespaces("Theme");
 
 	const STORAGE_KEY = "dodTheme";
 	const DEFAULT_PREFERENCE = "mocha";
+	/** Removed themes still stored in older browsers map back to the default. */
+	const REMOVED_PREFERENCES = new Set(["pink-cream"]);
 
 	/** @type {MediaQueryList|null} */
 	let isDarkPreferredQuery = null;
@@ -18,7 +20,12 @@ defineGlobalNamespaces("Theme");
 	 * @returns {string}
 	 */
 	function getPreference() {
-		return localStorage.getItem(STORAGE_KEY) || DEFAULT_PREFERENCE;
+		const stored = localStorage.getItem(STORAGE_KEY) || DEFAULT_PREFERENCE;
+		if (REMOVED_PREFERENCES.has(stored)) {
+			localStorage.setItem(STORAGE_KEY, DEFAULT_PREFERENCE);
+			return DEFAULT_PREFERENCE;
+		}
+		return stored;
 	}
 
 	/**
