@@ -1,0 +1,39 @@
+:: Intro [nosave]
+<<initPlayState>>\
+<<pronouns "player">>\
+<<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
+Welcome to Degrees of Deepspace, <<honorific>> Hunter!
+
+Linkon City is <<worldWeather>> this morning, inviting you in to explore and meet new friends. 
+
+Today is <<worldDateLong>>, and you awoke at <<worldTime>>.
+
+You may need to pick up a few odd jobs here and there to make ends meet and survive. 
+
+The Linkon City Bus Service is the easiest way to get around Linkon City.
+
+<<link "Next">><<goto "Intro Xavier Morning">><</link>>
+
+:: Intro Xavier Morning [nosave]
+<<initPlayState>>\
+<<pronouns "xavier">>\
+<<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
+You wake to a sliver of sunlight peeking in through your bedroom window, sheets draped partially over your face. Some plushies are scattered awry across your bed, others laying sideways on the floor, much to your displeasure. The incessant knocking at your door wills you to pull yourself up from the comfortable sheets. You trudge towards the entryway, opening the door to meet the smiling, <<gendered "boyish" "girlish" "sweet">> face of your landlord—and the person you just so happen to work with at the Hunter's Association.
+
+"Good morning." <<Xavier>> speaks calmly, rubbing the back of <<his>> neck. <<His>> eyes awkwardly dart towards the floor, before they could meet yours. "I know it isn't ideal, but in order to keep living here, I'll need <<money 500>> from you by the end of this week."
+
+"I know you've always been very punctual with paying me on time. So, you know I won't be mad at you if you are a day late this time around." <<He>> pauses, "however, if you are unable to pay me back for the week… I suppose we'll have to come up with another arrangement for repayment, right?" <<His>> sweet smile sent a shiver down your spine, but you keep still. <<stress "+">>
+
+"It looks like you still need some time to get ready… I'll be waiting for you outside. That is… <i>if</i> you want to walk to work with me, of course." <<His>> cheeks flushed red.
+
+You close the door, returning to your bedroom.
+
+<<run Journal.addReminder("xavier-morning-walk", LoveInterests.displayName("xavier") + " waits outside of your shared apartment every weekday morning at " + World.formatTimeAt(8, 0) + ". Jenna expects you at work by " + World.formatTimeAt(9, 0) + ".", { permanent: true })>>\
+
+<<link "Continue">><<goto "Apartment Bedroom">><</link>>
+
+:: Apartment Bedroom
+<<initPlayState>>\
+<<pronouns "player">>\
+<<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
+You stand in the bedroom of your apartment. Plushies still litter the bed and floor.

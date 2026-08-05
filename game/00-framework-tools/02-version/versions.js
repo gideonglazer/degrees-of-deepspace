@@ -83,11 +83,4 @@ defineGlobalNamespaces("Versions");
 /*
  * Migrations, oldest first. Keep them append-only: editing a released one means saves that already
  * ran it will not run the corrected version.
- *
- * Versions.register("0.1.1", "renamed $air to $oxygen", variables => {
- *     if (variables.air !== undefined) {
- *         variables.oxygen = variables.air;
- *         delete variables.air;
- *     }
- * });
  */

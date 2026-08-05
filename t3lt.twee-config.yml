@@ -24,7 +24,7 @@ sugarcube-2:
             description: Renders labelled radiobuttons from a Constants.character catalogue.
             parameters:
                 - text &+ text
-		ccCheck:
+        ccCheck:
             name: ccCheck
             description: Renders a checkbox bound to a boolean story variable.
             parameters:
@@ -42,4 +42,194 @@ sugarcube-2:
         ccLiNameRadios:
             name: ccLiNameRadios
             description: Renders Display Name locale radios for the focused love interest.
+            parameters: []
+        money:
+            name: money
+            description: Formats an amount with the selected currency symbol.
+            parameters:
+                - "|+ number"
+                - "|+ text"
+        worldDate:
+            name: worldDate
+            description: Prints the current in-game date using $options.dateFormat.
+            parameters: []
+        worldDateLong:
+            name: worldDateLong
+            description: Prints a long-form in-game date.
+            parameters: []
+        worldTime:
+            name: worldTime
+            description: Prints the current in-game time using $options.timeFormat.
+            parameters: []
+        worldWeather:
+            name: worldWeather
+            description: Prints the current weather as prose text.
+            parameters: []
+        worldTemp:
+            name: worldTemp
+            description: Prints ambient temperature using $options.temperature.
+            parameters: []
+        honorific:
+            name: honorific
+            description: Prints Mr./Ms./Mx. for the player gender.
+            parameters: []
+        honourific:
+            name: honourific
+            description: Alias of honorific.
+            parameters: []
+        pronouns:
+            name: pronouns
+            description: Sets who <<he>>/<<him>>/<<his>>/<<gendered>> refer to (player or LI id).
+            parameters:
+                - "|+ text"
+        gendered:
+            name: gendered
+            description: Picks masc/femme/neutral wording for the active pronoun focus.
+            parameters:
+                - text &+ text &+ text
+        liname:
+            name: liname
+            description: Prints a love interest display name by id.
+            parameters:
+                - text
+        stress:
+            name: stress
+            description: Applies a stress effect tier (+/++/+++ or -/--/---) and prints the indicator.
+            parameters:
+                - text
+        arousal:
+            name: arousal
+            description: Applies an arousal effect tier and prints the indicator.
+            parameters:
+                - text
+        pain:
+            name: pain
+            description: Applies a pain effect tier and prints the indicator.
+            parameters:
+                - text
+        trauma:
+            name: trauma
+            description: Applies a trauma effect tier and prints the indicator.
+            parameters:
+                - text
+        energy:
+            name: energy
+            description: Applies an energy effect tier and prints the indicator.
+            parameters:
+                - text
+        hygiene:
+            name: hygiene
+            description: Applies a hygiene effect tier and prints the indicator.
+            parameters:
+                - text
+        hunger:
+            name: hunger
+            description: Applies a hunger effect tier and prints the indicator.
+            parameters:
+                - text
+        comfort:
+            name: comfort
+            description: Applies a comfort effect tier and prints the indicator.
+            parameters:
+                - text
+        hudStat:
+            name: hudStat
+            description: Prints a DoL-style coloured Current Condition line for a stat.
+            parameters:
+                - text
+        hudTip:
+            name: hudTip
+            description: Prints a DoL-style Tip block when sidebar hints are enabled.
+            parameters: []
+        he:
+            name: he
+            description: Player subject pronoun.
+            parameters: []
+        He:
+            name: He
+            description: Capitalised player subject pronoun.
+            parameters: []
+        she:
+            name: she
+            description: Player subject pronoun (resolves from gender).
+            parameters: []
+        She:
+            name: She
+            description: Capitalised player subject pronoun.
+            parameters: []
+        him:
+            name: him
+            description: Player object pronoun.
+            parameters: []
+        Him:
+            name: Him
+            description: Capitalised player object pronoun.
+            parameters: []
+        her:
+            name: her
+            description: Player object pronoun (resolves from gender).
+            parameters: []
+        Her:
+            name: Her
+            description: Capitalised player object pronoun.
+            parameters: []
+        his:
+            name: his
+            description: Player possessive adjective.
+            parameters: []
+        His:
+            name: His
+            description: Capitalised player possessive adjective.
+            parameters: []
+        they:
+            name: they
+            description: Player subject pronoun (resolves from gender).
+            parameters: []
+        They:
+            name: They
+            description: Capitalised player subject pronoun.
+            parameters: []
+        them:
+            name: them
+            description: Player object pronoun.
+            parameters: []
+        Them:
+            name: Them
+            description: Capitalised player object pronoun.
+            parameters: []
+        their:
+            name: their
+            description: Player possessive adjective.
+            parameters: []
+        Their:
+            name: Their
+            description: Capitalised active-focus possessive adjective.
+            parameters: []
+        Xavier:
+            name: Xavier
+            description: Xavier display name for the selected locale.
+            parameters: []
+        Rafayel:
+            name: Rafayel
+            description: Rafayel display name for the selected locale.
+            parameters: []
+        Sylus:
+            name: Sylus
+            description: Sylus display name for the selected locale.
+            parameters: []
+        Zayne:
+            name: Zayne
+            description: Zayne display name for the selected locale.
+            parameters: []
+        Caleb:
+            name: Caleb
+            description: Caleb display name for the selected locale.
+            parameters: []
+        Gideon:
+            name: Gideon
+            description: Gideon display name for the selected locale.
+            parameters: []
+        Valko:
+            name: Valko
+            description: Valko display name for the selected locale.
             parameters: []

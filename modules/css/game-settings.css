@@ -352,6 +352,26 @@
 	opacity: 0.7;
 }
 
+.season-autumn {
+	color: #e08a3c;
+}
+
+.season-winter {
+	color: #7ec8e3;
+}
+
+.season-spring {
+	color: #6fbf73;
+}
+
+.season-summer {
+	color: #e8899a;
+}
+
+.season-random {
+	color: #b49ae0;
+}
+
 @media screen and (max-width: 60rem) {
 	#passages.cc-wide {
 		max-width: 46rem;

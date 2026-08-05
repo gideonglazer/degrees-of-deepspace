@@ -296,9 +296,7 @@ defineGlobalNamespaces("GameSettings");
 			if (!name) return;
 			const $label = jQuery(
 				`<label class="cc-option">` +
-					`<input type="radio" name="ccLiNameLocale" value="${escapeAttr(locale.value)}"${
-						current === locale.value ? " checked" : ""
-					}>` +
+					`<input type="radio" name="ccLiNameLocale" value="${escapeAttr(locale.value)}"${current === locale.value ? " checked" : ""}>` +
 					`<span class="cc-option-label">${escapeHtml(name)} (${escapeHtml(locale.code)})</span>` +
 					`</label>`
 			);

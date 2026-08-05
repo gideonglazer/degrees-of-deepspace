@@ -232,4 +232,13 @@ defineGlobalNamespaces("LoveInterests");
 		ensure,
 		stepFocus,
 	});
+
+	/** Convenience macros <<Xavier>>, <<Rafayel>>, … — registered here so the roster already exists. */
+	roster().forEach(li => {
+		const macroName = li.name;
+		if (!macroName || Macro.get(macroName)) return;
+		DefineMacroS(macroName, function () {
+			return displayName(li.id);
+		});
+	});
 })();

@@ -1,0 +1,52 @@
+:: StoryMenu
+<<link "Journal">><<run Journal.openDialog()>><</link>>
+
+:: StoryCaption
+<<if passage() !== "Start">>\
+<<run World.ensure()>><<run Stats.ensure()>><<run Journal.ensure()>><<run Options.ensure()>><<run Money.get()>>\
+<div id="hud" class="hud">\
+<div class="hud-row hud-money"><<= Money.format(Money.get())>></div>\
+<div class="hud-row hud-datetime"><<= World.formatTime()>> <<= World.weekdayName()>></div>\
+<div class="hud-row hud-date"><<= World.formatDate()>></div>\
+<div class="hud-row hud-weather"><<= World.weatherText()>>, <<= World.formatTemperature()>></div>\
+<<if $world.locationLabel>><div class="hud-row hud-location"><<= $world.locationLabel>></div><</if>>\
+\
+<div class="hud-condition">\
+<<hudStat "pain">>\
+<<hudStat "arousal">>\
+<<hudStat "energy">>\
+<<hudStat "stress">>\
+<<hudStat "trauma">>\
+<<hudStat "hygiene">>\
+<<hudStat "hunger">>\
+<<hudStat "comfort">>\
+</div>\
+\
+<<hudTip>>\
+</div>\
+<</if>>
+
+:: Journal Widgets [widget]
+<<widget "journalContents">>\
+<<run Journal.ensure()>>\
+<div class="journal">\
+<<set _notes to Journal.listSorted()>>\
+<<if !_notes.length>>\
+<p class="journal-empty">Your journal is empty.</p>\
+<<else>>\
+<<set _shownPermanent to false>>\
+<<set _shownOther to false>>\
+<<for _note range _notes>>\
+<<if _note.permanent && !_shownPermanent>>\
+<h3 class="journal-section">Reminders</h3>\
+<<set _shownPermanent to true>>\
+<</if>>\
+<<if !_note.permanent && !_shownOther>>\
+<h3 class="journal-section">Notes</h3>\
+<<set _shownOther to true>>\
+<</if>>\
+<div class="journal-entry<<if _note.permanent>> journal-permanent<</if>>"><<= _note.text>></div>\
+<</for>>\
+<</if>>\
+</div>\
+<</widget>>

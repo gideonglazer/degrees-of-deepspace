@@ -1,0 +1,283 @@
+/* Sidebar HUD (DoL-style Current Condition) and journal */
+
+#story-caption .hud {
+	font-size: inherit;
+	line-height: 1.4;
+	text-align: left;
+}
+
+#story-caption .hud-row {
+	margin: 0.1em 0;
+}
+
+#story-caption .hud-money {
+	font-weight: 600;
+}
+
+#story-caption .hud-datetime a {
+	color: inherit;
+	text-decoration: none;
+}
+
+#story-caption .hud-datetime a:hover {
+	text-decoration: underline;
+}
+
+#story-caption .hud-date,
+#story-caption .hud-weather,
+#story-caption .hud-location {
+	opacity: 0.85;
+	font-size: 0.95em;
+}
+
+#story-caption .hud-condition {
+	display: block;
+	margin: 0.55em 0 0.15em;
+	text-align: center;
+}
+
+#story-caption .hud-stat {
+	display: block;
+	margin: 0;
+	padding: 0.12em 0 0.18em;
+	color: var(--text-primary, #e8e8ef);
+	line-height: 1.25;
+	text-align: center;
+}
+
+#story-caption .hud-stat-name {
+	color: var(--text-primary, #f0f0f5);
+	font-weight: 500;
+}
+
+#story-caption .hud-stat-text {
+	font-weight: 400;
+}
+
+#story-caption .hud-stat-bar {
+	display: block;
+	width: 100%;
+	height: 3px;
+	margin-top: 0.18em;
+	background-color: rgba(140, 140, 160, 0.28);
+	border-radius: 1px;
+	overflow: hidden;
+}
+
+#story-caption .hud-stat-bar-fill {
+	height: 100%;
+	width: 0;
+	border-radius: 1px;
+	background-color: #8fbc8f;
+}
+
+#story-caption .hud-stat-bar-fill.severity0 {
+	background-color: #8fbc8f;
+}
+
+#story-caption .hud-stat-bar-fill.severity1 {
+	background-color: #9ccc65;
+}
+
+#story-caption .hud-stat-bar-fill.severity2 {
+	background-color: #d4a84b;
+}
+
+#story-caption .hud-stat-bar-fill.severity3 {
+	background-color: #d4783a;
+}
+
+#story-caption .hud-stat-bar-fill.severity4 {
+	background-color: #d64545;
+}
+
+/* DoL-like condition colour ramp (description only) */
+#story-caption .hud-stat-text.severity0 {
+	color: #8fbc8f;
+}
+
+#story-caption .hud-stat-text.severity1 {
+	color: #9ccc65;
+}
+
+#story-caption .hud-stat-text.severity2 {
+	color: #d4a84b;
+}
+
+#story-caption .hud-stat-text.severity3 {
+	color: #d4783a;
+}
+
+#story-caption .hud-stat-text.severity4 {
+	color: #d64545;
+	font-weight: 600;
+}
+
+/* Pink Cream: lime greens vibrate on rose — keep status copy light and readable. */
+[data-theme="pink-cream"] #story-caption .hud-stat-text.severity0,
+[data-theme="pink-cream"] #story-caption .hud-stat-text.severity1 {
+	color: #ffffff;
+}
+
+[data-theme="pink-cream"] #story-caption .hud-stat-text.severity2 {
+	color: #fff3b0;
+}
+
+[data-theme="pink-cream"] #story-caption .hud-stat-text.severity3 {
+	color: #ffd0a8;
+}
+
+[data-theme="pink-cream"] #story-caption .hud-stat-text.severity4 {
+	color: #ffc0c8;
+	font-weight: 600;
+}
+
+[data-theme="pink-cream"] #story-caption .hud-tip {
+	color: #ffe0ea;
+}
+
+[data-theme="pink-cream"] #story-caption .hud-tip-label {
+	color: #fff3b0;
+}
+
+#story-caption .hud-tip {
+	margin-top: 1.1em;
+	padding: 0 0.15em;
+	text-align: center;
+	color: #c8c8d2;
+	font-size: 0.92em;
+	line-height: 1.45;
+}
+
+#story-caption .hud-tip-label {
+	color: #e9c46a;
+	font-weight: 700;
+}
+
+/* Passage effect indicators — DoL paints +/name the same colour, no bold */
+.stat-effect-wrap {
+	white-space: nowrap;
+}
+
+.stat-effect-pipe {
+	color: #c8c8d8;
+	font-weight: 400;
+	margin: 0 0.1em;
+}
+
+.stat-effect {
+	font-weight: 400;
+	white-space: nowrap;
+}
+
+.stat-effect .stat-delta {
+	font-weight: 400;
+	margin-right: 0.12em;
+}
+
+.stat-effect .stat-name {
+	font-weight: 400;
+}
+
+.stat-effect .stat-delta,
+.stat-effect .stat-name {
+	color: inherit;
+}
+
+/*
+ * DoL condition gains (stress / arousal / pain / trauma): soft pink for the
+ * whole "+ Stress" chip — delimiter and label match.
+ */
+.stat-effect.stat-stress.stat-effect-bad,
+.stat-effect.stat-arousal.stat-effect-bad,
+.stat-effect.stat-pain.stat-effect-bad,
+.stat-effect.stat-trauma.stat-effect-bad {
+	color: #ff8fb8;
+}
+
+/* Pink Cream is already candy-pink — keep the chip readable in white. */
+[data-theme="pink-cream"] .stat-effect.stat-stress.stat-effect-bad,
+[data-theme="pink-cream"] .stat-effect.stat-arousal.stat-effect-bad,
+[data-theme="pink-cream"] .stat-effect.stat-pain.stat-effect-bad,
+[data-theme="pink-cream"] .stat-effect.stat-trauma.stat-effect-bad {
+	color: #ffffff;
+}
+
+/* Relief / beneficial change */
+.stat-effect.stat-effect-good {
+	color: #7dcea0;
+}
+
+.stat-effect.stat-energy.stat-effect-bad {
+	color: #c9a227;
+}
+
+.stat-effect.stat-hygiene.stat-effect-bad,
+.stat-effect.stat-hunger.stat-effect-bad,
+.stat-effect.stat-comfort.stat-effect-bad {
+	color: #e8916a;
+}
+
+.journal-title {
+	margin-top: 0;
+}
+
+.journal-section {
+	margin: 1em 0 0.4em;
+	font-size: 1.05em;
+}
+
+.journal-entry {
+	margin: 0.35em 0;
+	padding-left: 0.6em;
+	border-left: 2px solid currentColor;
+	opacity: 0.95;
+}
+
+.journal-permanent {
+	border-left-color: var(--hud-warn, #c9a227);
+}
+
+.journal-empty {
+	opacity: 0.7;
+	font-style: italic;
+}
+
+.journal-back {
+	margin-top: 1.25em;
+}
+
+/* Journal modal — classNames from Dialog.setup land on #ui-dialog-body */
+#ui-dialog-body.journal-dialog {
+	padding: 1.5rem 2.25rem 1.75rem;
+	box-sizing: border-box;
+}
+
+#ui-dialog-body.journal-dialog .journal {
+	max-height: min(70vh, 32rem);
+	overflow-y: auto;
+	padding: 0;
+	text-align: left;
+}
+
+#ui-dialog-body.journal-dialog .journal-section {
+	margin: 0.85em 0 0.55em;
+	font-size: 1.05em;
+	font-weight: 600;
+	color: var(--gold);
+}
+
+#ui-dialog-body.journal-dialog .journal-entry {
+	margin: 0.5em 0;
+	padding: 0.4em 0.75em;
+	border-left: 2px solid currentColor;
+	line-height: 1.5;
+}
+
+#ui-dialog-body.journal-dialog .journal-permanent {
+	border-left-color: var(--hud-warn, #c9a227);
+}
+
+#ui-dialog-body.journal-dialog .journal-empty {
+	padding: 0.25em 0;
+}

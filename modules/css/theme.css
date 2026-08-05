@@ -614,62 +614,62 @@
 
 [data-theme="pink-cream"] {
 	/*
-	 * Soft cream surfaces with defined rose chrome. Greyscale is inverted for a light
-	 * theme: --000 is deep rose text, --900 is the page cream.
+	 * Soft dusty-rose kawaii surfaces with white text. Greyscale uses dark-theme
+	 * orientation: --000 is white foreground, --900 is the page pink.
 	 */
-	--000: #8a3450;
-	--100: #9a4560;
-	--150: #a85470;
-	--200: #b86882;
-	--300: #c47a92;
-	--400: #d090a4;
-	--500: #dca8b8;
-	--600: #e8c0cc;
-	--700: #d47890;
-	--750: #f9e4ea;
-	--800: #fff0f4;
-	--850: #fce8ee;
-	--900: #fff8fa;
-	--red: #c44569;
-	--pink: #d06080;
-	--pink-secondary: #e898ac;
-	--purple: #b07090;
-	--purple-secondary: #d098b0;
-	--blue: #a07090;
-	--blue-secondary: #c090a8;
-	--teal: #a88898;
-	--green: #a88090;
-	--green-secondary: #c8a0b0;
-	--lime: #c898a0;
-	--orange: #d48878;
-	--brown: #a87070;
-	--black: #b86882;
-	--yellow: #d4a090;
-	--gold: #c45c78;
-	--silver: #e0a8b8;
-	--lewd: #d06080;
-	--defiant: #c44569;
-	--meek: #d098b0;
-	--brat: #d48878;
-	--relaxed: #a07090;
-	--anxious: #c44569;
-	--veteran: #b07090;
-	--methodical: #e8a8b8;
-	--scarred: #d48878;
-	--tattooed: #a88898;
-	--manager: #a07090;
-	--link: #c45c78;
-	--link-hover: #8a3450;
-	--danger: #b03858;
-	--tooltip-background: #fff0f4;
-	--tooltip-border: #d47890;
-	--fieldset-border: #d47890;
-	--control-accent: #c45c78;
-	--tone-femme: #c45c78;
-	--tone-masc: #8a6080;
-	--tone-neutral: #c48870;
-	--border-subtle: #e8b0c0;
-	--border-strong: #d47890;
+	--000: #ffffff;
+	--100: #fff5f8;
+	--150: #ffe8f0;
+	--200: #ffd6e4;
+	--300: #f5c4d4;
+	--400: #ebabbf;
+	--500: #e092ac;
+	--600: #d4809a;
+	--700: #ffe0ea;
+	--750: #b85a78;
+	--800: #ad516f;
+	--850: #a24966;
+	--900: #c96b88;
+	--red: #ff6b8a;
+	--pink: #ffffff;
+	--pink-secondary: #ffe0ea;
+	--purple: #e8c0ff;
+	--purple-secondary: #f0d4ff;
+	--blue: #c8dcff;
+	--blue-secondary: #dde8ff;
+	--teal: #b0ece4;
+	--green: #ffffff;
+	--green-secondary: #e8fff0;
+	--lime: #fff3b0;
+	--orange: #ffd0a8;
+	--brown: #ffc0b0;
+	--black: #d4809a;
+	--yellow: #fff3b0;
+	--gold: #ffe8a0;
+	--silver: #ffe0ea;
+	--lewd: #ffffff;
+	--defiant: #ff6b8a;
+	--meek: #ffe0ea;
+	--brat: #ffd0a8;
+	--relaxed: #c8dcff;
+	--anxious: #ff6b8a;
+	--veteran: #e8c0ff;
+	--methodical: #ffe0ea;
+	--scarred: #ffd0a8;
+	--tattooed: #b0ece4;
+	--manager: #c8dcff;
+	--link: #ffffff;
+	--link-hover: #ffe8f0;
+	--danger: #ff5a7a;
+	--tooltip-background: #ad516f;
+	--tooltip-border: #ffffff;
+	--fieldset-border: rgb(255 255 255 / 70%);
+	--control-accent: #ffffff;
+	--tone-femme: #ffffff;
+	--tone-masc: #c8dcff;
+	--tone-neutral: #fff3b0;
+	--border-subtle: rgb(255 255 255 / 35%);
+	--border-strong: rgb(255 255 255 / 65%);
 }
 
 [data-theme="dark-gothic"] {

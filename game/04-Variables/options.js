@@ -34,6 +34,8 @@ defineGlobalNamespaces("Options");
 			dateFormat: "MM/DD/YYYY",
 			temperature: "fahrenheit",
 			timeFormat: "12",
+			currency: "$",
+			startingSeason: "spring",
 			sidebarHints: true,
 			passageLineHeight: undefined,
 			overlayLineHeight: undefined,
