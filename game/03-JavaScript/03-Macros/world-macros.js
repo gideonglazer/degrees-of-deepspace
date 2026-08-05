@@ -5,7 +5,7 @@
 (function () {
 	"use strict";
 
-	const EFFECT_STATS = ["stress", "arousal", "pain", "trauma", "energy", "hygiene", "hunger", "comfort"];
+	const EFFECT_STATS = ["stress", "arousal", "pain", "trauma", "energy", "hygiene", "hunger"];
 
 	EFFECT_STATS.forEach(stat => {
 		DefineMacroS(stat, function (args) {
@@ -22,6 +22,21 @@
 
 	DefineMacroS("hudStat", function (args) {
 		return Stats.hudLine(String(args[0] || ""));
+	});
+
+	/**
+	 * Vertical spacer between link groups, e.g. room actions vs leave links.
+	 * <<gap>> / <<gap "sm">> / <<gap "md">> / <<gap "lg">> — or <<gap 1>>–<<gap 3>>.
+	 */
+	DefineMacroS("gap", function (args) {
+		let size = "md";
+		if (args.length && args[0] != null && String(args[0]).trim() !== "") {
+			const raw = String(args[0]).trim().toLowerCase();
+			if (raw === "1" || raw === "sm" || raw === "small") size = "sm";
+			else if (raw === "3" || raw === "lg" || raw === "large") size = "lg";
+			else size = "md";
+		}
+		return `<div class="passage-gap passage-gap-${size}" aria-hidden="true"></div>`;
 	});
 
 	DefineMacroS("money", function (args) {

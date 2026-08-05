@@ -215,6 +215,43 @@ button:disabled {
 	padding-left: var(--space-4);
 }
 
+/* LinkNumberify — DoL-style keyboard link prefixes */
+#passages a.link-internal .link-num {
+	color: var(--text-muted, #9aa3b2);
+	font-variant-numeric: tabular-nums;
+	user-select: none;
+}
+
+/* Clock cost of an action, e.g. "Leave Apartment (0:05)" — reads as prose, not as link */
+.action-time {
+	color: var(--text-primary);
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+/* Spacer between passage link groups (room actions vs leave/travel) */
+.passage-gap {
+	display: block;
+	width: 100%;
+	height: 0.85em;
+	margin: 0;
+	padding: 0;
+	pointer-events: none;
+	user-select: none;
+}
+
+.passage-gap-sm {
+	height: 0.45em;
+}
+
+.passage-gap-md {
+	height: 0.85em;
+}
+
+.passage-gap-lg {
+	height: 1.5em;
+}
+
 /* Narrow screens --------------------------------------------------------- */
 
 @media screen and (max-width: 60rem) {

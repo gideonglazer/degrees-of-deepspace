@@ -67,6 +67,7 @@ module.exports = {
 		Errors: "readonly",
 		GameSettings: "readonly",
 		Journal: "readonly",
+		LinkNumberify: "readonly",
 		LoveInterests: "readonly",
 		Money: "readonly",
 		Options: "readonly",

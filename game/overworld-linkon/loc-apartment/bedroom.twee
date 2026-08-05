@@ -1,0 +1,41 @@
+:: Apartment Bedroom
+<<initPlayState>>\
+<<pronouns "player">>\
+<<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
+You stand in the bedroom of your apartment.
+
+<<link "Sleep in what you’re currently wearing">><<goto "Apartment Bedroom Sleep">><</link>>
+<<gap>>
+<<link "Leave Bedroom <span class='action-time'>(0:00)</span>">><<goto "Apartment Living Room">><</link>>
+<<link "Leave Apartment <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Apartment Hallway">><</link>>
+
+:: Apartment Bedroom Sleep
+<<initPlayState>>\
+<<pronouns "player">>\
+<<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
+How long do you want to sleep?
+
+<<for _h to 1; _h lte 10; _h++>>\
+<<capture _h>>\
+<<link `"Sleep for " + _h + " hour" + (_h === 1 ? "" : "s") + " <span class='action-time'>(" + World.wakeTimeFor(_h) + ")</span>"`>><<set $sleepHours to _h>><<unset $sleepResult>><<goto "Apartment Bedroom Wake">><</link>> <<= Stats.effectMarkup("fatigue", "-")>>
+<</capture>>\
+<</for>>\
+<<link "Just sleep <span class='action-time'>(??:??)</span>">><<set $sleepHours to getRandomIntInclusive(4, 8)>><<unset $sleepResult>><<goto "Apartment Bedroom Wake">><</link>> <<= Stats.effectMarkup("fatigue", "-")>>
+<<link "Never mind">><<goto "Apartment Bedroom">><</link>>
+
+:: Apartment Bedroom Wake
+<<initPlayState>>\
+<<pronouns "player">>\
+<<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
+<<if def $sleepHours>>\
+<<set $sleepResult to World.sleepFor($sleepHours)>>\
+<<unset $sleepHours>>\
+<<elseif ndef $sleepResult>>\
+<<set $sleepResult to { hours: 0, forcedWake: false }>>\
+<</if>>\
+You sleep for <<= $sleepResult.hours>> hour<<if $sleepResult.hours !== 1>>s<</if>> and wake at <<= World.formatTime()>>. <<= Stats.effectMarkup("fatigue", "-")>>\
+<<if $sleepResult.forcedWake>>
+
+Exhaustion pulled you under until the weekday morning arrived.<</if>>
+
+<<link "Get up">><<unset $sleepResult>><<goto "Apartment Bedroom">><</link>>

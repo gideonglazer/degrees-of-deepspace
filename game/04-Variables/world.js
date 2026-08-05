@@ -31,6 +31,26 @@ defineGlobalNamespaces("World");
 	const SEASON_IDS = ["spring", "summer", "autumn", "winter"];
 
 	/**
+	 * Moves a calendar date forward to the Monday on or after it.
+	 *
+	 * @param {number} year
+	 * @param {number} month 1–12
+	 * @param {number} day
+	 * @returns {{ year: number, month: number, day: number }}
+	 */
+	function mondayOnOrAfter(year, month, day) {
+		const date = new Date(year, month - 1, day, 12, 0, 0, 0);
+		const weekday = date.getDay(); /* 0 Sun … 1 Mon … 6 Sat */
+		const delta = weekday === 0 ? 1 : weekday === 1 ? 0 : 8 - weekday;
+		if (delta) date.setDate(date.getDate() + delta);
+		return {
+			year: date.getFullYear(),
+			month: date.getMonth() + 1,
+			day: date.getDate(),
+		};
+	}
+
+	/**
 	 * Resolves $options.startingSeason into a concrete season id.
 	 *
 	 * @param {object} [variables]
@@ -58,8 +78,10 @@ defineGlobalNamespaces("World");
 		const world = ensure(vars);
 		const season = resolveStartingSeason(vars);
 		const start = SEASON_STARTS[season];
-		world.month = start.month;
-		world.day = start.day;
+		const monday = mondayOnOrAfter(world.year, start.month, start.day);
+		world.year = monday.year;
+		world.month = monday.month;
+		world.day = monday.day;
 		world.weather = start.weather;
 		world.temperatureC = start.temperatureC;
 		world.hour = 8;
@@ -84,10 +106,11 @@ defineGlobalNamespaces("World");
 	 * @returns {object}
 	 */
 	function createDefaults() {
+		const monday = mondayOnOrAfter(2048, 3, 21);
 		return {
-			year: 2048,
-			month: 3,
-			day: 21,
+			year: monday.year,
+			month: monday.month,
+			day: monday.day,
 			hour: 8,
 			minute: 0,
 			weather: "fair",
@@ -144,6 +167,32 @@ defineGlobalNamespaces("World");
 	}
 
 	/**
+	 * Short weekday label for the HUD (Sun, Mon, …).
+	 *
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function weekdayShort(variables) {
+		return weekdayName(variables).slice(0, 3);
+	}
+
+	/**
+	 * Analog clock hand angles (degrees) for the current world time.
+	 *
+	 * @param {object} [variables]
+	 * @returns {{ hour: number, minute: number }}
+	 */
+	function clockHandAngles(variables) {
+		const world = ensure(variables);
+		const minute = Math.max(0, Math.min(59, Math.floor(Number(world.minute) || 0)));
+		const hour = Math.max(0, Math.min(23, Math.floor(Number(world.hour) || 0)));
+		return {
+			hour: (hour % 12) * 30 + minute * 0.5,
+			minute: minute * 6,
+		};
+	}
+
+	/**
 	 * @param {number} month 1–12
 	 * @returns {string}
 	 */
@@ -163,13 +212,25 @@ defineGlobalNamespaces("World");
 	}
 
 	/**
-	 * Advances the clock by minutes and applies passive stat decay.
+	 * True when the current calendar day is Monday–Friday.
+	 *
+	 * @param {object} [variables]
+	 * @returns {boolean}
+	 */
+	function isWeekday(variables) {
+		const day = toDate(ensure(variables)).getDay();
+		return day >= 1 && day <= 5;
+	}
+
+	/**
+	 * Advances the clock by minutes and applies awake or asleep stat effects.
 	 *
 	 * @param {number} minutes
 	 * @param {object} [variables]
+	 * @param {{ asleep?: boolean }} [options]
 	 * @returns {object}
 	 */
-	function advance(minutes, variables) {
+	function advance(minutes, variables, options) {
 		const vars = variables || V();
 		const world = ensure(vars);
 		const amount = Math.max(0, Math.floor(Number(minutes) || 0));
@@ -195,10 +256,82 @@ defineGlobalNamespaces("World");
 			dayDelta -= 1;
 		}
 
-		if (typeof Stats !== "undefined" && Stats.passiveDecay) {
-			Stats.passiveDecay(amount, vars);
+		if (typeof Stats !== "undefined") {
+			if (options && options.asleep && Stats.sleepEffects) {
+				Stats.sleepEffects(amount, vars);
+			} else if (Stats.passiveDecay) {
+				Stats.passiveDecay(amount, vars);
+			}
 		}
 		return world;
+	}
+
+	/**
+	 * Minutes from now until the next occurrence of hour:minute (today or tomorrow).
+	 *
+	 * @param {number} targetHour
+	 * @param {number} targetMinute
+	 * @param {object} [variables]
+	 * @returns {number}
+	 */
+	function minutesUntil(targetHour, targetMinute, variables) {
+		const world = ensure(variables);
+		const now = world.hour * 60 + world.minute;
+		const target = Math.max(0, Math.min(23, Math.floor(Number(targetHour) || 0))) * 60
+			+ Math.max(0, Math.min(59, Math.floor(Number(targetMinute) || 0)));
+		let delta = target - now;
+		if (delta <= 0) delta += 24 * 60;
+		return delta;
+	}
+
+	/**
+	 * How long a requested sleep would actually last. On weekdays when exhausted,
+	 * the body wakes at 8:00 regardless of what was asked for.
+	 *
+	 * @param {number} hours
+	 * @param {object} [variables]
+	 * @returns {{ minutes: number, forcedWake: boolean }}
+	 */
+	function plannedSleep(hours, variables) {
+		const vars = variables || V();
+		ensure(vars);
+
+		if (typeof Stats !== "undefined" && Stats.isExhausted && Stats.isExhausted(vars) && isWeekday(vars)) {
+			return { minutes: minutesUntil(8, 0, vars), forcedWake: true };
+		}
+		return { minutes: Math.round(Math.max(0, Number(hours) || 0) * 60), forcedWake: false };
+	}
+
+	/**
+	 * Clock time the player would wake at, for previewing sleep options.
+	 *
+	 * @param {number} hours
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function wakeTimeFor(hours, variables) {
+		const vars = variables || V();
+		const world = ensure(vars);
+		const total = (world.hour * 60 + world.minute + plannedSleep(hours, vars).minutes) % (24 * 60);
+		return formatTimeAt(Math.floor(total / 60), total % 60, vars);
+	}
+
+	/**
+	 * Sleep for a chosen number of hours, advancing the clock with asleep stat effects.
+	 *
+	 * @param {number} hours
+	 * @param {object} [variables]
+	 * @returns {{ minutes: number, hours: number, forcedWake: boolean }}
+	 */
+	function sleepFor(hours, variables) {
+		const vars = variables || V();
+		const planned = plannedSleep(hours, vars);
+		advance(planned.minutes, vars, { asleep: true });
+		return {
+			minutes: planned.minutes,
+			hours: Math.round((planned.minutes / 60) * 10) / 10,
+			forcedWake: planned.forcedWake,
+		};
 	}
 
 	/**
@@ -219,7 +352,7 @@ defineGlobalNamespaces("World");
 	}
 
 	/**
-	 * Long date for prose, e.g. "Saturday, March 21, 2048".
+	 * Long date for prose, e.g. "Monday, March 23, 2048".
 	 *
 	 * @param {object} [variables]
 	 * @returns {string}
@@ -304,6 +437,7 @@ defineGlobalNamespaces("World");
 		WEATHER_TEXT,
 		SEASON_STARTS,
 		SEASON_IDS,
+		mondayOnOrAfter,
 		createDefaults,
 		ensure,
 		resolveStartingSeason,
@@ -312,9 +446,16 @@ defineGlobalNamespaces("World");
 		daysInMonth,
 		toDate,
 		weekdayName,
+		weekdayShort,
+		clockHandAngles,
+		isWeekday,
 		seasonForMonth,
 		season,
 		advance,
+		minutesUntil,
+		plannedSleep,
+		wakeTimeFor,
+		sleepFor,
 		formatDate,
 		formatDateLong,
 		formatTime,

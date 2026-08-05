@@ -1,0 +1,8 @@
+:: Apartment Living Room
+<<initPlayState>>\
+<<pronouns "player">>\
+<<run World.setLocation("apartment-living-room", "Garden South Street — Apartment")>>\
+You stand in the living room of your apartment.
+
+<<link "Go to Bedroom <span class='action-time'>(0:00)</span>">><<goto "Apartment Bedroom">><</link>>
+<<link "Leave Apartment <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Apartment Hallway">><</link>>

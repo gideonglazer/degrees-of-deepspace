@@ -4,13 +4,11 @@
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
 Welcome to Degrees of Deepspace, <<honorific>> Hunter!
 
-Linkon City is <<worldWeather>> this morning, inviting you in to explore and meet new friends. 
+Today is <<worldDateLong>>. Linkon City is <<worldWeather>> this morning, inviting you in to explore and meet new friends. 
 
-Today is <<worldDateLong>>, and you awoke at <<worldTime>>.
+You are currently at your apartment on Garden South Street. The Linkon City Bus Service is the easiest way to get around Linkon City. You may need to pick up a few odd jobs here and there to survive, however, working at the Hunter's Association will provide you more than enough money to make ends meet on your rent.
 
-You may need to pick up a few odd jobs here and there to make ends meet and survive. 
-
-The Linkon City Bus Service is the easiest way to get around Linkon City.
+Be diligent, and avoid going outside at night...
 
 <<link "Next">><<goto "Intro Xavier Morning">><</link>>
 
@@ -31,9 +29,3 @@ You close the door, returning to your bedroom.
 <<run Journal.addReminder("xavier-morning-walk", LoveInterests.displayName("xavier") + " waits outside of your shared apartment every weekday morning at " + World.formatTimeAt(8, 0) + ". Jenna expects you at work by " + World.formatTimeAt(9, 0) + ".", { permanent: true })>>\
 
 <<link "Continue">><<goto "Apartment Bedroom">><</link>>
-
-:: Apartment Bedroom
-<<initPlayState>>\
-<<pronouns "player">>\
-<<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
-You stand in the bedroom of your apartment. Plushies still litter the bed and floor.

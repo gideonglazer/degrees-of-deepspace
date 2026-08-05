@@ -82,7 +82,7 @@
 }
 
 .cc-fieldset {
-	background-color: transparent;
+	background-color: var(--surface-raised);
 	border: 1.5px solid var(--fieldset-border);
 	border-radius: var(--radius);
 	margin: 0 0 var(--space-4);

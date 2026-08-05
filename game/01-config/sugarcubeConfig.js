@@ -10,12 +10,14 @@
  *
  * - debug: enables debug tooling, for new games only.
  * - enableImages: set false to produce a text-only build.
+ * - enableLinkNumberify: number passage links and allow 0–9 / numpad shortcuts.
  * - version: stored in saves so Versions can migrate them.
  * - versionName: optional label, e.g. "alpha". Empty string means no label.
  */
 window.StartConfig = {
 	debug: false,
 	enableImages: true,
+	enableLinkNumberify: true,
 	version: "0.1.0",
 	versionName: "",
 };

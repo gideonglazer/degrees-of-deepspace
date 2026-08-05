@@ -63,9 +63,9 @@
 	--link-hover: #8af;
 	--danger: #c62b2b;
 
-	/* Tooltip */
+	/* Tooltip — DoL-style flat chip; border colour varies by theme */
 	--tooltip-background: #1a1919;
-	--tooltip-border: #b0b0b4;
+	--tooltip-border: #c9b896;
 
 	/*
 	 * Degrees of Deepspace semantic tokens, bridged to DoL greyscale/accent vars so every
@@ -87,6 +87,7 @@
 	--border-strong: var(--700);
 	--fieldset-border: rgb(219 230 245 / 55%);
 	--control-accent: #3b82f6;
+	--tooltip-color: var(--000);
 	--tone-femme: #e891a8;
 	--tone-masc: #8eb6e8;
 	--tone-neutral: #e8d48b;
@@ -625,11 +626,11 @@
 	--400: #ebabbf;
 	--500: #e092ac;
 	--600: #d4809a;
-	--700: #ffe0ea;
-	--750: #b85a78;
-	--800: #ad516f;
-	--850: #a24966;
-	--900: #c96b88;
+	--700: #8a3f5c;
+	--750: #d47896;
+	--800: #c96b88;
+	--850: #b85a78;
+	--900: #e8a0b4;
 	--red: #ff6b8a;
 	--pink: #ffffff;
 	--pink-secondary: #ffe0ea;
@@ -661,15 +662,15 @@
 	--link: #ffffff;
 	--link-hover: #ffe8f0;
 	--danger: #ff5a7a;
-	--tooltip-background: #ad516f;
-	--tooltip-border: #ffffff;
-	--fieldset-border: rgb(255 255 255 / 70%);
+	--tooltip-background: #b85a78;
+	--tooltip-border: #8a3f5c;
+	--fieldset-border: #8a3f5c;
 	--control-accent: #ffffff;
 	--tone-femme: #ffffff;
 	--tone-masc: #c8dcff;
 	--tone-neutral: #fff3b0;
-	--border-subtle: rgb(255 255 255 / 35%);
-	--border-strong: rgb(255 255 255 / 65%);
+	--border-subtle: #c96b88;
+	--border-strong: #8a3f5c;
 }
 
 [data-theme="dark-gothic"] {

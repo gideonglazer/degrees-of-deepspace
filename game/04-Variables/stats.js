@@ -16,9 +16,9 @@ defineGlobalNamespaces("Stats");
 		pain: { "+": 5, "++": 15, "+++": 30 },
 		trauma: { "+": 50, "++": 150, "+++": 300 },
 		energy: { "+": 5, "++": 10, "+++": 20 },
+		fatigue: { "+": 100, "++": 300, "+++": 600 },
 		hygiene: { "+": 50, "++": 100, "+++": 100 },
 		hunger: { "+": 5, "++": 10, "+++": 20 },
-		comfort: { "+": 5, "++": 10, "+++": 20 },
 	};
 
 	const LABELS = {
@@ -27,9 +27,9 @@ defineGlobalNamespaces("Stats");
 		pain: "Pain",
 		trauma: "Trauma",
 		energy: "Energy",
+		fatigue: "Fatigue",
 		hygiene: "Hygiene",
 		hunger: "Hunger",
-		comfort: "Comfort",
 	};
 
 	/**
@@ -42,9 +42,8 @@ defineGlobalNamespaces("Stats");
 			pain: 0,
 			stress: 0,
 			trauma: 0,
-			hygiene: 70,
-			hunger: 70,
-			comfort: 100,
+			hygiene: 100,
+			hunger: 80,
 		};
 	}
 
@@ -66,6 +65,7 @@ defineGlobalNamespaces("Stats");
 				vars.stats.fatigue = energyToFatigue(vars.stats.energy);
 			}
 			delete vars.stats.energy;
+			delete vars.stats.comfort;
 		}
 		clampAll(vars.stats);
 		return vars.stats;
@@ -100,7 +100,6 @@ defineGlobalNamespaces("Stats");
 		stats.trauma = Math.max(0, Math.min(TRAUMA_MAX, Math.round(Number(stats.trauma) || 0)));
 		stats.hygiene = Math.max(0, Math.min(PERCENT_MAX, Math.round(Number(stats.hygiene) || 0)));
 		stats.hunger = Math.max(0, Math.min(PERCENT_MAX, Math.round(Number(stats.hunger) || 0)));
-		stats.comfort = Math.max(0, Math.min(PERCENT_MAX, Math.round(Number(stats.comfort) || 0)));
 	}
 
 	/**
@@ -146,9 +145,41 @@ defineGlobalNamespaces("Stats");
 		/* DoD extras: mild drift */
 		stats.hygiene -= Math.floor(m / 30);
 		stats.hunger -= Math.floor(m / 20);
-		stats.comfort -= Math.floor(m / 60);
 
 		clampAll(stats);
+	}
+
+	/**
+	 * Stat changes per minute while asleep. Fatigue recovers.
+	 *
+	 * @param {number} minutes
+	 * @param {object} [variables]
+	 */
+	function sleepEffects(minutes, variables) {
+		const stats = ensure(variables);
+		const m = Math.max(0, Math.floor(Number(minutes) || 0));
+		if (!m) return;
+
+		/* -2.5 fatigue per minute → ~1200 over 8h, ~1800 over 12h */
+		stats.fatigue -= 2.5 * m;
+		stats.arousal -= 10 * m;
+		stats.pain -= Math.floor(m / 2);
+		stats.stress -= 2 * m;
+		stats.trauma -= Math.floor(m / 5);
+		stats.hygiene -= Math.floor(m / 60);
+		stats.hunger -= Math.floor(m / 30);
+
+		clampAll(stats);
+	}
+
+	/**
+	 * True when Energy is at or below 20 (fatigue ≥ 1600).
+	 *
+	 * @param {object} [variables]
+	 * @returns {boolean}
+	 */
+	function isExhausted(variables) {
+		return energy(variables) <= 20;
 	}
 
 	/**
@@ -167,7 +198,39 @@ defineGlobalNamespaces("Stats");
 	}
 
 	/** Stats that are "harmful" when they rise. */
-	const NEGATIVE_STATS = ["stress", "arousal", "pain", "trauma"];
+	const NEGATIVE_STATS = ["stress", "arousal", "pain", "trauma", "fatigue"];
+
+	/**
+	 * Markup for a tiered change without applying it. Use to preview an action's cost.
+	 *
+	 * @param {string} stat
+	 * @param {string} tier
+	 * @returns {string}
+	 */
+	function effectMarkup(stat, tier) {
+		const parsed = parseTier(tier);
+		const table = TIERS[stat];
+		if (!parsed || !table) return "";
+		const plusKey = parsed.key.replace(/-/g, "+");
+		if (table[plusKey] === undefined) return "";
+
+		const intensity = plusKey.length;
+		const up = parsed.sign > 0;
+		const mark = up ? "+".repeat(intensity) : "-".repeat(intensity);
+		const label = LABELS[stat] || stat;
+		const harmful = NEGATIVE_STATS.includes(stat);
+		/* Harmful stats: rising is bad, falling is good. Others invert. */
+		const tone = harmful === up ? "bad" : "good";
+		return (
+			`<span class="stat-effect-wrap">` +
+			`<span class="stat-effect-pipe">|</span> ` +
+			`<span class="stat-effect stat-${stat} stat-effect-${tone}">` +
+			`<span class="stat-delta">${mark}</span>` +
+			`<span class="stat-name">${label}</span>` +
+			`</span>` +
+			`</span>`
+		);
+	}
 
 	/**
 	 * Applies a tiered change and returns markup for the coloured indicator.
@@ -195,22 +258,7 @@ defineGlobalNamespaces("Stats");
 		}
 		clampAll(stats);
 
-		const intensity = plusKey.length;
-		const up = delta > 0;
-		const mark = up ? "+".repeat(intensity) : "-".repeat(intensity);
-		const label = LABELS[stat] || stat;
-		const harmful = NEGATIVE_STATS.includes(stat);
-		/* Harmful stats: rising is bad, falling is good. Others invert. */
-		const tone = harmful === up ? "bad" : "good";
-		return (
-			`<span class="stat-effect-wrap">` +
-			`<span class="stat-effect-pipe">|</span> ` +
-			`<span class="stat-effect stat-${stat} stat-effect-${tone}">` +
-			`<span class="stat-delta">${mark}</span>` +
-			`<span class="stat-name">${label}</span>` +
-			`</span>` +
-			`</span>`
-		);
+		return effectMarkup(stat, tier);
 	}
 
 	/**
@@ -285,13 +333,6 @@ defineGlobalNamespaces("Stats");
 			if (h >= 25) return "You are hungry.";
 			return "You are starving.";
 		}
-		if (stat === "comfort") {
-			const c = stats.comfort;
-			if (c >= 80) return "You are comfortable.";
-			if (c >= 50) return "You are fine.";
-			if (c >= 25) return "You are uncomfortable.";
-			return "You are miserable.";
-		}
 		return "";
 	}
 
@@ -305,7 +346,7 @@ defineGlobalNamespaces("Stats");
 	function severity(stat, variables) {
 		const stats = ensure(variables);
 		const ratio = value => {
-			if (stat === "energy" || stat === "hygiene" || stat === "hunger" || stat === "comfort") {
+			if (stat === "energy" || stat === "hygiene" || stat === "hunger") {
 				return 1 - value / PERCENT_MAX;
 			}
 			if (stat === "pain") return value / PAIN_MAX;
@@ -336,7 +377,7 @@ defineGlobalNamespaces("Stats");
 		if (stat === "arousal" || stat === "stress" || stat === "trauma") {
 			return Math.max(0, Math.min(100, Math.round(((Number(stats[stat]) || 0) / AROUSAL_MAX) * 100)));
 		}
-		if (stat === "hygiene" || stat === "hunger" || stat === "comfort") {
+		if (stat === "hygiene" || stat === "hunger") {
 			return Math.max(0, Math.min(100, Math.round(Number(stats[stat]) || 0)));
 		}
 		return 0;
@@ -382,7 +423,6 @@ defineGlobalNamespaces("Stats");
 			trauma: stats.trauma,
 			hygiene: stats.hygiene,
 			hunger: stats.hunger,
-			comfort: stats.comfort,
 		};
 	}
 
@@ -401,7 +441,10 @@ defineGlobalNamespaces("Stats");
 		energyToFatigue,
 		fatigueToEnergy,
 		passiveDecay,
+		sleepEffects,
+		isExhausted,
 		parseTier,
+		effectMarkup,
 		applyEffect,
 		describe,
 		severity,

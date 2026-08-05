@@ -127,16 +127,17 @@ sugarcube-2:
             description: Applies a hunger effect tier and prints the indicator.
             parameters:
                 - text
-        comfort:
-            name: comfort
-            description: Applies a comfort effect tier and prints the indicator.
-            parameters:
-                - text
         hudStat:
             name: hudStat
             description: Prints a DoL-style coloured Current Condition line for a stat.
             parameters:
                 - text
+        gap:
+            name: gap
+            description: Inserts vertical space between passage link groups (sm/md/lg or 1/2/3).
+            parameters:
+                - "|+ text"
+                - "|+ number"
         hudTip:
             name: hudTip
             description: Prints a DoL-style Tip block when sidebar hints are enabled.
