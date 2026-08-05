@@ -64,7 +64,7 @@ defineGlobalNamespaces("LoveInterests");
 				jp: "Seiya",
 				kr: "Sim Sunghoon",
 			}),
-			entry("zayne", "the Cardio Surgeon", {
+			entry("zayne", "the Cardiac Surgeon", {
 				en: "Zayne",
 				cn: "Li Shen",
 				jp: "Rei",

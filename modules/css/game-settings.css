@@ -82,7 +82,7 @@
 }
 
 .cc-fieldset {
-	background-color: var(--surface-raised);
+	background-color: transparent;
 	border: 1.5px solid var(--fieldset-border);
 	border-radius: var(--radius);
 	margin: 0 0 var(--space-4);
@@ -189,6 +189,11 @@
 
 .cc-swatch {
 	font-weight: 500;
+	/* Keep pale swatches (white, porcelain, platinum…) readable on light themes */
+	text-shadow:
+		0 0 0.85px rgb(30 35 55 / 55%),
+		0 0.5px 0 rgb(30 35 55 / 35%),
+		0.5px 0.5px 0 rgb(30 35 55 / 20%);
 }
 
 .cc-columns {

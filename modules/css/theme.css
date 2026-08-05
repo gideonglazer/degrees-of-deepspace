@@ -85,7 +85,7 @@
 	--success: var(--green);
 	--border-subtle: var(--750);
 	--border-strong: var(--700);
-	--fieldset-border: rgb(219 230 245 / 55%);
+	--fieldset-border: rgb(219 230 245 / 85%);
 	--control-accent: #3b82f6;
 	--tooltip-color: var(--000);
 	--tone-femme: #e891a8;
@@ -149,6 +149,7 @@
 	--link-hover: hsl(213deg 32% 45%);
 	--tooltip-border: #1a1919;
 	--tooltip-background: #b0b0b4;
+	--fieldset-border: hsl(220deg 16% 22% / 40%);
 }
 
 [data-theme="zen"] {
@@ -435,6 +436,9 @@
 	/* Tooltip */
 	--tooltip-background: hsl(220deg 22% 92%);
 	--tooltip-border: hsl(227deg 12% 71%);
+
+	/* Field outlines — default ice border washes out on latte surfaces */
+	--fieldset-border: hsl(234deg 16% 35% / 45%);
 
 	/* Icons shadow */
 	--background: hsl(0deg 0% 0% / 30%);
