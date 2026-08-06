@@ -78,11 +78,16 @@ defineGlobalNamespaces("LoveInterests");
 			gender: "male",
 			height: "tall",
 			skinTone: "fair",
+			love: 0,
 			hair: {
 				length: "short",
 				style: "neat",
 			},
 		},
+
+		/** Love change magnitudes for +, ++, +++. */
+		loveTiers: { "+": 1, "++": 2, "+++": 3 },
+		loveMax: 100,
 	});
 
 	/**
@@ -221,6 +226,77 @@ defineGlobalNamespaces("LoveInterests");
 		return vars.liFocus;
 	}
 
+	/**
+	 * Current love value for a love interest (0–loveMax).
+	 *
+	 * @param {string} id
+	 * @param {object} [variables]
+	 * @returns {number}
+	 */
+	function love(id, variables) {
+		const vars = variables || V();
+		ensure(vars);
+		const entry = vars.loveInterests[id];
+		return entry ? Math.max(0, Math.round(Number(entry.love) || 0)) : 0;
+	}
+
+	/**
+	 * Markup for a tiered love change without applying it (link previews).
+	 *
+	 * @param {string} id
+	 * @param {string} tier "+" / "++" / "+++" or "-" / "--" / "---"
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function effectMarkup(id, tier, variables) {
+		const parsed = typeof Stats !== "undefined" && Stats.parseTier ? Stats.parseTier(tier) : null;
+		const table = C().loveInterests.loveTiers || {};
+		if (!parsed || !get(id)) return "";
+		const plusKey = parsed.key.replace(/-/g, "+");
+		if (table[plusKey] === undefined) return "";
+
+		const intensity = plusKey.length;
+		const up = parsed.sign > 0;
+		const mark = up ? "+".repeat(intensity) : "-".repeat(intensity);
+		const name = displayName(id, variables);
+		const label = name ? `${name}'s Love` : "Love";
+		const tone = up ? "good" : "bad";
+		return (
+			`<span class="stat-effect-wrap">` +
+			`<span class="stat-effect-pipe">|</span> ` +
+			`<span class="stat-effect stat-love stat-effect-${tone}">` +
+			`<span class="stat-delta">${mark}</span>` +
+			`<span class="stat-name">${label}</span>` +
+			`</span>` +
+			`</span>`
+		);
+	}
+
+	/**
+	 * Applies a tiered love change and returns coloured indicator markup.
+	 *
+	 * @param {string} id
+	 * @param {string} tier
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function applyLove(id, tier, variables) {
+		const vars = variables || V();
+		ensure(vars);
+		if (!vars.loveInterests[id]) return "";
+		const parsed = typeof Stats !== "undefined" && Stats.parseTier ? Stats.parseTier(tier) : null;
+		const table = C().loveInterests.loveTiers || {};
+		const max = Number(C().loveInterests.loveMax) || 100;
+		if (!parsed) return "";
+		const plusKey = parsed.key.replace(/-/g, "+");
+		const magnitude = table[plusKey];
+		if (magnitude === undefined) return "";
+
+		const entry = vars.loveInterests[id];
+		entry.love = Math.max(0, Math.min(max, (Number(entry.love) || 0) + magnitude * parsed.sign));
+		return effectMarkup(id, tier, vars);
+	}
+
 	Object.assign(LoveInterests, {
 		createDefaults,
 		roster,
@@ -231,6 +307,9 @@ defineGlobalNamespaces("LoveInterests");
 		displayTitle,
 		ensure,
 		stepFocus,
+		love,
+		effectMarkup,
+		applyLove,
 	});
 
 	/** Convenience macros <<Xavier>>, <<Rafayel>>, … — registered here so the roster already exists. */

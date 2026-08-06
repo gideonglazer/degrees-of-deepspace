@@ -147,4 +147,13 @@
 	DefineMacroS("liname", function (args) {
 		return LoveInterests.displayName(String(args[0] || ""));
 	});
+
+	/**
+	 * <<love "xavier" "+">> — applies a love tier and prints the indicator.
+	 */
+	DefineMacroS("love", function (args) {
+		const id = args[0] != null ? String(args[0]) : "";
+		const tier = args[1] != null ? String(args[1]) : "+";
+		return LoveInterests.applyLove(id, tier);
+	});
 })();

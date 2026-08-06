@@ -41,7 +41,6 @@
 	window.defineGlobalNamespaces = defineGlobalNamespaces;
 
 	defineGlobalNamespaces("DOD", {
-		/** Set from StartConfig once game/01-config has loaded. */
 		version: "0.0.0",
 	});
 })();

@@ -1,4 +1,4 @@
-:: Intro [nosave]
+:: Intro
 <<initPlayState>>\
 <<pronouns "player">>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
@@ -12,7 +12,7 @@ Be diligent, and avoid going outside at night...
 
 <<link "Next">><<goto "Intro Xavier Morning">><</link>>
 
-:: Intro Xavier Morning [nosave]
+:: Intro Xavier Morning
 <<initPlayState>>\
 <<pronouns "xavier">>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\

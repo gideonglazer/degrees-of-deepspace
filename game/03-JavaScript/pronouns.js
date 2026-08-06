@@ -4,10 +4,13 @@
  * Gender buckets:
  *   male / transMasc → he/him/his + Mr.
  *   female / transFemme → she/her/hers + Ms.
- *   nonbinary / fluid → they/them/their(s) + Mx.
+ *   nonbinary / fluid → they/them/their(s) + Mx. (plural verb agreement)
  *
  * Set the active subject with <<pronouns "xavier">> (or <<pronouns "player">>),
  * then <<he>> / <<him>> / <<his>> / <<gendered>> follow that character's gender.
+ *
+ * Write verbs normally ("<<he>> isn't", "<<he>> asks", "he's happy"). After the passage
+ * renders, fixAgreementIn() corrects singular-they agreement automatically.
  */
 
 defineGlobalNamespaces("Pronouns");
@@ -41,6 +44,67 @@ defineGlobalNamespaces("Pronouns");
 			honorific: "Mx.",
 		},
 	};
+
+	/** Always-wrong after "they"; map to the plural-verb form. */
+	const THEY_VERB_MAP = {
+		is: "are",
+		"isn't": "aren't",
+		"isn’t": "aren’t",
+		was: "were",
+		"wasn't": "weren't",
+		"wasn’t": "weren’t",
+		has: "have",
+		"hasn't": "haven't",
+		"hasn’t": "haven’t",
+		does: "do",
+		"doesn't": "don't",
+		"doesn’t": "don’t",
+	};
+	
+	const THEY_FOLLOW_KEEP_S = new Set(
+		[
+			"always",
+			"sometimes",
+			"afterwards",
+			"afterward",
+			"outwards",
+			"inwards",
+			"upwards",
+			"downwards",
+			"forwards",
+			"backwards",
+			"sideways",
+			"anyways",
+			"perhaps",
+			"various",
+			"previous",
+			"across",
+			"towards",
+			"toward",
+			"besides",
+			"others",
+			"themselves",
+			"this",
+			"thus",
+			"as",
+			"yes",
+			"ours",
+			"yours",
+			"theirs",
+			"his",
+			"hers",
+			"its",
+			"series",
+			"species",
+			"news",
+			"means",
+			"glasses",
+			"pants",
+			"scissors",
+			"clothes",
+			"thanks",
+		].map(w => w.toLowerCase())
+	);
 
 	/**
 	 * @param {string} gender
@@ -192,6 +256,213 @@ defineGlobalNamespaces("Pronouns");
 		return gendered(activeGender(variables), masc, femme, neutral);
 	}
 
+	/**
+	 * Singular they (and any future plural-pronoun buckets) take plural verbs.
+	 *
+	 * @param {string} gender
+	 * @returns {boolean}
+	 */
+	function usesPluralVerb(gender) {
+		return bucket(gender) === "neutral";
+	}
+
+	/**
+	 * @param {string} singular e.g. "is", "isn't", "walks"
+	 * @param {string} plural e.g. "are", "aren't", "walk"
+	 * @param {string} gender
+	 * @returns {string}
+	 */
+	function verb(singular, plural, gender) {
+		return usesPluralVerb(gender) ? plural : singular;
+	}
+
+	/**
+	 * @param {string} singular
+	 * @param {string} plural
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function activeVerb(singular, plural, variables) {
+		return verb(singular, plural, activeGender(variables));
+	}
+
+	/**
+	 * Verb ending helper: walk<<s>> → "s" / "" ; go<<es>> → "es" / "".
+	 *
+	 * @param {string} singularEnding
+	 * @param {string} [pluralEnding]
+	 * @param {string} gender
+	 * @returns {string}
+	 */
+	function ending(singularEnding, pluralEnding, gender) {
+		return usesPluralVerb(gender) ? pluralEnding || "" : singularEnding;
+	}
+
+	/**
+	 * @param {string} singularEnding
+	 * @param {string} [pluralEnding]
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function activeEnding(singularEnding, pluralEnding, variables) {
+		return ending(singularEnding, pluralEnding, activeGender(variables));
+	}
+
+	/**
+	 * Subject + be contraction: he's / she's / they're.
+	 *
+	 * @param {string} gender
+	 * @param {boolean} [capitalise]
+	 * @returns {string}
+	 */
+	function subjectBeContraction(gender, capitalise) {
+		const b = bucket(gender);
+		let value = b === "masc" ? "he's" : b === "femme" ? "she's" : "they're";
+		if (capitalise) {
+			value = value.charAt(0).toUpperCase() + value.slice(1);
+		}
+		return value;
+	}
+
+	/**
+	 * @param {boolean} [capitalise]
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function activeSubjectBeContraction(capitalise, variables) {
+		return subjectBeContraction(activeGender(variables), capitalise);
+	}
+
+	/**
+	 * @param {string} word
+	 * @param {string} replacement
+	 * @returns {string}
+	 */
+	function matchCase(word, replacement) {
+		if (!word) return replacement;
+		if (word === word.toUpperCase()) return replacement.toUpperCase();
+		if (word.charAt(0) === word.charAt(0).toUpperCase()) {
+			return replacement.charAt(0).toUpperCase() + replacement.slice(1);
+		}
+		return replacement;
+	}
+
+	/**
+	 * Best-effort 3sg → base present: asks→ask, goes→go, tries→try, watches→watch.
+	 *
+	 * @param {string} word
+	 * @returns {string|null} null if unchanged / not treated as a verb
+	 */
+	function pluralizePresentVerb(word) {
+		const lower = word.toLowerCase();
+		if (THEY_FOLLOW_KEEP_S.has(lower)) return null;
+		if (THEY_VERB_MAP[lower]) return matchCase(word, THEY_VERB_MAP[lower]);
+
+		if (lower.length < 2 || !/[sS]$/.test(word)) return null;
+
+		// tries → try
+		if (/[bcdfghjklmnpqrstvwxyz]ies$/i.test(lower) && lower.length > 4) {
+			return matchCase(word, lower.slice(0, -3) + "y");
+		}
+		// goes → go ; watches/wishes/buzzes/boxes → watch/wish/buzz/box
+		if (/(?:oes|[xz]es|ches|shes|sses|zzes)$/i.test(lower)) {
+			return matchCase(word, lower.slice(0, -2));
+		}
+		// plain -s, but not -ss / -us / -is stems (status, this, bliss)
+		if (/s$/i.test(lower) && !/(?:ss|us|is)$/i.test(lower)) {
+			return matchCase(word, lower.slice(0, -1));
+		}
+		return null;
+	}
+
+	/**
+	 * Correct ungrammatical "they" + singular-verb sequences in plain text.
+	 * Safe regardless of pronoun focus ("they isn't" is always wrong here).
+	 *
+	 * @param {string} text
+	 * @returns {string}
+	 */
+	function fixTheyVerbs(text) {
+		return String(text || "").replace(/\b([Tt]hey)\s+([A-Za-z][A-Za-z’']*)/g, (full, they, word) => {
+			const fixed = pluralizePresentVerb(word);
+			return fixed ? `${they} ${fixed}` : full;
+		});
+	}
+
+	/**
+	 * When the active focus uses singular they, rewrite narrative he's/she's → they're.
+	 * Skips text inside double quotes so dialogue about someone else is preserved.
+	 *
+	 * @param {string} text
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function fixSubjectBeContractions(text, variables) {
+		if (!usesPluralVerb(activeGender(variables))) return String(text || "");
+		const source = String(text || "");
+		const parts = source.split(/(["“”])/);
+		let inQuote = false;
+		return parts
+			.map(part => {
+				if (part === '"' || part === "“" || part === "”") {
+					inQuote = part === '"' ? !inQuote : part === "“" ? true : part === "”" ? false : inQuote;
+					return part;
+				}
+				if (inQuote) return part;
+				return part
+					.replace(/\bhe's\b/gi, m => matchCase(m, "they're"))
+					.replace(/\bhe’s\b/gi, m => matchCase(m, "they’re"))
+					.replace(/\bshe's\b/gi, m => matchCase(m, "they're"))
+					.replace(/\bshe’s\b/gi, m => matchCase(m, "they’re"));
+			})
+			.join("");
+	}
+
+	/**
+	 * @param {string} text
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function fixAgreement(text, variables) {
+		return fixSubjectBeContractions(fixTheyVerbs(text), variables);
+	}
+
+	/**
+	 * Walk text nodes under a rendered passage root and apply agreement fixes.
+	 *
+	 * @param {Element|DocumentFragment|null|undefined} root
+	 * @param {object} [variables]
+	 */
+	function fixAgreementIn(root, variables) {
+		if (!root) return;
+		// Merge adjacent text nodes so "<<he>> isn't" is one string ("they isn't").
+		if (typeof root.normalize === "function") root.normalize();
+		const doc = root.ownerDocument || (typeof document !== "undefined" ? document : null);
+		if (!doc || typeof doc.createTreeWalker !== "function") return;
+		const walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+		const nodes = [];
+		while (walker.nextNode()) nodes.push(walker.currentNode);
+		nodes.forEach(node => {
+			const value = node.nodeValue;
+			if (!value || !/[A-Za-z]/.test(value)) return;
+			const next = fixAgreement(value, variables);
+			if (next !== value) node.nodeValue = next;
+		});
+	}
+
+	function installPassageHook() {
+		if (typeof jQuery === "undefined") return;
+		jQuery(document).on(":passagerender", function (ev) {
+			fixAgreementIn(ev.content);
+		});
+	}
+
+	if (typeof jQuery !== "undefined") {
+		installPassageHook();
+	} else if (typeof document !== "undefined") {
+		document.addEventListener("DOMContentLoaded", installPassageHook);
+	}
+
 	Object.assign(Pronouns, {
 		TABLES,
 		bucket,
@@ -207,5 +478,16 @@ defineGlobalNamespaces("Pronouns");
 		honorific,
 		gendered,
 		activeGendered,
+		usesPluralVerb,
+		verb,
+		activeVerb,
+		ending,
+		activeEnding,
+		subjectBeContraction,
+		activeSubjectBeContraction,
+		fixTheyVerbs,
+		fixSubjectBeContractions,
+		fixAgreement,
+		fixAgreementIn,
 	});
 })();

@@ -223,6 +223,32 @@ defineGlobalNamespaces("World");
 	}
 
 	/**
+	 * Minutes past midnight for the current world clock.
+	 *
+	 * @param {object} [variables]
+	 * @returns {number}
+	 */
+	function minutesOfDay(variables) {
+		const world = ensure(variables);
+		return Math.max(0, Math.floor(Number(world.hour) || 0)) * 60
+			+ Math.max(0, Math.min(59, Math.floor(Number(world.minute) || 0)));
+	}
+
+	/**
+	 * True when the clock is strictly before hour:minute.
+	 *
+	 * @param {number} hour
+	 * @param {number} minute
+	 * @param {object} [variables]
+	 * @returns {boolean}
+	 */
+	function isBefore(hour, minute, variables) {
+		const target = Math.max(0, Math.min(23, Math.floor(Number(hour) || 0))) * 60
+			+ Math.max(0, Math.min(59, Math.floor(Number(minute) || 0)));
+		return minutesOfDay(variables) < target;
+	}
+
+	/**
 	 * Advances the clock by minutes and applies awake or asleep stat effects.
 	 *
 	 * @param {number} minutes
@@ -318,6 +344,7 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Sleep for a chosen number of hours, advancing the clock with asleep stat effects.
+	 * Writes an autosave after sleeping so rest is a progress checkpoint.
 	 *
 	 * @param {number} hours
 	 * @param {object} [variables]
@@ -327,11 +354,17 @@ defineGlobalNamespaces("World");
 		const vars = variables || V();
 		const planned = plannedSleep(hours, vars);
 		advance(planned.minutes, vars, { asleep: true });
-		return {
+		const result = {
 			minutes: planned.minutes,
 			hours: Math.round((planned.minutes / 60) * 10) / 10,
 			forcedWake: planned.forcedWake,
 		};
+		delete vars.sleepHours;
+		vars.sleepResult = result;
+		if (typeof SavesUI !== "undefined" && SavesUI.autosave) {
+			SavesUI.autosave();
+		}
+		return result;
 	}
 
 	/**
@@ -449,6 +482,8 @@ defineGlobalNamespaces("World");
 		weekdayShort,
 		clockHandAngles,
 		isWeekday,
+		minutesOfDay,
+		isBefore,
 		seasonForMonth,
 		season,
 		advance,

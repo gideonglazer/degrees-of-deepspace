@@ -208,10 +208,47 @@
 }
 
 .cc-actions {
-	align-items: center;
+	align-items: stretch;
 	display: flex;
-	flex-wrap: wrap;
+	flex-direction: column;
+	flex-wrap: nowrap;
 	gap: var(--space-3);
+}
+
+.cc-save-name {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	max-width: none;
+	width: 100%;
+}
+
+.cc-save-name-label {
+	font-size: 0.95rem;
+}
+
+.cc-save-name .cc-optional {
+	color: var(--text-muted, #889);
+	font-style: italic;
+	font-weight: 400;
+}
+
+.cc-save-name input[type="text"] {
+	background-color: var(--surface-raised, #1a1b26);
+	border: 1px solid var(--border-strong, #444);
+	border-radius: var(--radius, 3px);
+	color: var(--text-primary, #eee);
+	font-size: 0.95rem;
+	max-width: 22rem;
+	padding: 0.35rem 0.5rem;
+	width: 100%;
+}
+
+.cc-save-name .small-description {
+	font-size: 0.72rem;
+	line-height: 1.35;
+	margin: 0;
+	max-width: none;
 }
 
 /* Love Interest Modifier */

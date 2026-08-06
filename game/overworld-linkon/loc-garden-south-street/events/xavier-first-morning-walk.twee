@@ -1,0 +1,48 @@
+:: Xavier First Morning Walk
+<<initPlayState>>\
+<<pronouns "xavier">>\
+<<run Flags.set("xavierFirstWorkWalk")>>\
+<<run World.setLocation("garden-south-street", "Garden South Street")>>\
+You step outside of the apartment complex. From the corner of your eye, you spot <<Xavier>>, scrolling on <<his>> phone, one hand clutching the strap of <<his>> scabbard. Your eyes are drawn immediately to the smiling star keychain attached to the hanging cord.
+
+You rush over, and <<his>> eyes immediately fix onto you, a visible, calm smile forming on <<his>> lips.
+
+"You made it just in time. I was just about to take off. Would you like to walk with me?" <<he>> asks.
+
+<<link `"Walk with " + LoveInterests.displayName("xavier") + " to work <span class='action-time'>(0:25)</span>"`>><<goto "Xavier First Morning Walk Accept">><</link>> <<= LoveInterests.effectMarkup("xavier", "+")>>
+<<link `"Decline " + Pronouns.activeForm("possessive", false) + " offer"`>><<goto "Xavier First Morning Walk Decline">><</link>>
+
+:: Xavier First Morning Walk Accept
+<<initPlayState>>\
+<<pronouns "xavier">>\
+<<run World.advance(25)>>\
+<<run World.setLocation("azure-square", "Azure Square")>>\
+You nod in agreement, mirroring the smile on <<Xavier>>'s face. <<He>> wags one finger in the direction of the Hunter's Association, motioning for the two of you to take off now. <<love "xavier" "+">>
+
+You walk with <<Xavier>> to work, making quiet conversation. <<He>> shares a witty joke, which elicits quiet laughter from you, much to <<his>> delight. From the corner of your eye, you notice <<him>> staring at you, but you decide to not say anything.
+
+<<link "Continue">><<goto "Xavier First Morning Walk Arrive">><</link>>
+
+:: Xavier First Morning Walk Arrive
+<<initPlayState>>\
+<<pronouns "xavier">>\
+<<run World.setLocation("hunters-association", "Azure Square — Hunter's Association")>>\
+Engrossed in your discussion over which weapons are best against which wanderers, you stand outside of the Association with <<him>>, and he's happy to stay and listen for a little while longer.
+
+"Thanks for walking to work with me, I really enjoyed it." <<He>> reached a hand out, <<his>> fingers inches away from brushing against your arm, when suddenly <<he>> pulls back, instead offering a shy smile, <<his>> face flustering red. "I'll see you inside, okay?" <<love "xavier" "+">>
+
+<<He>> walks into the building.
+
+<<link "Enter the Hunter's Association">><<goto "Hunters Association">><</link>>
+
+:: Xavier First Morning Walk Decline
+<<initPlayState>>\
+<<pronouns "xavier">>\
+<<run World.setLocation("garden-south-street", "Garden South Street")>>\
+You shake your head. "There's a couple things I need to do before work. I'll see you there." you inform <<him>>.
+
+Despite the soft smile on <<his>> face, <<his>> twinge of disappointment was hard to miss.
+
+"No problem, I'll see you there." <<he>> says, walking the opposite way from the Hunter's Association. However, after noticing <<his>> sudden sense of misdirection, <<he>> turned the other way, <<his>> cheeks pink with embarrassment.
+
+<<link "Continue">><<goto "Garden South Street">><</link>>

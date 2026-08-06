@@ -1,14 +1,22 @@
 :: Game Settings Widgets [widget]
 
-<<widget "initGameSettings">><<run Player.ensure()>><<run LoveInterests.ensure()>><<run Options.ensure()>><<run Options.applyTypography()>><<if ndef $ccPanel>><<set $ccPanel to "creator">><</if>><<set $gameVersion to StartConfig.version>><<run jQuery("#passages").addClass("cc-wide")>><</widget>>
+<<widget "initGameSettings">><<run Player.ensure()>><<run LoveInterests.ensure()>><<run Options.ensure()>><<run Options.applyTypography()>><<if ndef $ccPanel>><<set $ccPanel to "creator">><</if>><<if ndef $saveName>><<set $saveName to "">><</if>><<set $gameVersion to StartConfig.version>><<run jQuery("#passages").addClass("cc-wide")>><</widget>>
 
-<<widget "initPlayState">><<run Player.ensure()>><<run LoveInterests.ensure()>><<run Options.ensure()>><<run World.ensure()>><<run Stats.ensure()>><<run Journal.ensure()>><<run Money.get()>><<run Options.applyTypography()>><<run jQuery("#passages").removeClass("cc-wide")>><</widget>>
+<<widget "initPlayState">><<run Player.ensure()>><<run LoveInterests.ensure()>><<run Options.ensure()>><<run World.ensure()>><<run Stats.ensure()>><<run Journal.ensure()>><<run Flags.ensure()>><<run Money.get()>><<if ndef $saveName>><<set $saveName to "">><</if>><<run Options.applyTypography()>><<run jQuery("#passages").removeClass("cc-wide")>><</widget>>
 
 <<widget "gameSettings">><div class="cc"><div class="cc-shell"><div class="cc-tabs" role="tablist"><<button "Character Creator">><<ccPanelSwitch "creator">><</button>><<button "Love Interest Modifier">><<ccPanelSwitch "loveInterest">><</button>><<button "General">><<ccPanelSwitch "general">><</button>><<button "Themes">><<ccPanelSwitch "themes">><</button>></div><div id="ccPanel" class="cc-panel" role="tabpanel"><<ccPanel>></div></div><div id="ccActions" class="cc-actions"><<ccActions>></div></div><<run GameSettings.bindShell()>><</widget>>
 
 <<widget "ccPanel">><<switch $ccPanel>><<case "loveInterest">><<ccLoveInterest>><<case "general">><<ccGeneral>><<case "themes">><<ccThemes>><<default>><<ccSelf>><</switch>><</widget>>
 
-<<widget "ccActions">><span id="ccBeginWrap"><<button "Begin">><<run World.startNew()>><<initPlayState>><<goto "Intro">><</button>></span><<run GameSettings.styleBegin()>><</widget>>
+<<widget "ccActions">>\
+<div class="cc-save-name">\
+<div class="cc-save-name-label"><span class="gold">Save Name:</span> <span class="cc-optional">(optional)</span></div>\
+<<textbox "$saveName" "">>\
+<div class="small-description">Save files are stored in your browser's cache. Export your saves frequently to avoid losing them.</div>\
+</div>\
+<span id="ccBeginWrap"><<button "Begin">><<run World.startNew()>><<initPlayState>><<goto "Intro">><</button>></span>\
+<<run GameSettings.styleBegin()>>\
+<</widget>>
 
 <<widget "ccSelf">><div class="cc-creator-toolbar"><<button "Randomize">><<run GameSettings.randomizeCreator()>><</button>> <<button "Default">><<run GameSettings.resetCreator()>><</button>></div>\
 <div class="cc-columns">\

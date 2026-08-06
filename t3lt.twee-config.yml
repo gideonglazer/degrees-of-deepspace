@@ -92,6 +92,11 @@ sugarcube-2:
             description: Prints a love interest display name by id.
             parameters:
                 - text
+        love:
+            name: love
+            description: Applies a love-interest love tier (+/++/+++ or -/--/---) and prints the indicator.
+            parameters:
+                - text &+ text
         stress:
             name: stress
             description: Applies a stress effect tier (+/++/+++ or -/--/---) and prints the indicator.

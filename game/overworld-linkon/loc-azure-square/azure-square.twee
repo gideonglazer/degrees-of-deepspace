@@ -1,0 +1,8 @@
+:: Azure Square
+<<initPlayState>>\
+<<run World.setLocation("azure-square", "Azure Square")>>\
+You are in Azure Square. The Hunter's Association building stands ahead.
+
+<<link "Enter the Hunter's Association <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Hunters Association">><</link>>
+<<gap>>
+<<link "Return to Garden South Street <span class='action-time'>(0:25)</span>">><<run World.advance(25)>><<goto "Garden South Street">><</link>>

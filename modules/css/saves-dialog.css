@@ -1,0 +1,239 @@
+/* DoL-style Saves dialog — compact width, short rows */
+
+#ui-dialog:has(#ui-dialog-body.dod-saves) {
+	width: min(58rem, 94vw) !important;
+	max-width: min(58rem, 94vw) !important;
+	min-width: min(42rem, 94vw) !important;
+}
+
+#ui-dialog-body.dod-saves {
+	padding: 0.5rem 0.35rem 0.55rem;
+	box-sizing: border-box;
+	overflow: visible;
+	width: 100%;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-warning {
+	margin: 0 0.35rem 0.55rem;
+	color: var(--text-primary, #eee);
+	font-size: 0.9rem;
+	line-height: 1.3;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-table {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	table-layout: fixed;
+	font-size: 0.95rem;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-table th,
+#ui-dialog-body.dod-saves .dod-saves-table td {
+	padding: 0.35rem 0.35rem;
+	border-top: 1px solid var(--border-subtle, #444);
+	vertical-align: middle;
+	text-align: left;
+	line-height: 1.25;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-table th {
+	color: var(--text-muted, #999);
+	font-size: 0.85rem;
+	font-weight: 600;
+	border-top: 0;
+	padding-top: 0.15rem;
+	padding-bottom: 0.3rem;
+}
+
+/* Fixed layout uses the first row for widths — pin columns on th + td. */
+#ui-dialog-body.dod-saves .dod-saves-table th:nth-child(1),
+#ui-dialog-body.dod-saves .dod-saves-table td:nth-child(1) {
+	width: 2.25rem;
+	padding-left: 0.25rem;
+	padding-right: 0.15rem;
+	text-align: center;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-num {
+	font-variant-numeric: tabular-nums;
+	color: var(--text-muted, #999);
+}
+
+#ui-dialog-body.dod-saves .dod-saves-table th:nth-child(2),
+#ui-dialog-body.dod-saves .dod-saves-table td:nth-child(2) {
+	width: 9.25rem;
+	padding-left: 0.15rem;
+	white-space: nowrap;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-actions .dod-saves-btn {
+	margin-right: 0.3rem;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-table th:nth-child(3),
+#ui-dialog-body.dod-saves .dod-saves-table td:nth-child(3) {
+	width: 5.5rem;
+	padding-right: 0.2rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-id {
+	color: var(--gold, #ffd700);
+	font-weight: 600;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-table th:nth-child(4),
+#ui-dialog-body.dod-saves .dod-saves-table td:nth-child(4) {
+	width: auto;
+	padding-left: 0.15rem;
+	padding-right: 0.35rem;
+	text-align: left;
+	line-height: 1.25;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-detail-text {
+	color: var(--text-primary, #eee);
+	font-size: 0.9rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-datestamp {
+	color: var(--green, #38b20a);
+	font-size: 0.85rem;
+	font-variant-numeric: tabular-nums;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-table th:nth-child(5),
+#ui-dialog-body.dod-saves .dod-saves-table td:nth-child(5) {
+	width: 5.25rem;
+	padding-left: 0.2rem;
+	text-align: right;
+	white-space: nowrap;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-btn {
+	min-width: 4rem;
+	padding: 0.28rem 0.65rem;
+	font-size: 0.88rem;
+	line-height: 1.2;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-btn-save,
+#ui-dialog-body.dod-saves .dod-saves-btn-load,
+#ui-dialog-body.dod-saves .dod-saves-btn-export {
+	color: #e8f2ff;
+	background-color: #2a5ea8;
+	border-color: #3d7ad4;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-btn-save:hover:not(:disabled),
+#ui-dialog-body.dod-saves .dod-saves-btn-load:hover:not(:disabled),
+#ui-dialog-body.dod-saves .dod-saves-btn-export:hover:not(:disabled) {
+	background-color: #3470c4;
+	border-color: #5b94e6;
+	color: #fff;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-btn-delete,
+#ui-dialog-body.dod-saves .dod-saves-btn-delete-all {
+	color: #fff;
+	background-color: #a32020;
+	border-color: #c43a3a;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-btn-delete:hover:not(:disabled),
+#ui-dialog-body.dod-saves .dod-saves-btn-delete-all:hover:not(:disabled) {
+	background-color: #c02828;
+	border-color: #e05050;
+	color: #fff;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-btn:disabled,
+#ui-dialog-body.dod-saves .dod-saves-btn[disabled] {
+	color: #bbb;
+	background-color: #3a3a3a;
+	border-color: #555;
+	opacity: 1;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-export-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin: 0.55rem 0.35rem 0;
+	padding-top: 0.55rem;
+	border-top: 1px solid var(--border-subtle, #444);
+}
+
+#ui-dialog-body.dod-saves .dod-saves-export-actions .dod-saves-btn {
+	min-width: 7.25rem;
+	padding: 0.35rem 0.75rem;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-export-actions .dod-saves-btn-delete-all {
+	margin-left: auto;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-pager {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.45rem 0.6rem;
+	margin: 0.5rem 0.35rem 0;
+	font-size: 0.9rem;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-pager-label {
+	color: var(--text-muted, #999);
+}
+
+#ui-dialog-body.dod-saves .dod-saves-page-input,
+#ui-dialog-body.dod-saves .dod-saves-per-input {
+	width: 3.5rem;
+	padding: 0.25rem 0.3rem;
+	text-align: center;
+	font-size: 0.9rem;
+	font-variant-numeric: tabular-nums;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-page-btn {
+	min-width: 2.1rem;
+	padding: 0.25rem 0.45rem;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-jump {
+	margin-left: auto;
+	color: #e8f2ff;
+	background-color: #2a5ea8;
+	border-color: #3d7ad4;
+	min-width: 0;
+	padding: 0.3rem 0.75rem;
+	font-size: 0.88rem;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-confirm-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.45rem 0.65rem;
+	margin: 0.5rem 0.35rem 0;
+	padding-top: 0.5rem;
+	border-top: 1px solid var(--border-subtle, #444);
+	font-size: 0.88rem;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-sep {
+	color: var(--text-dim, #666);
+}
+
+#ui-dialog-body.dod-saves .dod-saves-confirm-row label {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	cursor: pointer;
+}
