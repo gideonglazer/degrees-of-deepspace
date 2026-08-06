@@ -13,10 +13,11 @@ if defined FORCE_VERSION (
 	)
 )
 
-if defined VERSION (
-	set "TARGET=Degrees of Deepspace !VERSION!.html"
-) else (
+rem Empty FORCE_VERSION (as set by the dev server) must produce the stable filename.
+if "!VERSION!"=="" (
 	set "TARGET=Degrees of Deepspace.html"
+) else (
+	set "TARGET=Degrees of Deepspace !VERSION!.html"
 )
 
 set "TWEEGO_EXE="
@@ -33,7 +34,8 @@ if not defined TWEEGO_EXE (
 if not "%TWEEGO_EXE%"=="tweego" (
 	if not exist "%TWEEGO_EXE%" (
 		echo No tweego binary found on PATH, and no vendored binary available.
-		echo Install tweego from http://www.motoslave.net/tweego/ or see devTools\tweego\README.md.
+		echo Run "npm run build" or "npm run dev" once — they download Tweego automatically.
+		echo Or install from http://www.motoslave.net/tweego/ — see devTools\tweego\README.md.
 		exit /b 2
 	)
 )
@@ -43,6 +45,10 @@ rem The story format comes from StoryData; see the matching comment in compile.s
 if errorlevel 1 (
 	echo Build failed.
 	exit /b 1
+)
+
+if not "!TARGET!"=="Degrees of Deepspace.html" (
+	copy /Y "!TARGET!" "Degrees of Deepspace.html" >nul
 )
 
 echo Done: "!TARGET!"

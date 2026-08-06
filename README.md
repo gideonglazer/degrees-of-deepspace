@@ -9,20 +9,18 @@ There is no game here yet — only the build pipeline and a small framework laye
 
 ## Prerequisites
 
--   **Node.js** 18+ (only for linting and the dev server; the game itself has no runtime dependencies)
--   **Tweego** on your `PATH` — install from <http://www.motoslave.net/tweego/>
+-   **Node.js** 18+ (linting, the dev server, and the build wrapper)
 
-    Alternatively, vendor platform binaries under `devTools/tweego/` and the build will find them; see
-    [`devTools/tweego/README.md`](devTools/tweego/README.md).
-
-SugarCube 2.37.3 is already vendored at
-[`devTools/tweego/storyFormats/sugarcube-2/`](devTools/tweego/storyFormats/sugarcube-2/), so you do
-not need to install a story format.
+Tweego is downloaded automatically on first `npm run build` / `npm run dev` if it is not already on
+your `PATH` or under `devTools/tweego/`. SugarCube 2.37.3 is already vendored at
+[`devTools/tweego/storyFormats/sugarcube-2/`](devTools/tweego/storyFormats/sugarcube-2/).
 
 ```bash
 npm install
 npm run dev
 ```
+
+Works the same on macOS, Linux, and Windows. Open the `http://localhost:8080` URL it prints.
 
 ## Scripts
 
@@ -38,13 +36,14 @@ npm run dev
 `npm run dev` is the one to use day to day. Use `npm run build` when you want a versioned file to
 share.
 
-On Windows, `compile.bat` and `compile_watch.bat` are equivalent to `build` and `watch`.
+`compile.sh` / `compile.bat` are still there if you want to invoke Tweego directly; day-to-day use
+goes through the npm scripts above.
 
 ### Build output
 
 The compiled file is named from `git describe`, so each build is traceable to a commit, and
-`Degrees of Deepspace.html` is a symlink to the newest one. Both are gitignored. Override the
-version with `FORCE_VERSION`:
+`Degrees of Deepspace.html` is also written as a stable name for the newest build (symlink on Unix,
+copy on Windows). Both are gitignored. Override the version with `FORCE_VERSION`:
 
 ```bash
 FORCE_VERSION=0.2.0-test npm run build

@@ -1,15 +1,8 @@
 #!/usr/bin/env bash
 
-output=/dev/stdout
-
 #display an error message
 function echoError() {
 	echo -e "\033[0;31m$*\033[0m"
-}
-
-#display message
-function echoMessage() {
-	echo "$1" >"${output}"
 }
 
 #resolve the version string used in the output filename
@@ -40,7 +33,6 @@ function resolveTweego() {
 
 	case "$(uname -m)" in
 		arm64 | aarch64)
-			echoMessage "arm64 arch"
 			if [ "$(uname -s)" = "Darwin" ]; then
 				echo "./devTools/tweego/tweego_osx64"
 			else
@@ -48,7 +40,6 @@ function resolveTweego() {
 			fi
 			;;
 		x86_64 | amd64)
-			echoMessage "x64 arch"
 			if [ "$(uname -s)" = "Darwin" ]; then
 				echo "./devTools/tweego/tweego_osx64"
 			elif [ "$OSTYPE" = "msys" ]; then
@@ -58,7 +49,6 @@ function resolveTweego() {
 			fi
 			;;
 		x86 | i[3-6]86)
-			echoMessage "x86 arch"
 			if [ "$(uname -s)" = "Darwin" ]; then
 				echo "./devTools/tweego/tweego_osx86"
 			elif [ "$OSTYPE" = "msys" ]; then
@@ -87,7 +77,8 @@ function compile() {
 	TWEEGO_EXE="$(resolveTweego)"
 	if [ -z "$TWEEGO_EXE" ] || { [ "$TWEEGO_EXE" != "tweego" ] && [ ! -x "$TWEEGO_EXE" ]; }; then
 		echoError "No tweego binary found on PATH, and no vendored binary available for your platform."
-		echoError "Install tweego from http://www.motoslave.net/tweego/ or see devTools/tweego/README.md."
+		echoError "Run \"npm run build\" or \"npm run dev\" once — they download Tweego automatically."
+		echoError "Or install from http://www.motoslave.net/tweego/ — see devTools/tweego/README.md."
 		exit 2
 	fi
 

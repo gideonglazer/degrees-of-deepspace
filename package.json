@@ -5,8 +5,8 @@
 	"description": "Degrees of Deepspace — Twine/SugarCube 2 sandbox game built with Tweego",
 	"type": "module",
 	"scripts": {
-		"build": "bash compile.sh",
-		"watch": "bash compile.sh -w",
+		"build": "node tools/compile.mjs",
+		"watch": "node tools/compile.mjs -w",
 		"dev": "node tools/dev.mjs",
 		"lint": "eslint --fix --ext .js,.cjs,.mjs .",
 		"lint:check": "eslint --ext .js,.cjs,.mjs .",

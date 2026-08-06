@@ -7,6 +7,11 @@
 # Compiled game htmls.
 Degrees of Deepspace*.html
 
+# Auto-downloaded Tweego binaries (see tools/ensure-tweego.mjs)
+devTools/tweego/tweego_osx*
+devTools/tweego/tweego_linux*
+devTools/tweego/tweego_win*
+
 # Distributable builds
 /dist/*
 

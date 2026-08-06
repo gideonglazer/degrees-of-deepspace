@@ -5,21 +5,24 @@
 1. `tweego` on your `PATH`
 2. A platform-specific binary vendored in this directory
 
-Vendoring the binaries lets contributors build without installing anything, which is how upstream
-Degrees of Lewdity ships. They are not committed here because they are large and platform-specific.
-To vendor them, download the archives from <http://www.motoslave.net/tweego/> and place the
-executables here using these exact names:
+`npm run build` and `npm run dev` call `tools/ensure-tweego.mjs` first, which downloads the official
+**v2.1.1** release into this folder on first use if neither of the above is present. You do not need
+to install Tweego by hand for day-to-day work.
 
-| Platform             | Filename           |
-| -------------------- | ------------------ |
+To vendor a binary manually, download the archives from <http://www.motoslave.net/tweego/> (or the
+[GitHub release](https://github.com/tmedwards/tweego/releases/tag/v2.1.1)) and place the executables
+here using these exact names:
+
+| Platform              | Filename           |
+| --------------------- | ------------------ |
 | macOS x64 / universal | `tweego_osx64`     |
-| macOS x86            | `tweego_osx86`     |
-| Linux x64            | `tweego_linux64`   |
-| Linux x86            | `tweego_linux86`   |
-| Windows x64          | `tweego_win64.exe` |
-| Windows x86          | `tweego_win86.exe` |
+| macOS x86             | `tweego_osx86`     |
+| Linux x64             | `tweego_linux64`   |
+| Linux x86             | `tweego_linux86`   |
+| Windows x64           | `tweego_win64.exe` |
+| Windows x86           | `tweego_win86.exe` |
 
-Remember to `chmod +x` the Unix binaries.
+Remember to `chmod +x` the Unix binaries. Downloaded copies are gitignored.
 
 ## storyFormats
 

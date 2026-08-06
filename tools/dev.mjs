@@ -1,8 +1,8 @@
 /**
  * Development server for Degrees of Deepspace.
  *
- * Rebuilds the story with compile.sh whenever a source file changes, serves the project root over
- * HTTP (so runtime assets like style.css and img/ resolve), and pushes a reload to open tabs.
+ * Rebuilds the story whenever a source file changes, serves the project root over HTTP (so runtime
+ * assets like style.css and img/ resolve), and pushes a reload to open tabs.
  *
  * Usage: npm run dev  (PORT=8080 by default)
  */
@@ -13,9 +13,11 @@ import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { ensureTweego } from "./ensure-tweego.mjs";
+
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-// compile.sh omits the version suffix when FORCE_VERSION is set but empty, giving us a stable path
+// Empty FORCE_VERSION omits the version suffix, giving the dev server a stable output path.
 const BUILD_ENV = { ...process.env, FORCE_VERSION: "" };
 const OUTPUT_HTML = "Degrees of Deepspace.html";
 
@@ -40,6 +42,13 @@ function notifyReload() {
 let building = false;
 let buildQueued = false;
 
+function spawnCompile() {
+	const isWin = process.platform === "win32";
+	return isWin
+		? spawn("cmd.exe", ["/c", "compile.bat"], { cwd: root, env: BUILD_ENV, windowsHide: true })
+		: spawn("bash", ["compile.sh"], { cwd: root, env: BUILD_ENV });
+}
+
 function build() {
 	if (building) {
 		buildQueued = true;
@@ -47,12 +56,16 @@ function build() {
 	}
 	building = true;
 
-	const child = spawn("bash", ["compile.sh"], { cwd: root, env: BUILD_ENV });
+	const child = spawnCompile();
 	let stderr = "";
 	child.stdout.on("data", d => process.stdout.write(`[build] ${d}`));
 	child.stderr.on("data", d => {
 		stderr += d;
 		process.stderr.write(`[build] ${d}`);
+	});
+	child.on("error", err => {
+		building = false;
+		log("build", err.message);
 	});
 	child.on("exit", code => {
 		building = false;
@@ -87,7 +100,7 @@ function snapshot(relPaths) {
 		try {
 			stats = fs.statSync(absPath);
 		} catch {
-			return; // Deleted between readdir and stat
+			return;
 		}
 
 		if (stats.isDirectory()) {
@@ -194,6 +207,13 @@ function listen(port, attemptsLeft) {
 		log("serve", `http://localhost:${port}`);
 		log("serve", `watching ${REBUILD_PATHS.join(", ")} — the page reloads itself after each build`);
 	});
+}
+
+try {
+	await ensureTweego();
+} catch (err) {
+	process.stderr.write(`[tweego] ${err.message || err}\n`);
+	process.exit(1);
 }
 
 build();
