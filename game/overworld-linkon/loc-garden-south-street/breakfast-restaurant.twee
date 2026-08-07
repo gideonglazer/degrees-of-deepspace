@@ -1,0 +1,76 @@
+:: Breakfast Restaurant
+<<initPlayState>>\
+<<set _dayKey to $world.year + "-" + $world.month + "-" + $world.day>>\
+<<if ndef $breakfastDaily || $breakfastDaily.day !== _dayKey>>\
+<<set $breakfastDaily to { day: _dayKey, food: false, drink: false }>>\
+<</if>>\
+<<if !World.isBefore(6, 0) && World.isBefore(15, 0)>>\
+<<run World.setLocation("breakfast-restaurant", "Garden South Street — Breakfast Restaurant")>>\
+You are in the breakfast restaurant that resides right next to your apartment complex. The scent of pancakes and warm maple syrup fills the air.<<if previous() === "Garden South Street">> A lady behind the counter greets you, welcoming you to sit.<</if>> You sit at a table, examining the menu, which lists what's currently being served.<<if $stats.hunger < 50>> <<orange>>You can feel your stomach growling.<</orange>><</if>>
+
+Foods:
+<<if $breakfastDaily.food>>\
+<<blue>>You've already had something to eat here today.<</blue>>\
+<<else>>\
+<<foodIcon "breakfast-restaurant" "donuts">><<link `"Buy donuts (" + Money.format(4) + ") <span class='action-time'>(0:08)</span>"`>><<set $breakfastBuy to { kind: "food", id: "donuts", name: "donuts", price: 4, minutes: 8, hunger: "+", stress: "-", text: "You eat a couple of donuts." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+") + Stats.effectMarkup("stress", "-")>>
+<<foodIcon "breakfast-restaurant" "egg-tart">><<link `"Buy egg tart (" + Money.format(4) + ") <span class='action-time'>(0:08)</span>"`>><<set $breakfastBuy to { kind: "food", id: "egg-tart", name: "egg tart", price: 4, minutes: 8, hunger: "+", stress: "-", text: "You eat a sweet egg tart." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+") + Stats.effectMarkup("stress", "-")>>
+<<foodIcon "breakfast-restaurant" "fried-egg">><<link `"Buy fried egg (" + Money.format(4) + ") <span class='action-time'>(0:08)</span>"`>><<set $breakfastBuy to { kind: "food", id: "fried-egg", name: "fried egg", price: 4, minutes: 8, hunger: "+", stress: "-", text: "You eat a fried egg." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+") + Stats.effectMarkup("stress", "-")>>
+<<foodIcon "breakfast-restaurant" "toast-with-jam">><<link `"Buy toast with jam (" + Money.format(4) + ") <span class='action-time'>(0:08)</span>"`>><<set $breakfastBuy to { kind: "food", id: "toast-with-jam", name: "toast with jam", price: 4, minutes: 8, hunger: "+", stress: "-", text: "You eat toast with jam." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+") + Stats.effectMarkup("stress", "-")>>
+<<foodIcon "breakfast-restaurant" "apple-pie">><<link `"Buy apple pie (" + Money.format(5) + ") <span class='action-time'>(0:10)</span>"`>><<set $breakfastBuy to { kind: "food", id: "apple-pie", name: "apple pie", price: 5, minutes: 10, hunger: "+", stress: "-", text: "You enjoy a slice of apple pie." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+") + Stats.effectMarkup("stress", "-")>>
+<<foodIcon "breakfast-restaurant" "croissant">><<link `"Buy croissant (" + Money.format(5) + ") <span class='action-time'>(0:08)</span>"`>><<set $breakfastBuy to { kind: "food", id: "croissant", name: "croissant", price: 5, minutes: 8, hunger: "+", stress: "-", text: "You tear into a flaky croissant." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+") + Stats.effectMarkup("stress", "-")>>
+<<foodIcon "breakfast-restaurant" "bagel">><<link `"Buy bagel (" + Money.format(5) + ") <span class='action-time'>(0:10)</span>"`>><<set $breakfastBuy to { kind: "food", id: "bagel", name: "bagel", price: 5, minutes: 10, hunger: "++", stress: "-", text: "You eat a bagel." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "++") + Stats.effectMarkup("stress", "-")>>
+<<foodIcon "breakfast-restaurant" "bao-bun">><<link `"Buy bao bun (" + Money.format(6) + ") <span class='action-time'>(0:10)</span>"`>><<set $breakfastBuy to { kind: "food", id: "bao-bun", name: "bao bun", price: 6, minutes: 10, hunger: "++", stress: "-", text: "You eat a soft bao bun." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "++") + Stats.effectMarkup("stress", "-")>>
+<<foodIcon "breakfast-restaurant" "breakfast-burrito">><<link `"Buy breakfast burrito (" + Money.format(7) + ") <span class='action-time'>(0:12)</span>"`>><<set $breakfastBuy to { kind: "food", id: "breakfast-burrito", name: "breakfast burrito", price: 7, minutes: 12, hunger: "++", stress: "-", text: "You finish a warm breakfast burrito." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "++") + Stats.effectMarkup("stress", "-")>>
+<<foodIcon "breakfast-restaurant" "eggs-with-toast">><<link `"Buy eggs with toast (" + Money.format(7) + ") <span class='action-time'>(0:12)</span>"`>><<set $breakfastBuy to { kind: "food", id: "eggs-with-toast", name: "eggs with toast", price: 7, minutes: 12, hunger: "++", stress: "-", text: "You eat a plate of eggs with toast." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "++") + Stats.effectMarkup("stress", "-")>>
+<<foodIcon "breakfast-restaurant" "bacon-dish">><<link `"Buy bacon dish (" + Money.format(8) + ") <span class='action-time'>(0:15)</span>"`>><<set $breakfastBuy to { kind: "food", id: "bacon-dish", name: "bacon dish", price: 8, minutes: 15, hunger: "+++", stress: "--", text: "You dig into a hearty bacon dish." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+++") + Stats.effectMarkup("stress", "--")>>
+<<foodIcon "breakfast-restaurant" "omelette-dish">><<link `"Buy omelette (" + Money.format(8) + ") <span class='action-time'>(0:15)</span>"`>><<set $breakfastBuy to { kind: "food", id: "omelette-dish", name: "omelette", price: 8, minutes: 15, hunger: "+++", stress: "--", text: "You eat a fluffy omelette." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+++") + Stats.effectMarkup("stress", "--")>>
+<<foodIcon "breakfast-restaurant" "pancakes">><<link `"Buy pancakes (" + Money.format(8) + ") <span class='action-time'>(0:15)</span>"`>><<set $breakfastBuy to { kind: "food", id: "pancakes", name: "pancakes", price: 8, minutes: 15, hunger: "+++", stress: "--", text: "You polish off a warm stack of pancakes." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+++") + Stats.effectMarkup("stress", "--")>>
+<<foodIcon "breakfast-restaurant" "waffles">><<link `"Buy waffles (" + Money.format(8) + ") <span class='action-time'>(0:15)</span>"`>><<set $breakfastBuy to { kind: "food", id: "waffles", name: "waffles", price: 8, minutes: 15, hunger: "+++", stress: "--", text: "You finish a plate of crisp waffles." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+++") + Stats.effectMarkup("stress", "--")>>
+<</if>>\
+<<gap "sm">>\
+Drinks:
+<<if $breakfastDaily.drink>>\
+<<blue>>You've already had a drink here today.<</blue>>\
+<<else>>\
+<<foodIcon "breakfast-restaurant" "green-tea">><<link `"Buy green tea (" + Money.format(2) + ") <span class='action-time'>(0:05)</span>"`>><<set $breakfastBuy to { kind: "drink", id: "green-tea", name: "green tea", price: 2, minutes: 5, hunger: "+", energy: "+", text: "You drink a cup of green tea." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+") + Stats.effectMarkup("energy", "+")>>
+<<foodIcon "breakfast-restaurant" "milk">><<link `"Buy milk (" + Money.format(2) + ") <span class='action-time'>(0:05)</span>"`>><<set $breakfastBuy to { kind: "drink", id: "milk", name: "milk", price: 2, minutes: 5, hunger: "+", energy: "+", text: "You drink a glass of milk." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+") + Stats.effectMarkup("energy", "+")>>
+<<foodIcon "breakfast-restaurant" "tea">><<link `"Buy tea (" + Money.format(2) + ") <span class='action-time'>(0:05)</span>"`>><<set $breakfastBuy to { kind: "drink", id: "tea", name: "tea", price: 2, minutes: 5, hunger: "+", energy: "+", text: "You drink a cup of tea." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+") + Stats.effectMarkup("energy", "+")>>
+<<foodIcon "breakfast-restaurant" "coffee">><<link `"Buy coffee (" + Money.format(3) + ") <span class='action-time'>(0:05)</span>"`>><<set $breakfastBuy to { kind: "drink", id: "coffee", name: "coffee", price: 3, minutes: 5, hunger: "+", energy: "++", text: "You drink a cup of coffee." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "+") + Stats.effectMarkup("energy", "++")>>
+<</if>>\
+
+<<gap>>
+<<actionIcon "exit">><<link "Exit <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Garden South Street">><</link>>
+<<else>>\
+<<run World.setLocation("garden-south-street", "Garden South Street")>>\
+The restaurant is closed. A sign on the door reads: "Opening hours: <<= World.formatTimeAt(6, 0)>> - <<= World.formatTimeAt(15, 0)>>"
+
+<<link "Leave">><<goto "Garden South Street">><</link>>
+<</if>>
+
+:: Breakfast Restaurant Buy
+<<initPlayState>>\
+<<set _dayKey to $world.year + "-" + $world.month + "-" + $world.day>>\
+<<if ndef $breakfastDaily || $breakfastDaily.day !== _dayKey>>\
+<<set $breakfastDaily to { day: _dayKey, food: false, drink: false }>>\
+<</if>>\
+<<if ndef $breakfastBuy || !$breakfastBuy.price>>\
+<<goto "Breakfast Restaurant">>\
+<</if>>\
+<<set _item to $breakfastBuy>>\
+<<set _backLabel to "Back">>\
+<<if (_item.kind === "food" && $breakfastDaily.food) || (_item.kind === "drink" && $breakfastDaily.drink)>>\
+<<teal>>You've already had <<if _item.kind === "food">>something to eat<<else>>a drink<</if>> here today.<</teal>>
+<<elseif Money.get() < _item.price>>\
+You don't have enough money for that.
+<<else>>\
+<<run Money.add(-_item.price)>><<run World.advance(_item.minutes)>>\
+<<set _fx to "">>\
+<<if _item.hunger>><<set _fx to _fx + Stats.applyEffect("hunger", _item.hunger)>><</if>>\
+<<if _item.stress>><<set _fx to _fx + Stats.applyEffect("stress", _item.stress)>><</if>>\
+<<if _item.energy>><<set _fx to _fx + Stats.applyEffect("energy", _item.energy)>><</if>>\
+<<if _item.kind === "food">><<set $breakfastDaily.food to true>><<set _backLabel to "Finish eating your " + _item.name>><<else>><<set $breakfastDaily.drink to true>><<set _backLabel to "Finish drinking your " + _item.name>><</if>>\
+<<= _item.text>> <<= _fx>>
+<</if>>\
+<<unset $breakfastBuy>>\
+<<gap>>
+<<link `_backLabel`>><<goto "Breakfast Restaurant">><</link>>

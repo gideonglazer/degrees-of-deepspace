@@ -1,8 +1,20 @@
 :: Azure Square
 <<initPlayState>>\
 <<run World.setLocation("azure-square", "Azure Square")>>\
-You are in Azure Square. The Hunter's Association building stands ahead.
+You are currently at Azure Square, the heart of Linkon City. \
+<<if !World.isBefore(5, 0) && World.isBefore(11, 0)>>\
+The area is teeming with life, as energetic voices call out to one another, and hurried individuals make their commutes to work.\
+<<elseif !World.isBefore(11, 0) && World.isBefore(13, 0)>>\
+People are crowded around The Café Corner, looking to get their lunchtime fill. Benches are taken as soon as they become available, and mumbles of chatter pervade your curiosity.\
+<<elseif !World.isBefore(13, 0) && World.isBefore(21, 0)>>\
+Children run past you, headed to Twinkle Toys. They must have just gotten out of school, you think to yourself.\
+<<else>>\
+The night chill consumes you, and gleaming lights surround you. As you look up, drones and their red eyes light up the sky, scanning for Wanderers.\
+<</if>>
 
-<<link "Enter the Hunter's Association <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Hunters Association">><</link>>
-<<gap>>
-<<link "Return to Garden South Street <span class='action-time'>(0:25)</span>">><<run World.advance(25)>><<goto "Garden South Street">><</link>>
+Places of Interest
+<<icon "hunters-association">><<link "Enter the Hunter's Association <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Hunters Association">><</link>>
+
+Travel
+<<link "Tide Street <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Tide Street">><</link>>
+<<link "Garden South Street <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Garden South Street">><</link>>

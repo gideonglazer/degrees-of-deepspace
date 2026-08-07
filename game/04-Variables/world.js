@@ -134,7 +134,7 @@ defineGlobalNamespaces("World");
 				if (vars.world[key] === undefined) vars.world[key] = defaults[key];
 			});
 		}
-		if (vars.money === undefined) vars.money = 0;
+		if (vars.money === undefined) vars.money = typeof Money !== "undefined" ? Money.STARTING : 1200;
 		return vars.world;
 	}
 

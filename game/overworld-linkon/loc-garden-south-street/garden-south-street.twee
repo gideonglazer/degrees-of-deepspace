@@ -1,9 +1,33 @@
 :: Garden South Street
 <<initPlayState>>\
+<<pronouns "xavier">>\
 <<if !Flags.get("xavierFirstWorkWalk") && World.isWeekday() && World.isBefore(8, 30)>>\
 <<goto "Xavier First Morning Walk">>\
 <</if>>\
 <<run World.setLocation("garden-south-street", "Garden South Street")>>\
-You are on Garden South Street.
+You are on Garden South Street. You live in an apartment complex here, and it is close to Azure Square. There's a pet store and care center, as well as a café on this street, however, <<Xavier>> considers the café to be more of a "breakfast restaurant".
 
-<<icon "apartment-ml-door">><<link "Enter the apartment complex <span class='action-time'>(0:00)</span>">><<goto "Apartment Hallway Lower">><</link>>
+Places of Interest
+<<icon "apartment">><<link "Enter the apartment complex <span class='action-time'>(0:00)</span>">><<goto "Apartment Hallway Lower">><</link>>
+<<foodIcon "breakfast-restaurant" "omelette-dish">><<link "Enter the breakfast restaurant <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Breakfast Restaurant">><</link>>
+<<icon "pet-store">><<link "Visit the pet store <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Pet Store">><</link>>
+<<icon "pet-care-center">><<link "Visit the pet care center <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Pet Care Center">><</link>>
+
+Travel
+<<link "Azure Square <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Azure Square">><</link>>
+
+:: Pet Store
+<<initPlayState>>\
+<<run World.setLocation("apartment-living-room", "Garden South Street — Pet Store")>>\
+
+Coming Soon...
+
+<<actionIcon "exit">><<link "Exit <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Garden South Street">><</link>>
+
+:: Pet Care Center
+<<initPlayState>>\
+<<run World.setLocation("apartment-living-room", "Garden South Street — Pet Care Center")>>\
+
+Coming Soon...
+
+<<actionIcon "exit">><<link "Exit <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Garden South Street">><</link>>

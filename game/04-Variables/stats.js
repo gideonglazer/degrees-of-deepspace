@@ -98,8 +98,8 @@ defineGlobalNamespaces("Stats");
 		stats.pain = Math.max(0, Math.min(PAIN_MAX, Math.round(Number(stats.pain) || 0)));
 		stats.stress = Math.max(0, Math.min(STRESS_MAX, Math.round(Number(stats.stress) || 0)));
 		stats.trauma = Math.max(0, Math.min(TRAUMA_MAX, Math.round(Number(stats.trauma) || 0)));
-		stats.hygiene = Math.max(0, Math.min(PERCENT_MAX, Math.round(Number(stats.hygiene) || 0)));
-		stats.hunger = Math.max(0, Math.min(PERCENT_MAX, Math.round(Number(stats.hunger) || 0)));
+		stats.hygiene = Math.max(0, Math.min(PERCENT_MAX, Number(stats.hygiene) || 0));
+		stats.hunger = Math.max(0, Math.min(PERCENT_MAX, Number(stats.hunger) || 0));
 	}
 
 	/**
@@ -132,19 +132,19 @@ defineGlobalNamespaces("Stats");
 		const m = Math.max(0, Math.floor(Number(minutes) || 0));
 		if (!m) return;
 
-		/* DoL: +1 fatigue per minute awake */
+		/* +1 fatigue per minute awake */
 		stats.fatigue += m;
-		/* DoL: arousal decays ~10 per minute */
+		/* Arousal decays ~10 per minute */
 		stats.arousal -= 10 * m;
-		/* Pain eases over time (~1 per 2 minutes on 0–200 scale) */
+		/* Eases over time (~1 per 2 minutes on 0–200 scale) */
 		stats.pain -= Math.floor(m / 2);
 		/* Stress usually decreases over time (~2 per minute on 0–10000) */
 		stats.stress -= 2 * m;
 		/* Trauma heals slowly (~1 per 5 minutes) */
 		stats.trauma -= Math.floor(m / 5);
-		/* DoD extras: mild drift */
-		stats.hygiene -= Math.floor(m / 30);
-		stats.hunger -= Math.floor(m / 20);
+		/* Day-to-day needs: meal every few hours, wash about once a day */
+		stats.hygiene -= m / 12;
+		stats.hunger -= m / 6;
 
 		clampAll(stats);
 	}
@@ -166,8 +166,8 @@ defineGlobalNamespaces("Stats");
 		stats.pain -= Math.floor(m / 2);
 		stats.stress -= 2 * m;
 		stats.trauma -= Math.floor(m / 5);
-		stats.hygiene -= Math.floor(m / 60);
-		stats.hunger -= Math.floor(m / 30);
+		stats.hygiene -= m / 24;
+		stats.hunger -= m / 15;
 
 		clampAll(stats);
 	}
@@ -216,7 +216,7 @@ defineGlobalNamespaces("Stats");
 
 		const intensity = plusKey.length;
 		const up = parsed.sign > 0;
-		const mark = up ? "+".repeat(intensity) : "-".repeat(intensity);
+		const mark = up ? "+".repeat(intensity) : "\u2212".repeat(intensity);
 		const label = LABELS[stat] || stat;
 		const harmful = NEGATIVE_STATS.includes(stat);
 		/* Harmful stats: rising is bad, falling is good. Others invert. */

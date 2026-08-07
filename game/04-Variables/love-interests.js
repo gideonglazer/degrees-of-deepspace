@@ -1,6 +1,8 @@
 /**
  * Love interest catalogue and story-state helpers. Static entries live under Constants.loveInterests;
  * per-run customisation is stored on $loveInterests keyed by id.
+ *
+ * Visibility in Social uses Flags like metXavier / metCaleb (see metFlag / meet / hasMet).
  */
 
 defineGlobalNamespaces("LoveInterests");
@@ -72,6 +74,27 @@ defineGlobalNamespaces("LoveInterests");
 			}),
 		],
 
+		/**
+		 * Relationship stats shared by every love interest.
+		 * Unique extras are listed under uniqueStats by id (Seiya = Xavier).
+		 */
+		universalStats: ["love", "longing"],
+
+		/** Per-character extras beyond the universal stats. */
+		uniqueStats: {
+			caleb: ["sanity", "dominance"],
+			valko: ["loyalty", "dominance"],
+			xavier: ["dominance"],
+		},
+
+		statLabels: {
+			love: "Love",
+			longing: "Longing",
+			sanity: "Sanity",
+			dominance: "Dominance",
+			loyalty: "Loyalty",
+		},
+
 		/** Cosmetics defaults applied to every love interest until the player customises them. */
 		defaults: {
 			nameLocale: "en",
@@ -79,24 +102,33 @@ defineGlobalNamespaces("LoveInterests");
 			height: "tall",
 			skinTone: "fair",
 			love: 0,
+			longing: 0,
 			hair: {
 				length: "short",
 				style: "neat",
 			},
 		},
 
-		/** Love change magnitudes for +, ++, +++. */
+		/** Love / longing / unique-stat change magnitudes for +, ++, +++. */
 		loveTiers: { "+": 1, "++": 2, "+++": 3 },
 		loveMax: 100,
 	});
 
 	/**
-	 * Fresh cosmetics object for one love interest.
+	 * Fresh cosmetics + relationship object for one love interest.
 	 *
+	 * @param {string} [id] When set, also seeds that character's unique stats.
 	 * @returns {object}
 	 */
-	function createDefaults() {
-		return clone(C().loveInterests.defaults);
+	function createDefaults(id) {
+		const base = clone(C().loveInterests.defaults);
+		if (id) {
+			const unique = (C().loveInterests.uniqueStats && C().loveInterests.uniqueStats[id]) || [];
+			unique.forEach(key => {
+				if (base[key] === undefined) base[key] = 0;
+			});
+		}
+		return base;
 	}
 
 	/**
@@ -159,6 +191,17 @@ defineGlobalNamespaces("LoveInterests");
 	}
 
 	/**
+	 * Epithet only, e.g. "the Deepspace Hunter".
+	 *
+	 * @param {string} id
+	 * @returns {string}
+	 */
+	function displayEpithet(id) {
+		const li = get(id);
+		return li && li.title ? li.title : "";
+	}
+
+	/**
 	 * Full header string, e.g. "Ao Yin the Werewolf".
 	 *
 	 * @param {string} id
@@ -173,6 +216,73 @@ defineGlobalNamespaces("LoveInterests");
 	}
 
 	/**
+	 * Flag id for first encounter, e.g. xavier → metXavier.
+	 *
+	 * @param {string} id
+	 * @returns {string}
+	 */
+	function metFlag(id) {
+		const key = String(id || "");
+		if (!key) return "";
+		return "met" + key.charAt(0).toUpperCase() + key.slice(1);
+	}
+
+	/**
+	 * @param {string} id
+	 * @param {object} [variables]
+	 * @returns {boolean}
+	 */
+	function hasMet(id, variables) {
+		const flag = metFlag(id);
+		return flag ? Flags.get(flag, variables) : false;
+	}
+
+	/**
+	 * Marks a love interest as met (unlocks them in Social).
+	 *
+	 * @param {string} id
+	 * @param {object} [variables]
+	 * @returns {boolean}
+	 */
+	function meet(id, variables) {
+		const flag = metFlag(id);
+		if (!flag || !get(id)) return false;
+		return Flags.set(flag, true, variables);
+	}
+
+	/**
+	 * Roster entries the player has encountered.
+	 *
+	 * @param {object} [variables]
+	 * @returns {Array<{id: string, name: string, title: string, names: Object<string, string>}>}
+	 */
+	function known(variables) {
+		return roster().filter(li => hasMet(li.id, variables));
+	}
+
+	/**
+	 * Stat keys shown for a love interest (universal + unique).
+	 *
+	 * @param {string} id
+	 * @returns {string[]}
+	 */
+	function statsFor(id) {
+		const universal = (C().loveInterests.universalStats || ["love", "longing"]).slice();
+		const unique = (C().loveInterests.uniqueStats && C().loveInterests.uniqueStats[id]) || [];
+		return universal.concat(unique.filter(key => !universal.includes(key)));
+	}
+
+	/**
+	 * @param {string} key
+	 * @returns {string}
+	 */
+	function statLabel(key) {
+		const labels = C().loveInterests.statLabels || {};
+		if (labels[key]) return labels[key];
+		return key ? key.charAt(0).toUpperCase() + key.slice(1) : "";
+	}
+
+	/**
 	 * Ensures `$loveInterests` and `$liFocus` exist. Safe on Start and after loads.
 	 *
 	 * @param {object} [variables] Defaults to live story variables.
@@ -183,11 +293,12 @@ defineGlobalNamespaces("LoveInterests");
 		if (!vars.loveInterests || typeof vars.loveInterests !== "object") {
 			vars.loveInterests = {};
 		}
+		if (typeof Flags !== "undefined") Flags.ensure(vars);
 
-		const base = createDefaults();
 		roster().forEach(li => {
+			const base = createDefaults(li.id);
 			if (!vars.loveInterests[li.id] || typeof vars.loveInterests[li.id] !== "object") {
-				vars.loveInterests[li.id] = createDefaults();
+				vars.loveInterests[li.id] = createDefaults(li.id);
 				return;
 			}
 			const target = vars.loveInterests[li.id];
@@ -201,13 +312,37 @@ defineGlobalNamespaces("LoveInterests");
 					if (target.hair[key] === undefined) target.hair[key] = base.hair[key];
 				});
 			}
+			statsFor(li.id).forEach(key => {
+				if (target[key] === undefined) target[key] = 0;
+				target[key] = Math.max(0, Math.min(statMax(), Math.round(Number(target[key]) || 0)));
+			});
 		});
 
 		const ids = roster().map(li => li.id);
 		if (!vars.liFocus || !ids.includes(vars.liFocus)) {
 			vars.liFocus = ids[0] || "";
 		}
+
+		/*
+		 * Backfill metXavier for saves that already finished the intro before met flags existed.
+		 * The permanent morning-walk reminder is only added on Intro Xavier Morning.
+		 */
+		if (
+			!hasMet("xavier", vars) &&
+			typeof Journal !== "undefined" &&
+			Journal.find("xavier-morning-walk", vars)
+		) {
+			meet("xavier", vars);
+		}
+
 		return vars.loveInterests;
+	}
+
+	/**
+	 * @returns {number}
+	 */
+	function statMax() {
+		return Number(C().loveInterests.loveMax) || 100;
 	}
 
 	/**
@@ -227,6 +362,22 @@ defineGlobalNamespaces("LoveInterests");
 	}
 
 	/**
+	 * Current value for a relationship stat (0–loveMax).
+	 *
+	 * @param {string} id
+	 * @param {string} key
+	 * @param {object} [variables]
+	 * @returns {number}
+	 */
+	function getStat(id, key, variables) {
+		const vars = variables || V();
+		ensure(vars);
+		const entry = vars.loveInterests[id];
+		if (!entry || !statsFor(id).includes(key)) return 0;
+		return Math.max(0, Math.round(Number(entry[key]) || 0));
+	}
+
+	/**
 	 * Current love value for a love interest (0–loveMax).
 	 *
 	 * @param {string} id
@@ -234,10 +385,78 @@ defineGlobalNamespaces("LoveInterests");
 	 * @returns {number}
 	 */
 	function love(id, variables) {
+		return getStat(id, "love", variables);
+	}
+
+	/**
+	 * Current longing value for a love interest (0–loveMax).
+	 *
+	 * @param {string} id
+	 * @param {object} [variables]
+	 * @returns {number}
+	 */
+	function longing(id, variables) {
+		return getStat(id, "longing", variables);
+	}
+
+	/**
+	 * Markup for a tiered relationship-stat change without applying it (link previews).
+	 *
+	 * @param {string} id
+	 * @param {string} key
+	 * @param {string} tier "+" / "++" / "+++" or "-" / "--" / "---"
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function effectMarkup(id, key, tier, variables) {
+		const parsed = typeof Stats !== "undefined" && Stats.parseTier ? Stats.parseTier(tier) : null;
+		const table = C().loveInterests.loveTiers || {};
+		if (!parsed || !get(id) || !statsFor(id).includes(key)) return "";
+		const plusKey = parsed.key.replace(/-/g, "+");
+		if (table[plusKey] === undefined) return "";
+
+		const intensity = plusKey.length;
+		const up = parsed.sign > 0;
+		const mark = up ? "+".repeat(intensity) : "-".repeat(intensity);
+		const name = displayName(id, variables);
+		const label = name ? `${name}'s ${statLabel(key)}` : statLabel(key);
+		const tone = up ? "good" : "bad";
+		const cssKey = key === "love" ? "love" : `li-${key}`;
+		return (
+			`<span class="stat-effect-wrap">` +
+			`<span class="stat-effect-pipe">|</span> ` +
+			`<span class="stat-effect stat-${cssKey} stat-effect-${tone}">` +
+			`<span class="stat-delta">${mark}</span>` +
+			`<span class="stat-name">${label}</span>` +
+			`</span>` +
+			`</span>`
+		);
+	}
+
+	/**
+	 * Applies a tiered relationship-stat change and returns coloured indicator markup.
+	 *
+	 * @param {string} id
+	 * @param {string} key
+	 * @param {string} tier
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function applyStat(id, key, tier, variables) {
 		const vars = variables || V();
 		ensure(vars);
+		if (!vars.loveInterests[id] || !statsFor(id).includes(key)) return "";
+		const parsed = typeof Stats !== "undefined" && Stats.parseTier ? Stats.parseTier(tier) : null;
+		const table = C().loveInterests.loveTiers || {};
+		const max = statMax();
+		if (!parsed) return "";
+		const plusKey = parsed.key.replace(/-/g, "+");
+		const magnitude = table[plusKey];
+		if (magnitude === undefined) return "";
+
 		const entry = vars.loveInterests[id];
-		return entry ? Math.max(0, Math.round(Number(entry.love) || 0)) : 0;
+		entry[key] = Math.max(0, Math.min(max, (Number(entry[key]) || 0) + magnitude * parsed.sign));
+		return effectMarkup(id, key, tier, vars);
 	}
 
 	/**
@@ -248,28 +467,8 @@ defineGlobalNamespaces("LoveInterests");
 	 * @param {object} [variables]
 	 * @returns {string}
 	 */
-	function effectMarkup(id, tier, variables) {
-		const parsed = typeof Stats !== "undefined" && Stats.parseTier ? Stats.parseTier(tier) : null;
-		const table = C().loveInterests.loveTiers || {};
-		if (!parsed || !get(id)) return "";
-		const plusKey = parsed.key.replace(/-/g, "+");
-		if (table[plusKey] === undefined) return "";
-
-		const intensity = plusKey.length;
-		const up = parsed.sign > 0;
-		const mark = up ? "+".repeat(intensity) : "-".repeat(intensity);
-		const name = displayName(id, variables);
-		const label = name ? `${name}'s Love` : "Love";
-		const tone = up ? "good" : "bad";
-		return (
-			`<span class="stat-effect-wrap">` +
-			`<span class="stat-effect-pipe">|</span> ` +
-			`<span class="stat-effect stat-love stat-effect-${tone}">` +
-			`<span class="stat-delta">${mark}</span>` +
-			`<span class="stat-name">${label}</span>` +
-			`</span>` +
-			`</span>`
-		);
+	function loveEffectMarkup(id, tier, variables) {
+		return effectMarkup(id, "love", tier, variables);
 	}
 
 	/**
@@ -281,20 +480,7 @@ defineGlobalNamespaces("LoveInterests");
 	 * @returns {string}
 	 */
 	function applyLove(id, tier, variables) {
-		const vars = variables || V();
-		ensure(vars);
-		if (!vars.loveInterests[id]) return "";
-		const parsed = typeof Stats !== "undefined" && Stats.parseTier ? Stats.parseTier(tier) : null;
-		const table = C().loveInterests.loveTiers || {};
-		const max = Number(C().loveInterests.loveMax) || 100;
-		if (!parsed) return "";
-		const plusKey = parsed.key.replace(/-/g, "+");
-		const magnitude = table[plusKey];
-		if (magnitude === undefined) return "";
-
-		const entry = vars.loveInterests[id];
-		entry.love = Math.max(0, Math.min(max, (Number(entry.love) || 0) + magnitude * parsed.sign));
-		return effectMarkup(id, tier, vars);
+		return applyStat(id, "love", tier, variables);
 	}
 
 	Object.assign(LoveInterests, {
@@ -304,12 +490,24 @@ defineGlobalNamespaces("LoveInterests");
 		listboxOptions,
 		get,
 		displayName,
+		displayEpithet,
 		displayTitle,
+		metFlag,
+		hasMet,
+		meet,
+		known,
+		statsFor,
+		statLabel,
 		ensure,
 		stepFocus,
+		statMax,
+		getStat,
 		love,
-		effectMarkup,
+		longing,
+		effectMarkup: loveEffectMarkup,
+		statEffectMarkup: effectMarkup,
 		applyLove,
+		applyStat,
 	});
 
 	/** Convenience macros <<Xavier>>, <<Rafayel>>, … — registered here so the roster already exists. */

@@ -1,0 +1,3 @@
+:: Tide Street
+<<initPlayState>>\
+<<run World.setLocation("tide-street", "Tide Street")>>\

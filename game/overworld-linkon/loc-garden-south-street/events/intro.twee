@@ -15,6 +15,7 @@ Be diligent, and avoid going outside at night...
 :: Intro Xavier Morning
 <<initPlayState>>\
 <<pronouns "xavier">>\
+<<run LoveInterests.meet("xavier")>>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
 You wake to a sliver of sunlight peeking in through your bedroom window, sheets draped partially over your face. Some plushies are scattered awry across your bed, others laying sideways on the floor, much to your displeasure. The incessant knocking at your door wills you to pull yourself up from the comfortable sheets. You trudge towards the entryway, opening the door to meet the smiling, <<gendered "boyish" "girlish" "sweet">> face of your landlord—and the person you just so happen to work with at the Hunter's Association.
 

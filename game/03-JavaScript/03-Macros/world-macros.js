@@ -29,6 +29,7 @@
 	 * <<icon "bedroom">> → img/location-icons/bedroom.png
 	 * <<icon "apartment-door" "gif">> → .gif in the same folder
 	 * <<actionIcon "sleep-apt">> → img/action-icons/sleep-apt.png
+	 * <<foodIcon "breakfast-restaurant" "pancakes">> → img/food-icons/breakfast-restaurant/pancakes.png
 	 */
 	function iconImg(folder, args) {
 		const name = args[0] != null ? String(args[0]).trim() : "";
@@ -46,6 +47,12 @@
 
 	DefineMacroS("actionIcon", function (args) {
 		return iconImg("action-icons", args);
+	});
+
+	DefineMacroS("foodIcon", function (args) {
+		const place = args[0] != null ? String(args[0]).trim().replace(/[^a-zA-Z0-9_-]/g, "") : "";
+		if (!place) return "";
+		return iconImg(`food-icons/${place}`, [args[1], args[2]]);
 	});
 
 	/**
@@ -155,5 +162,33 @@
 		const id = args[0] != null ? String(args[0]) : "";
 		const tier = args[1] != null ? String(args[1]) : "+";
 		return LoveInterests.applyLove(id, tier);
+	});
+
+	/**
+	 * <<longing "xavier" "+">> — applies a longing tier and prints the indicator.
+	 */
+	DefineMacroS("longing", function (args) {
+		const id = args[0] != null ? String(args[0]) : "";
+		const tier = args[1] != null ? String(args[1]) : "+";
+		return LoveInterests.applyStat(id, "longing", tier);
+	});
+
+	/**
+	 * <<listat "xavier" "dominance" "+">> — applies any LI relationship stat tier.
+	 */
+	DefineMacroS("listat", function (args) {
+		const id = args[0] != null ? String(args[0]) : "";
+		const key = args[1] != null ? String(args[1]) : "";
+		const tier = args[2] != null ? String(args[2]) : "+";
+		return LoveInterests.applyStat(id, key, tier);
+	});
+
+	/**
+	 * <<socialCard "xavier">> — one Primary Relationships card (Social modal).
+	 */
+	DefineMacro("socialCard", function (args) {
+		const id = args[0] != null ? String(args[0]) : "";
+		if (!id || !LoveInterests.get(id)) return;
+		$(Social.cardMarkup(id)).appendTo(this.output);
 	});
 })();

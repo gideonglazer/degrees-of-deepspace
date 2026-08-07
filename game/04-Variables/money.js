@@ -8,6 +8,7 @@ defineGlobalNamespaces("Money");
 	"use strict";
 
 	const SYMBOLS = ["$", "£", "€", "¥", "₩", "₽", "₹", "元"];
+	const STARTING = 1000;
 
 	/**
 	 * @returns {string[]}
@@ -39,13 +40,25 @@ defineGlobalNamespaces("Money");
 	}
 
 	/**
+	 * Ensures $money exists with the starting amount when unset.
+	 *
+	 * @param {object} [variables]
+	 * @returns {number}
+	 */
+	function ensure(variables) {
+		const vars = variables || V();
+		if (vars.money === undefined) vars.money = STARTING;
+		return Math.round(Number(vars.money) || 0);
+	}
+
+	/**
 	 * @param {number} delta
 	 * @param {object} [variables]
 	 * @returns {number}
 	 */
 	function add(delta, variables) {
 		const vars = variables || V();
-		if (vars.money === undefined) vars.money = 0;
+		ensure(vars);
 		vars.money = Math.round(Number(vars.money) || 0) + Math.round(Number(delta) || 0);
 		return vars.money;
 	}
@@ -55,10 +68,8 @@ defineGlobalNamespaces("Money");
 	 * @returns {number}
 	 */
 	function get(variables) {
-		const vars = variables || V();
-		if (vars.money === undefined) vars.money = 0;
-		return Math.round(Number(vars.money) || 0);
+		return ensure(variables);
 	}
 
-	Object.assign(Money, { SYMBOLS, symbols, symbol, format, add, get });
+	Object.assign(Money, { SYMBOLS, STARTING, symbols, symbol, format, ensure, add, get });
 })();
