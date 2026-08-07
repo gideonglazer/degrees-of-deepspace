@@ -166,11 +166,12 @@ defineGlobalNamespaces("Social");
 		LoveInterests.ensure(vars);
 		const name = LoveInterests.displayName(id, vars);
 		const epithet = LoveInterests.displayEpithet(id);
-		const stats = LoveInterests.statsFor(id);
+		const stats = LoveInterests.statsFor(id)
+			.map(key => ({ key, value: LoveInterests.getStat(id, key, vars) }))
+			.filter(stat => stat.value > 0);
 
 		const statCells = stats
-			.map(key => {
-				const value = LoveInterests.getStat(id, key, vars);
+			.map(({ key, value }) => {
 				const label = LoveInterests.statLabel(key);
 				return (
 					`<div class="social-stat">` +
@@ -182,6 +183,9 @@ defineGlobalNamespaces("Social");
 			})
 			.join("");
 
+		const statsClass =
+			"social-card-stats" + (stats.length === 1 ? " social-card-stats--single" : "");
+
 		return (
 			`<div class="social-card" data-li="${id}">` +
 			`<div class="social-card-header">` +
@@ -189,7 +193,7 @@ defineGlobalNamespaces("Social");
 			(epithet ? `<span class="social-card-title">${epithet}</span>` : "") +
 			`</div>` +
 			`<div class="social-card-status">${statusMarkup(id, vars)}</div>` +
-			`<div class="social-card-stats">${statCells}</div>` +
+			(stats.length ? `<div class="${statsClass}">${statCells}</div>` : "") +
 			`</div>`
 		);
 	}

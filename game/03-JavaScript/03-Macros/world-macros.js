@@ -29,7 +29,7 @@
 	 * <<icon "bedroom">> → img/location-icons/bedroom.png
 	 * <<icon "apartment-door" "gif">> → .gif in the same folder
 	 * <<actionIcon "sleep-apt">> → img/action-icons/sleep-apt.png
-	 * <<foodIcon "breakfast-restaurant" "pancakes">> → img/food-icons/breakfast-restaurant/pancakes.png
+	 * <<foodIcon "breakfast" "pancakes">> → img/food-icons/breakfast/pancakes.png
 	 */
 	function iconImg(folder, args) {
 		const name = args[0] != null ? String(args[0]).trim() : "";

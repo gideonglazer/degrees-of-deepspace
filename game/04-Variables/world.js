@@ -107,7 +107,15 @@ defineGlobalNamespaces("World");
 			id: "bloomshore-bedroom",
 			label: "Bloomshore District — Home",
 			passage: "Bloomshore Bedroom",
-			locationIds: ["bloomshore-bedroom", "bloomshore-living-room"],
+			locationIds: [
+				"bloomshore-bedroom",
+				"bloomshore-hallway",
+				"bloomshore-caleb-bedroom",
+				"bloomshore-grandma-bedroom",
+				"bloomshore-downstairs",
+				"bloomshore-living-room",
+				"bloomshore-kitchen",
+			],
 		},
 	};
 
@@ -183,7 +191,9 @@ defineGlobalNamespaces("World");
 				if (vars.world[key] === undefined) vars.world[key] = defaults[key];
 			});
 		}
-		if (vars.money === undefined) vars.money = typeof Money !== "undefined" ? Money.STARTING : 1200;
+		if (vars.money === undefined) {
+			vars.money = typeof Money !== "undefined" ? Money.startingAmount(vars) : 1200;
+		}
 		return vars.world;
 	}
 

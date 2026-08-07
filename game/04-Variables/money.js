@@ -8,7 +8,10 @@ defineGlobalNamespaces("Money");
 	"use strict";
 
 	const SYMBOLS = ["$", "£", "€", "¥", "₩", "₽", "₹", "元"];
+	/** Default starting cash for older PCs. */
 	const STARTING = 1000;
+	/** Starting cash for younger PCs (student / allowance life). */
+	const STARTING_YOUNGER = 15;
 
 	/**
 	 * @returns {string[]}
@@ -40,6 +43,17 @@ defineGlobalNamespaces("Money");
 	}
 
 	/**
+	 * Starting cash for a new run, based on player age.
+	 *
+	 * @param {object} [variables]
+	 * @returns {number}
+	 */
+	function startingAmount(variables) {
+		if (typeof Player !== "undefined" && Player.isYounger(variables)) return STARTING_YOUNGER;
+		return STARTING;
+	}
+
+	/**
 	 * Ensures $money exists with the starting amount when unset.
 	 *
 	 * @param {object} [variables]
@@ -47,7 +61,7 @@ defineGlobalNamespaces("Money");
 	 */
 	function ensure(variables) {
 		const vars = variables || V();
-		if (vars.money === undefined) vars.money = STARTING;
+		if (vars.money === undefined) vars.money = startingAmount(vars);
 		return Math.round(Number(vars.money) || 0);
 	}
 
@@ -71,5 +85,16 @@ defineGlobalNamespaces("Money");
 		return ensure(variables);
 	}
 
-	Object.assign(Money, { SYMBOLS, STARTING, symbols, symbol, format, ensure, add, get });
+	Object.assign(Money, {
+		SYMBOLS,
+		STARTING,
+		STARTING_YOUNGER,
+		symbols,
+		symbol,
+		format,
+		startingAmount,
+		ensure,
+		add,
+		get,
+	});
 })();
