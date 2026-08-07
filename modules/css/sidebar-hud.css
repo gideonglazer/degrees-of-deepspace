@@ -487,8 +487,8 @@
 	color: var(--purple-secondary, #aa4bc8);
 }
 
-#ui-dialog-body.social-dialog .social-stat-icon-sanity {
-	color: var(--blue, #4372ff);
+#ui-dialog-body.social-dialog .social-stat-icon-jealousy {
+	color: var(--orange, #e67e22);
 }
 
 #ui-dialog-body.social-dialog .social-stat-icon-loyalty {

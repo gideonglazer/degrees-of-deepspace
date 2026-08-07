@@ -2,20 +2,20 @@
 <<initPlayState>>\
 <<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
 <<run World.setLocation("bloomshore-bedroom", "Bloomshore District — Home")>>\
-You stand in your bedroom at home in Bloomshore.
+You stand in your bedroom.
 
 <<actionIcon "sleep-apt">><<link "Sleep in what you’re currently wearing">><<goto "Bloomshore Bedroom Sleep">><</link>>
 <<gap>>
-<<icon "living-room">><<link "Go to Living Room <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Living Room">><</link>>
+<<icon "apartment-hall">><<link "Exit Bedroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Hallway">><</link>>
 <<gap>>
-<<icon "apartment-ml-door">><<link "Leave Home <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Bloomshore District">><</link>>
+<<icon "apartment-ml-door">><<link "Leave Home <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Bloomshore District">><</link>>
 
 
 :: Bloomshore Bedroom Sleep
 <<initPlayState>>\
 <<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
 <<run World.setLocation("bloomshore-bedroom", "Bloomshore District — Home")>>\
-You climb into bed.
+You climb in bed, cuddling a stuffed animal.
 
 <<for _h to 1; _h lte 10; _h++>>\
 <<capture _h>>\

@@ -82,7 +82,7 @@ defineGlobalNamespaces("LoveInterests");
 
 		/** Per-character extras beyond the universal stats. */
 		uniqueStats: {
-			caleb: ["sanity", "dominance"],
+			caleb: ["jealousy", "dominance"],
 			valko: ["loyalty", "dominance"],
 			xavier: ["dominance"],
 		},
@@ -90,7 +90,7 @@ defineGlobalNamespaces("LoveInterests");
 		statLabels: {
 			love: "Love",
 			longing: "Longing",
-			sanity: "Sanity",
+			jealousy: "Jealousy",
 			dominance: "Dominance",
 			loyalty: "Loyalty",
 		},

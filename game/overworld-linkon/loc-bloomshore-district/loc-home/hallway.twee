@@ -1,0 +1,47 @@
+:: Bloomshore Hallway
+<<initPlayState>>\
+<<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
+<<pronouns "caleb">>\
+<<run World.setLocation("bloomshore-hallway", "Bloomshore District — Home")>>\
+You are in the upstairs hallway. Four doors line the corridor; the attic hatch waits above, and the stairs lead down.
+
+<<icon "bedroom">><<link "Enter your bedroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Bedroom">><</link>>
+<<icon "bedroom">><<link `"Enter " + LoveInterests.displayName("caleb") + "'s bedroom <span class='action-time'>(0:01)</span>"`>><<run World.advance(1)>><<goto "Bloomshore Caleb Bedroom">><</link>>
+<<icon "bedroom">><<link "Enter Grandma's bedroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Grandma Bedroom">><</link>>
+<<icon "apartment-door">><<link "Try the locked room <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Locked Room">><</link>>
+<<gap>>
+<<actionIcon "stairs-up">><<link "Go up to the attic <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Attic Locked">><</link>>
+<<actionIcon "stairs-down">><<link "Go downstairs <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Downstairs">><</link>>
+
+:: Bloomshore Caleb Bedroom
+<<initPlayState>>\
+<<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
+<<pronouns "caleb">>\
+<<run World.setLocation("bloomshore-caleb-bedroom", "Bloomshore District — Home")>>\
+You stand in <<Caleb>>'s bedroom. His room is spotless, save for the cluster of paper airplanes that lay scattered across his desk.
+
+<<icon "apartment-hall">><<link "Return to the hallway <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Hallway">><</link>>
+
+:: Bloomshore Grandma Bedroom
+<<initPlayState>>\
+<<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
+<<run World.setLocation("bloomshore-grandma-bedroom", "Bloomshore District — Home")>>\
+You stand in Grandma's bedroom. Soft light filters through her lace curtains. You catch a whiff of her old perfume and hairspray; Seems she is gone for now.
+
+<<icon "apartment-hall">><<link "Return to the hallway <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Hallway">><</link>>
+
+:: Bloomshore Locked Room
+<<initPlayState>>\
+<<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
+<<run World.setLocation("bloomshore-hallway", "Bloomshore District — Home")>>\
+You try the door. It's locked.
+
+<<link "Step back">><<goto "Bloomshore Hallway">><</link>>
+
+:: Bloomshore Attic Locked
+<<initPlayState>>\
+<<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
+<<run World.setLocation("bloomshore-hallway", "Bloomshore District — Home")>>\
+You reach for the attic hatch, only to find it's locked. <<warning>>It's not like you'd want to go up there anyways, given what happened to you when you were younger.<</warning>>
+
+<<link "Step back">><<goto "Bloomshore Hallway">><</link>>

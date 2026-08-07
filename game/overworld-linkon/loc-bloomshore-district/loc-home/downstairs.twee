@@ -1,0 +1,16 @@
+:: Bloomshore Downstairs
+<<initPlayState>>\
+<<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
+<<run World.setLocation("bloomshore-downstairs", "Bloomshore District — Home")>>\
+You are downstairs near the front of the house. The living room and kitchen open off this space; the stairs lead back up, and the front door waits behind you.
+
+<<actionIcon "stairs-up">><<link "Go upstairs <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Hallway">><</link>>
+<<icon "living-room">><<link "Go to Living Room <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Living Room">><</link>>
+<<icon "kitchen">><<link "Go to Kitchen <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Kitchen">><</link>>
+<<gap>>
+<<icon "apartment-ml-door">><<link "Leave Home <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore District">><</link>>
+
+:: Bloomshore Home Entry
+<<initPlayState>>\
+<<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
+<<goto "Bloomshore Downstairs">>

@@ -15,7 +15,7 @@ Places of Interest
 <<if Player.isOlder()>>\
 <<icon "apartment">><<link "Enter the apartment complex <span class='action-time'>(0:00)</span>">><<goto "Apartment Hallway Lower">><</link>>
 <</if>>\
-<<foodIcon "breakfast-restaurant" "omelette-dish">><<link "Enter the breakfast restaurant <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Breakfast Restaurant">><</link>>
+<<foodIcon "breakfast" "omelette-dish">><<link "Enter the breakfast restaurant <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Breakfast Restaurant">><</link>>
 <<icon "pet-store">><<link "Visit the pet store <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Pet Store">><</link>>
 <<icon "pet-care-center">><<link "Visit the pet care center <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Pet Care Center">><</link>>
 

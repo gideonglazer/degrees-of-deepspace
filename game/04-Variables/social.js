@@ -44,13 +44,13 @@ defineGlobalNamespaces("Social");
 					`<circle cx="8" cy="8" r="2.1" fill="currentColor"/>` +
 					`</svg></span>`
 				);
-			case "sanity":
+			case "jealousy":
 				return (
 					`<span class="${cls}" aria-hidden="true">` +
 					`<svg viewBox="0 0 16 16" width="14" height="14" focusable="false">` +
-					`<path d="M8 13.2S3.2 9.8 3.2 6.2A2.9 2.9 0 0 1 8 4.6a2.9 2.9 0 0 1 4.8 1.6C12.8 9.8 8 13.2 8 13.2z" ` +
+					`<path d="M1.8 8s2.4-4.2 6.2-4.2S14.2 8 14.2 8s-2.4 4.2-6.2 4.2S1.8 8 1.8 8z" ` +
 					`fill="none" stroke="currentColor" stroke-width="1.2"/>` +
-					`<path d="M6.2 7.2l1.6 1.5 2.4-3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>` +
+					`<circle cx="8" cy="8" r="2" fill="${filled ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.2"/>` +
 					`</svg></span>`
 				);
 			case "loyalty":
@@ -122,15 +122,14 @@ defineGlobalNamespaces("Social");
 		const loyalty = LoveInterests.statsFor(id).includes("loyalty")
 			? LoveInterests.getStat(id, "loyalty", vars)
 			: 0;
-		const sanity = LoveInterests.statsFor(id).includes("sanity")
-			? LoveInterests.getStat(id, "sanity", vars)
-			: null;
-		const they = subjectPronoun(id, vars);
+		const jealousy = LoveInterests.statsFor(id).includes("jealousy")
+			? LoveInterests.getStat(id, "jealousy", vars)
+			: 0;
 		const their = possessivePronoun(id, vars);
 
 		/* Unique-stat flavours take priority when elevated. */
-		if (sanity !== null && sanity <= 25 && love >= 40) {
-			return `${name}'s ${tint("purple", "sanity is fraying")}, but ${they} still cling to you.`;
+		if (jealousy >= 70 && love >= 40) {
+			return `${name}'s ${tint("orange", "jealousy")} flares whenever others get close to you.`;
 		}
 		if (dominance >= 70) {
 			return `${name} keeps you on a ${tint("red", "tighter leash")}.`;
