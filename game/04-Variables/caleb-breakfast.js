@@ -14,56 +14,56 @@ defineGlobalNamespaces("CalebBreakfast");
 			minutes: 15,
 			hunger: "+++",
 			stress: "--",
-			text: "You sit down and dig into the hearty bacon dish Caleb left for you.",
+			text: "You sit down and dig into the hearty bacon dish <<Caleb>> left for you.",
 		},
 		"bao-bun": {
 			name: "bao bun",
 			minutes: 10,
 			hunger: "++",
 			stress: "-",
-			text: "You eat the soft bao bun Caleb steamed this morning.",
+			text: "You eat the soft bao bun <<Caleb>> steamed this morning.",
 		},
 		"fried-egg": {
 			name: "fried egg",
 			minutes: 8,
 			hunger: "+",
 			stress: "-",
-			text: "You eat the fried egg Caleb cooked for you.",
+			text: "You eat the fried egg <<Caleb>> cooked for you.",
 		},
 		"eggs-with-toast": {
 			name: "eggs with toast",
 			minutes: 12,
 			hunger: "++",
 			stress: "-",
-			text: "You eat the plate of eggs with toast Caleb made.",
+			text: "You eat the plate of eggs with toast <<Caleb>> made.",
 		},
 		"omelette-dish": {
 			name: "omelette",
 			minutes: 15,
 			hunger: "+++",
 			stress: "--",
-			text: "You eat the fluffy omelette cooked by Caleb that he left for you on the counter.",
+			text: "You eat the fluffy omelette <<Caleb>> left for you.",
 		},
 		pancakes: {
 			name: "pancakes",
 			minutes: 15,
 			hunger: "+++",
 			stress: "--",
-			text: "You eat the warm stack of pancakes Caleb left for you.",
+			text: "You eat the warm stack of pancakes <<Caleb>> left for you.",
 		},
 		waffles: {
 			name: "waffles",
 			minutes: 15,
 			hunger: "+++",
 			stress: "--",
-			text: "You finish the crisp waffles Caleb cooked this morning.",
+			text: "You finish the crisp waffles <<Caleb>> cooked for you.",
 		},
 		"toast-with-jam": {
 			name: "toast with jam",
 			minutes: 8,
 			hunger: "+",
 			stress: "-",
-			text: "You eat the toast with jam Caleb set out for you.",
+			text: "You eat the toast with jam <<Caleb>> set out for you.",
 		},
 	};
 
@@ -151,14 +151,31 @@ defineGlobalNamespaces("CalebBreakfast");
 		return fx;
 	}
 
+	/**
+	 * Wiki markup for today's dish prose (supports <<Caleb>>, <<he>>, etc.).
+	 *
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function textMarkup(variables) {
+		const state = ensure(variables);
+		const item = meal(state.id);
+		return item ? item.text : "";
+	}
+
 	Object.assign(CalebBreakfast, {
 		ensure,
 		meal,
 		isWindowOpen,
 		available,
 		eat,
+		textMarkup,
 		menuIds() {
 			return IDS.slice();
 		},
+	});
+
+	DefineMacroS("calebBreakfastText", function () {
+		return textMarkup();
 	});
 })();

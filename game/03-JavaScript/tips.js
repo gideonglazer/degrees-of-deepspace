@@ -14,7 +14,7 @@ defineGlobalNamespaces("Tips");
 		"Energy drains while you are awake. Sleep to restore it.",
 		"Stress usually decreases over time. Fun or relaxing activities also reduce it.",
 		"You can change the date, time, temperature, currency symbol, and starting season in General settings.",
-		"Pain, stress, and trauma fade slowly if you give yourself time to recover.",
+		"Pain, stress, and control ease slowly if you give yourself time to recover.",
 		"Hunger and hygiene drift over time — eat and wash up regularly when you can.",
 	];
 

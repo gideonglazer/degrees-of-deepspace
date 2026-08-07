@@ -34,7 +34,11 @@ Engrossed in your discussion over which weapons are best against which wanderers
 
 <<He>> walks into the building.
 
-<<link "Enter the Hunter's Association">><<goto "Hunters Association">><</link>>
+<<link "Continue">><<goto "Older Route In Development">><</link>>
+
+:: Older Route In Development
+<<initPlayState>>\
+<span class="gold">The Older PCs route is currently in development. This is the end of the route, for now. Please restart and start as a Younger PC and look out for updates!</span>
 
 :: Xavier First Morning Walk Decline
 <<initPlayState>>\
@@ -46,4 +50,5 @@ Despite the soft smile on <<his>> face, <<his>> twinge of disappointment was har
 
 "No problem, I'll see you there." <<he>> says, walking the opposite way from the Hunter's Association. However, after noticing <<his>> sudden sense of misdirection, <<he>> turned the other way, <<his>> cheeks pink with embarrassment.
 
-<<link "Continue">><<goto "Garden South Street">><</link>>
+/% <<link "Continue">><<goto "Garden South Street">><</link>> %/
+<<link "Continue">><<goto "Older Route In Development">><</link>>

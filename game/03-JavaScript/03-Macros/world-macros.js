@@ -5,7 +5,7 @@
 (function () {
 	"use strict";
 
-	const EFFECT_STATS = ["stress", "arousal", "pain", "trauma", "energy", "hygiene", "hunger"];
+	const EFFECT_STATS = ["stress", "arousal", "pain", "control", "energy", "hygiene", "hunger"];
 
 	EFFECT_STATS.forEach(stat => {
 		DefineMacroS(stat, function (args) {

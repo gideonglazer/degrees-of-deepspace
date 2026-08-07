@@ -82,17 +82,25 @@ defineGlobalNamespaces("LoveInterests");
 
 		/** Per-character extras beyond the universal stats. */
 		uniqueStats: {
+			sylus: ["vulnerability", "dominance"],
+			gideon: ["confidence"],
 			caleb: ["jealousy", "dominance"],
-			valko: ["loyalty", "dominance"],
-			xavier: ["dominance"],
+			valko: ["loyalty"],
+			xavier: ["devotion"],
+			rafayel: ["trust"],
+			zayne: ["dominance"],
 		},
 
 		statLabels: {
 			love: "Love",
 			longing: "Longing",
-			jealousy: "Jealousy",
+			vulnerability: "Vulnerability",
 			dominance: "Dominance",
+			confidence: "Confidence",
+			jealousy: "Jealousy",
 			loyalty: "Loyalty",
+			devotion: "Devotion",
+			trust: "Trust",
 		},
 
 		/** Cosmetics defaults applied to every love interest until the player customises them. */
@@ -424,7 +432,7 @@ defineGlobalNamespaces("LoveInterests");
 		const cssKey = key === "love" ? "love" : `li-${key}`;
 		return (
 			`<span class="stat-effect-wrap">` +
-			`<span class="stat-effect-pipe">|</span> ` +
+			` <span class="stat-effect-pipe">|</span> ` +
 			`<span class="stat-effect stat-${cssKey} stat-effect-${tone}">` +
 			`<span class="stat-delta">${mark}</span>` +
 			`<span class="stat-name">${label}</span>` +

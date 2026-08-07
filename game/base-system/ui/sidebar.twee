@@ -45,7 +45,7 @@
 <<hudStat "arousal">>\
 <<hudStat "energy">>\
 <<hudStat "stress">>\
-<<hudStat "trauma">>\
+<<hudStat "control">>\
 <<hudStat "hygiene">>\
 <<hudStat "hunger">>\
 </div>\

@@ -1,7 +1,7 @@
 :: Garden South Street
 <<initPlayState>>\
 <<pronouns "xavier">>\
-<<if Player.isOlder() && !Flags.get("xavierFirstWorkWalk") && World.isWeekday() && World.isBefore(8, 30)>>\
+<<if Player.isOlder() && !Flags.get("xavierFirstWorkWalk")>>\
 <<goto "Xavier First Morning Walk">>\
 <</if>>\
 <<run World.setLocation("garden-south-street", "Garden South Street")>>\
