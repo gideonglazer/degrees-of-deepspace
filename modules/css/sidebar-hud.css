@@ -363,11 +363,11 @@
 	padding: 0.25em 0;
 }
 
-/* Social modal — Primary Relationships */
+/* Social modal — Primary Relationships (fixed width, 3 cards per row) */
 #ui-dialog:has(#ui-dialog-body.social-dialog) {
 	width: min(56rem, 94vw) !important;
 	max-width: min(56rem, 94vw) !important;
-	min-width: min(28rem, 94vw) !important;
+	min-width: min(56rem, 94vw) !important;
 }
 
 #ui-dialog-body.social-dialog {
@@ -397,28 +397,42 @@
 
 #ui-dialog-body.social-dialog .social-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
-	gap: 0.75rem;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.65rem;
 }
 
 #ui-dialog-body.social-dialog .social-card {
 	display: flex;
 	flex-direction: column;
-	gap: 0.55rem;
-	padding: 0.7rem 0.8rem 0.75rem;
+	align-items: center;
+	min-width: 0;
+	min-height: 12rem;
+	padding: 0;
 	border: 1px solid var(--border-strong, #666);
 	border-radius: var(--radius, 3px);
 	background: transparent;
 	box-sizing: border-box;
-	min-height: 9.5rem;
+	text-align: center;
+	overflow: hidden;
+}
+
+@media (max-width: 40rem) {
+	#ui-dialog-body.social-dialog .social-grid {
+		grid-template-columns: 1fr;
+	}
 }
 
 #ui-dialog-body.social-dialog .social-card-header {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
+	justify-content: center;
 	gap: 0.35rem 0.55rem;
+	align-self: stretch;
+	padding: 0.55rem 0.85rem;
 	line-height: 1.25;
+	border-bottom: 1px solid var(--border-subtle, #444);
+	font-size: 1.08em;
 }
 
 #ui-dialog-body.social-dialog .social-card-name {
@@ -427,33 +441,67 @@
 }
 
 #ui-dialog-body.social-dialog .social-card-title {
-	font-size: 0.92em;
+	font-size: 0.9em;
 	font-style: italic;
 	color: var(--text-muted, #aaa);
 }
 
 #ui-dialog-body.social-dialog .social-card-status {
 	flex: 1 1 auto;
-	font-size: 0.95em;
+	align-self: stretch;
+	font-size: 0.92em;
 	line-height: 1.45;
 	color: var(--text-primary, #eee);
 	text-align: center;
-	padding: 0.15rem 0.1rem;
+	padding: 0.65rem 0.9rem;
+	border-bottom: 1px solid var(--border-subtle, #444);
+}
+
+#ui-dialog-body.social-dialog .social-card-status:last-child {
+	border-bottom: none;
 }
 
 #ui-dialog-body.social-dialog .social-card-stats {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: 0.45rem 0.65rem;
-	padding-top: 0.55rem;
-	border-top: 1px solid var(--border-subtle, #444);
+	width: 100%;
+	align-self: stretch;
 	text-align: center;
+}
+
+#ui-dialog-body.social-dialog .social-card-stats--single {
+	grid-template-columns: 1fr;
+}
+
+#ui-dialog-body.social-dialog .social-stat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.2rem;
+	min-height: 4.25rem;
+	padding: 0.55rem 0.45rem;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+#ui-dialog-body.social-dialog .social-card-stats:not(.social-card-stats--single) > .social-stat:nth-child(odd) {
+	border-right: 1px solid var(--border-subtle, #444);
+}
+
+#ui-dialog-body.social-dialog .social-card-stats:not(.social-card-stats--single) > .social-stat:nth-child(-n + 2) {
+	border-bottom: 1px solid var(--border-subtle, #444);
+}
+
+#ui-dialog-body.social-dialog .social-card-stats:not(.social-card-stats--single) > .social-stat:nth-last-child(-n + 2):nth-child(odd):last-child {
+	border-bottom: none;
+	grid-column: 1 / -1;
+	border-right: none;
 }
 
 #ui-dialog-body.social-dialog .social-stat-label {
 	font-size: 0.82em;
 	color: var(--text-muted, #aaa);
-	margin-bottom: 0.15rem;
 }
 
 #ui-dialog-body.social-dialog .social-stat-value {
