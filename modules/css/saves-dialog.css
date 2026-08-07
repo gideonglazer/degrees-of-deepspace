@@ -1,5 +1,3 @@
-/* DoL-style Saves dialog — compact width, short rows */
-
 #ui-dialog:has(#ui-dialog-body.dod-saves) {
 	width: min(58rem, 94vw) !important;
 	max-width: min(58rem, 94vw) !important;
@@ -46,7 +44,6 @@
 	padding-bottom: 0.3rem;
 }
 
-/* Fixed layout uses the first row for widths — pin columns on th + td. */
 #ui-dialog-body.dod-saves .dod-saves-table th:nth-child(1),
 #ui-dialog-body.dod-saves .dod-saves-table td:nth-child(1) {
 	width: 2.25rem;

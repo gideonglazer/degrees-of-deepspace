@@ -6,13 +6,6 @@
 (function () {
 	"use strict";
 
-	/**
-	 * @param {string} value
-	 * @param {string} label
-	 * @param {string} [tone] Visual tone class key: masc | femme | neutral | default
-	 * @param {string} [color] Optional hex/css colour for the label text
-	 * @returns {{value: string, label: string, tone?: string, color?: string}}
-	 */
 	function opt(value, label, tone, color) {
 		const entry = { value, label };
 		if (tone) entry.tone = tone;

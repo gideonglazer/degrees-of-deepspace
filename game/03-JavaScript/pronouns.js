@@ -106,10 +106,6 @@ defineGlobalNamespaces("Pronouns");
 		].map(w => w.toLowerCase())
 	);
 
-	/**
-	 * @param {string} gender
-	 * @returns {"masc"|"femme"|"neutral"}
-	 */
 	function bucket(gender) {
 		const g = String(gender || "");
 		if (g === "male" || g === "transMasc") return "masc";
@@ -117,28 +113,15 @@ defineGlobalNamespaces("Pronouns");
 		return "neutral";
 	}
 
-	/**
-	 * @param {string} gender
-	 * @returns {object}
-	 */
 	function tableFor(gender) {
 		return TABLES[bucket(gender)];
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function playerGender(variables) {
 		const vars = variables || V();
 		return (vars.player && vars.player.gender) || "female";
 	}
 
-	/**
-	 * @param {string} liId
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function liGender(liId, variables) {
 		const vars = variables || V();
 		if (vars.loveInterests && vars.loveInterests[liId] && vars.loveInterests[liId].gender) {
@@ -149,20 +132,12 @@ defineGlobalNamespaces("Pronouns");
 
 	/**
 	 * Who <<he>> / <<him>> / <<his>> currently refer to: "player" or an LI id.
-	 *
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function focus(variables) {
 		const vars = variables || V();
 		return vars.pronounFocus || "player";
 	}
 
-	/**
-	 * @param {string} who "player" or love-interest id
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function setFocus(who, variables) {
 		const vars = variables || V();
 		const id = String(who || "player").trim() || "player";
@@ -170,19 +145,12 @@ defineGlobalNamespaces("Pronouns");
 		return id;
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function usePlayer(variables) {
 		return setFocus("player", variables);
 	}
 
 	/**
 	 * Gender string for the active pronoun subject.
-	 *
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function activeGender(variables) {
 		const who = focus(variables);
@@ -190,12 +158,6 @@ defineGlobalNamespaces("Pronouns");
 		return liGender(who, variables);
 	}
 
-	/**
-	 * @param {string} formName subject|object|possessive|possessiveNoun|reflexive|honorific
-	 * @param {string} gender
-	 * @param {boolean} [capitalise]
-	 * @returns {string}
-	 */
 	function form(formName, gender, capitalise) {
 		const table = tableFor(gender);
 		let value = table[formName] || "";
@@ -207,11 +169,6 @@ defineGlobalNamespaces("Pronouns");
 
 	/**
 	 * Pronoun for the active focus (after <<pronouns …>>).
-	 *
-	 * @param {string} formName
-	 * @param {boolean} [capitalise]
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function activeForm(formName, capitalise, variables) {
 		return form(formName, activeGender(variables), capitalise);
@@ -219,9 +176,6 @@ defineGlobalNamespaces("Pronouns");
 
 	/**
 	 * Player honorific only (Mr./Ms./Mx. Hunter), ignores NPC focus.
-	 *
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function honorific(variables) {
 		return form("honorific", playerGender(variables), false);
@@ -229,12 +183,6 @@ defineGlobalNamespaces("Pronouns");
 
 	/**
 	 * Picks masc / femme / neutral wording for a gender.
-	 *
-	 * @param {string} gender
-	 * @param {string} masc
-	 * @param {string} femme
-	 * @param {string} neutral
-	 * @returns {string}
 	 */
 	function gendered(gender, masc, femme, neutral) {
 		const b = bucket(gender);
@@ -245,12 +193,6 @@ defineGlobalNamespaces("Pronouns");
 
 	/**
 	 * Gendered wording for the active pronoun focus.
-	 *
-	 * @param {string} masc
-	 * @param {string} femme
-	 * @param {string} neutral
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function activeGendered(masc, femme, neutral, variables) {
 		return gendered(activeGender(variables), masc, femme, neutral);
@@ -258,62 +200,32 @@ defineGlobalNamespaces("Pronouns");
 
 	/**
 	 * Singular they (and any future plural-pronoun buckets) take plural verbs.
-	 *
-	 * @param {string} gender
-	 * @returns {boolean}
 	 */
 	function usesPluralVerb(gender) {
 		return bucket(gender) === "neutral";
 	}
 
-	/**
-	 * @param {string} singular e.g. "is", "isn't", "walks"
-	 * @param {string} plural e.g. "are", "aren't", "walk"
-	 * @param {string} gender
-	 * @returns {string}
-	 */
 	function verb(singular, plural, gender) {
 		return usesPluralVerb(gender) ? plural : singular;
 	}
 
-	/**
-	 * @param {string} singular
-	 * @param {string} plural
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function activeVerb(singular, plural, variables) {
 		return verb(singular, plural, activeGender(variables));
 	}
 
 	/**
 	 * Verb ending helper: walk<<s>> → "s" / "" ; go<<es>> → "es" / "".
-	 *
-	 * @param {string} singularEnding
-	 * @param {string} [pluralEnding]
-	 * @param {string} gender
-	 * @returns {string}
 	 */
 	function ending(singularEnding, pluralEnding, gender) {
 		return usesPluralVerb(gender) ? pluralEnding || "" : singularEnding;
 	}
 
-	/**
-	 * @param {string} singularEnding
-	 * @param {string} [pluralEnding]
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function activeEnding(singularEnding, pluralEnding, variables) {
 		return ending(singularEnding, pluralEnding, activeGender(variables));
 	}
 
 	/**
 	 * Subject + be contraction: he's / she's / they're.
-	 *
-	 * @param {string} gender
-	 * @param {boolean} [capitalise]
-	 * @returns {string}
 	 */
 	function subjectBeContraction(gender, capitalise) {
 		const b = bucket(gender);
@@ -324,20 +236,10 @@ defineGlobalNamespaces("Pronouns");
 		return value;
 	}
 
-	/**
-	 * @param {boolean} [capitalise]
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function activeSubjectBeContraction(capitalise, variables) {
 		return subjectBeContraction(activeGender(variables), capitalise);
 	}
 
-	/**
-	 * @param {string} word
-	 * @param {string} replacement
-	 * @returns {string}
-	 */
 	function matchCase(word, replacement) {
 		if (!word) return replacement;
 		if (word === word.toUpperCase()) return replacement.toUpperCase();
@@ -349,9 +251,6 @@ defineGlobalNamespaces("Pronouns");
 
 	/**
 	 * Best-effort 3sg → base present: asks→ask, goes→go, tries→try, watches→watch.
-	 *
-	 * @param {string} word
-	 * @returns {string|null} null if unchanged / not treated as a verb
 	 */
 	function pluralizePresentVerb(word) {
 		const lower = word.toLowerCase();
@@ -378,9 +277,6 @@ defineGlobalNamespaces("Pronouns");
 	/**
 	 * Correct ungrammatical "they" + singular-verb sequences in plain text.
 	 * Safe regardless of pronoun focus ("they isn't" is always wrong here).
-	 *
-	 * @param {string} text
-	 * @returns {string}
 	 */
 	function fixTheyVerbs(text) {
 		return String(text || "").replace(/\b([Tt]hey)\s+([A-Za-z][A-Za-z’']*)/g, (full, they, word) => {
@@ -392,10 +288,6 @@ defineGlobalNamespaces("Pronouns");
 	/**
 	 * When the active focus uses singular they, rewrite narrative he's/she's → they're.
 	 * Skips text inside double quotes so dialogue about someone else is preserved.
-	 *
-	 * @param {string} text
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function fixSubjectBeContractions(text, variables) {
 		if (!usesPluralVerb(activeGender(variables))) return String(text || "");
@@ -418,20 +310,12 @@ defineGlobalNamespaces("Pronouns");
 			.join("");
 	}
 
-	/**
-	 * @param {string} text
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function fixAgreement(text, variables) {
 		return fixSubjectBeContractions(fixTheyVerbs(text), variables);
 	}
 
 	/**
 	 * Walk text nodes under a rendered passage root and apply agreement fixes.
-	 *
-	 * @param {Element|DocumentFragment|null|undefined} root
-	 * @param {object} [variables]
 	 */
 	function fixAgreementIn(root, variables) {
 		if (!root) return;

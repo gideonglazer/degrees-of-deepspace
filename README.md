@@ -149,7 +149,7 @@ Build switches (debug mode, text-only builds, version) live in
 
 ## Code style
 
-Tabs, 160-column lines, double quotes, semicolons — enforced by Prettier via ESLint, matching DoL.
+Tabs, 160-column lines, double quotes, semicolons — enforced by Prettier via ESLint.
 
 JavaScript targets **ES2019** (`eslint-plugin-es`), and CSS targets browsers from 2015 onward
 (`.browserslistrc`), both to support the old mobile WebViews that a browser game inevitably meets.

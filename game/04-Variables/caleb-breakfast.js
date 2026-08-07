@@ -69,10 +69,6 @@ defineGlobalNamespaces("CalebBreakfast");
 
 	const IDS = Object.keys(MENU);
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function dayKey(variables) {
 		const world = World.ensure(variables);
 		return world.year + "-" + world.month + "-" + world.day;
@@ -80,9 +76,6 @@ defineGlobalNamespaces("CalebBreakfast");
 
 	/**
 	 * Ensures today's dish is rolled. Safe to call from kitchen passages.
-	 *
-	 * @param {object} [variables]
-	 * @returns {{ day: string, id: string, eaten: boolean }}
 	 */
 	function ensure(variables) {
 		const vars = variables || V();
@@ -101,19 +94,12 @@ defineGlobalNamespaces("CalebBreakfast");
 		return vars.calebBreakfast;
 	}
 
-	/**
-	 * @param {string} id
-	 * @returns {{ name: string, minutes: number, hunger: string, stress: string, text: string }|null}
-	 */
 	function meal(id) {
 		return MENU[id] || null;
 	}
 
 	/**
 	 * True during the 6:00–9:00 eat window (inclusive of 6:00, exclusive of 9:00).
-	 *
-	 * @param {object} [variables]
-	 * @returns {boolean}
 	 */
 	function isWindowOpen(variables) {
 		return !World.isBefore(6, 0, variables) && World.isBefore(9, 0, variables);
@@ -121,9 +107,6 @@ defineGlobalNamespaces("CalebBreakfast");
 
 	/**
 	 * Dish is on the counter and the player can still eat it.
-	 *
-	 * @param {object} [variables]
-	 * @returns {boolean}
 	 */
 	function available(variables) {
 		const state = ensure(variables);
@@ -132,9 +115,6 @@ defineGlobalNamespaces("CalebBreakfast");
 
 	/**
 	 * Applies hunger/stress/dominance and marks the meal eaten.
-	 *
-	 * @param {object} [variables]
-	 * @returns {string} Combined effect markup (may be empty if unavailable)
 	 */
 	function eat(variables) {
 		const vars = variables || V();
@@ -153,9 +133,6 @@ defineGlobalNamespaces("CalebBreakfast");
 
 	/**
 	 * Wiki markup for today's dish prose (supports <<Caleb>>, <<he>>, etc.).
-	 *
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function textMarkup(variables) {
 		const state = ensure(variables);

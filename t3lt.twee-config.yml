@@ -134,7 +134,7 @@ sugarcube-2:
                 - text
         hudStat:
             name: hudStat
-            description: Prints a DoL-style coloured Current Condition line for a stat.
+            description: Prints a coloured Current Condition line for a stat.
             parameters:
                 - text
         gap:
@@ -145,7 +145,7 @@ sugarcube-2:
                 - "|+ number"
         hudTip:
             name: hudTip
-            description: Prints a DoL-style Tip block when sidebar hints are enabled.
+            description: Prints a tip block when sidebar hints are enabled.
             parameters: []
         he:
             name: he

@@ -10,9 +10,6 @@ defineGlobalNamespaces("GameSettings");
 
 	/**
 	 * Escapes text for safe use inside HTML attribute values.
-	 *
-	 * @param {*} value
-	 * @returns {string}
 	 */
 	function escapeAttr(value) {
 		return String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
@@ -20,9 +17,6 @@ defineGlobalNamespaces("GameSettings");
 
 	/**
 	 * Escapes text for use as HTML body content.
-	 *
-	 * @param {*} value
-	 * @returns {string}
 	 */
 	function escapeHtml(value) {
 		return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -30,10 +24,6 @@ defineGlobalNamespaces("GameSettings");
 
 	/**
 	 * Builds a labelled radiobutton row from a Constants.character option list.
-	 *
-	 * @param {string} varPath Story variable path, e.g. "$player.gender"
-	 * @param {Array<{value: string, label: string, tone?: string, color?: string}>} options
-	 * @returns {string} Wikified markup
 	 */
 	function radiosMarkup(varPath, options) {
 		return options
@@ -54,9 +44,6 @@ defineGlobalNamespaces("GameSettings");
 
 	/**
 	 * Reads a `$`-prefixed story variable path like `$player.freckles`.
-	 *
-	 * @param {string} varPath
-	 * @returns {*}
 	 */
 	function readVar(varPath) {
 		const path = String(varPath || "").replace(/^\$/, "");
@@ -65,9 +52,6 @@ defineGlobalNamespaces("GameSettings");
 
 	/**
 	 * Writes a boolean (or any value) to a `$`-prefixed story variable path.
-	 *
-	 * @param {string} varPath
-	 * @param {*} value
 	 */
 	function writeVar(varPath, value) {
 		const keys = String(varPath || "")
@@ -81,8 +65,6 @@ defineGlobalNamespaces("GameSettings");
 	/**
 	 * Seeds left/right eye colours from the shared colour when heterochromia turns on, and copies
 	 * left back to the shared colour when it turns off.
-	 *
-	 * @param {boolean} enabled
 	 */
 	function syncHeterochromia(enabled) {
 		const player = V().player;

@@ -13,17 +13,10 @@ defineGlobalNamespaces("Money");
 	/** Starting cash for younger PCs (student / allowance life). */
 	const STARTING_YOUNGER = 15;
 
-	/**
-	 * @returns {string[]}
-	 */
 	function symbols() {
 		return SYMBOLS.slice();
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function symbol(variables) {
 		const vars = variables || V();
 		const options = typeof Options !== "undefined" ? Options.ensure(vars) : null;
@@ -31,11 +24,6 @@ defineGlobalNamespaces("Money");
 		return SYMBOLS.includes(sym) ? sym : "$";
 	}
 
-	/**
-	 * @param {number|string} amount
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function format(amount, variables) {
 		const n = Number(amount);
 		const value = Number.isFinite(n) ? Math.round(n) : 0;
@@ -44,9 +32,6 @@ defineGlobalNamespaces("Money");
 
 	/**
 	 * Starting cash for a new run, based on player age.
-	 *
-	 * @param {object} [variables]
-	 * @returns {number}
 	 */
 	function startingAmount(variables) {
 		if (typeof Player !== "undefined" && Player.isYounger(variables)) return STARTING_YOUNGER;
@@ -55,9 +40,6 @@ defineGlobalNamespaces("Money");
 
 	/**
 	 * Ensures $money exists with the starting amount when unset.
-	 *
-	 * @param {object} [variables]
-	 * @returns {number}
 	 */
 	function ensure(variables) {
 		const vars = variables || V();
@@ -65,11 +47,6 @@ defineGlobalNamespaces("Money");
 		return Math.round(Number(vars.money) || 0);
 	}
 
-	/**
-	 * @param {number} delta
-	 * @param {object} [variables]
-	 * @returns {number}
-	 */
 	function add(delta, variables) {
 		const vars = variables || V();
 		ensure(vars);
@@ -77,10 +54,6 @@ defineGlobalNamespaces("Money");
 		return vars.money;
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {number}
-	 */
 	function get(variables) {
 		return ensure(variables);
 	}

@@ -18,9 +18,6 @@ defineGlobalNamespaces("Perflog");
 
 	/**
 	 * Adds a duration to the running totals for `label`.
-	 *
-	 * @param {string} label
-	 * @param {number} duration Milliseconds.
 	 */
 	function record(label, duration) {
 		const entry = samples[label] || (samples[label] = { calls: 0, total: 0, max: 0 });
@@ -32,10 +29,6 @@ defineGlobalNamespaces("Perflog");
 	/**
 	 * Times `fn` under `label` and returns its result. A no-op wrapper when logging is off, so it is
 	 * safe to leave in hot paths.
-	 *
-	 * @param {string} label
-	 * @param {Function} fn
-	 * @returns {*}
 	 */
 	function mark(label, fn) {
 		if (!enabled) return fn();
@@ -60,8 +53,6 @@ defineGlobalNamespaces("Perflog");
 
 	/**
 	 * Logs a table of collected samples, slowest total first.
-	 *
-	 * @returns {Array<object>} The same rows, for further inspection.
 	 */
 	function report() {
 		const rows = Object.keys(samples)

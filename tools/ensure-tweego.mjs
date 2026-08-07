@@ -14,9 +14,6 @@ const RELEASE_BASE = `https://github.com/tmedwards/tweego/releases/download/v${T
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const vendorDir = path.join(root, "devTools", "tweego");
 
-/**
- * @returns {{ archive: string, binaryName: string, vendorName: string } | null}
- */
 function platformSpec() {
 	const platform = process.platform;
 	const arch = process.arch;
@@ -50,24 +47,16 @@ function tweegoOnPath() {
 	return result.status === 0;
 }
 
-/**
- * @param {string} vendorName
- */
 function vendoredPath(vendorName) {
 	return path.join(vendorDir, vendorName);
 }
 
-/**
- * @param {string} message
- */
 function log(message) {
 	process.stdout.write(`[tweego] ${message}\n`);
 }
 
 /**
  * Downloads the platform binary into devTools/tweego/ if neither PATH nor a vendored copy exists.
- *
- * @returns {Promise<void>}
  */
 export async function ensureTweego() {
 	if (tweegoOnPath()) return;

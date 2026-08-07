@@ -6,27 +6,18 @@ defineGlobalNamespaces("LinkNumberify");
 	/** Ten plain slots followed by ten shifted ones. */
 	const MAX_LINKS = 20;
 
-	/**
-	 * @returns {boolean}
-	 */
 	function enabled() {
 		if (window.StartConfig && StartConfig.enableLinkNumberify === false) return false;
 		if (tags().includes("nokeys")) return false;
 		return true;
 	}
 
-	/**
-	 * @returns {JQuery}
-	 */
 	function passageLinks() {
 		return jQuery("#passages").find("a.link-internal").not(".link-numberify-skip");
 	}
 
 	/**
 	 * Digit shown for a slot: slots 0–8 are 1–9, slot 9 is 0, then the shifted run repeats.
-	 *
-	 * @param {number} slot
-	 * @returns {number}
 	 */
 	function digitForSlot(slot) {
 		const position = slot % 10;
@@ -53,9 +44,6 @@ defineGlobalNamespaces("LinkNumberify");
 
 	/**
 	 * Digit pressed, or null for any other key. Uses `code` so Shift+1 still reads as 1.
-	 *
-	 * @param {KeyboardEvent} event
-	 * @returns {number|null}
 	 */
 	function digitFromEvent(event) {
 		const code = String(event.code || "");
@@ -66,9 +54,6 @@ defineGlobalNamespaces("LinkNumberify");
 		return null;
 	}
 
-	/**
-	 * @param {KeyboardEvent} event
-	 */
 	function onKeyUp(event) {
 		if (!enabled() || event.ctrlKey || event.altKey || event.metaKey) return;
 

@@ -1,9 +1,5 @@
 /**
  * Creates the DOD global namespace and the helper used to hang sub-namespaces off it.
- *
- * Every `.js` file under game/ is concatenated into one script block by tweego and shares a single
- * scope, so "namespace" here means one frozen container on `window` rather than a module system.
- * This file sorts first under 00-framework-tools, so it runs before anything that needs it.
  */
 
 (function () {
@@ -13,10 +9,6 @@
 	 * Defines a namespace at the given dotted path, creating intermediate objects as needed.
 	 * Re-defining an existing path merges into it instead of replacing, so a namespace can be
 	 * extended from several files.
-	 *
-	 * @param {string} path Dotted path relative to window.
-	 * @param {object} [members] Properties to merge into the namespace.
-	 * @returns {object} The namespace object.
 	 */
 	function defineGlobalNamespaces(path, members) {
 		const parts = String(path).split(".");

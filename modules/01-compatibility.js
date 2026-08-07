@@ -6,11 +6,6 @@
 (function () {
 	"use strict";
 
-	/*
-	 * Older Android WebViews ship a partial ES2020. We target ES2019 to avoid needing polyfills at
-	 * all, but these three are cheap to backfill and easy to reach for by accident.
-	 */
-
 	if (!Object.fromEntries) {
 		Object.fromEntries = function (entries) {
 			const result = {};
@@ -22,7 +17,6 @@
 	}
 
 	if (!String.prototype.replaceAll) {
-		// eslint-disable-next-line no-extend-native
 		String.prototype.replaceAll = function (search, replacement) {
 			if (search instanceof RegExp) {
 				if (!search.global) throw new TypeError("replaceAll must be called with a global RegExp");
@@ -33,7 +27,6 @@
 	}
 
 	if (!Array.prototype.flat) {
-		// eslint-disable-next-line no-extend-native
 		Array.prototype.flat = function (depth) {
 			const levels = depth === undefined ? 1 : Number(depth);
 			return this.reduce(function (acc, item) {
@@ -42,10 +35,6 @@
 		};
 	}
 
-	/*
-	 * Features we rely on but will not polyfill. Warn loudly rather than failing somewhere
-	 * inscrutable later on.
-	 */
 	const required = {
 		"CSS custom properties": window.CSS && CSS.supports && CSS.supports("--a", "0"),
 		"Local storage": (function () {

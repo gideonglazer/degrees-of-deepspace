@@ -6,9 +6,6 @@
 Object.defineProperties(Array.prototype, {
 	/**
 	 * Sum of the array, optionally mapped first.
-	 *
-	 * @param {Function} [mapper] Receives (value, index) and returns a number.
-	 * @returns {number}
 	 */
 	sum: {
 		configurable: true,
@@ -20,9 +17,6 @@ Object.defineProperties(Array.prototype, {
 
 	/**
 	 * Groups entries into an object keyed by the result of `keyOf`.
-	 *
-	 * @param {Function|string} keyOf Property name, or a function receiving (value, index).
-	 * @returns {Object<string, Array>}
 	 */
 	groupBy: {
 		configurable: true,
@@ -39,9 +33,6 @@ Object.defineProperties(Array.prototype, {
 
 	/**
 	 * Removes duplicates, comparing by the result of `keyOf` when given. Keeps the first occurrence.
-	 *
-	 * @param {Function|string} [keyOf] Property name, or a function receiving (value, index).
-	 * @returns {Array}
 	 */
 	unique: {
 		configurable: true,
@@ -61,9 +52,6 @@ Object.defineProperties(Array.prototype, {
 
 	/**
 	 * The entry with the highest `scoreOf`, or undefined when the array is empty.
-	 *
-	 * @param {Function} scoreOf Receives (value, index) and returns a number.
-	 * @returns {*}
 	 */
 	maxBy: {
 		configurable: true,

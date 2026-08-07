@@ -11,10 +11,6 @@
 
 	/**
 	 * Defines a macro whose handler writes into `this.output`.
-	 *
-	 * @param {string|string[]} name Macro name, or [name, ...aliases].
-	 * @param {Function} handler Receives (args, macroContext) with `this` bound to the context.
-	 * @param {object} [options] Extra Macro.add options, e.g. { tags: [] } for a container macro.
 	 */
 	function DefineMacro(name, handler, options) {
 		const names = ensureIsArray(name);
@@ -35,10 +31,6 @@
 	/**
 	 * Defines a macro that prints whatever its handler returns. For the common case of a macro that
 	 * produces a string of markup.
-	 *
-	 * @param {string|string[]} name
-	 * @param {Function} handler Receives (args, macroContext); return a string of markup, or nothing.
-	 * @param {object} [options]
 	 */
 	function DefineMacroS(name, handler, options) {
 		DefineMacro(

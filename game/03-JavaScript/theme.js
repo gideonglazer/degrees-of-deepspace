@@ -16,9 +16,6 @@ defineGlobalNamespaces("Theme");
 	/** @type {MediaQueryList|null} */
 	let isDarkPreferredQuery = null;
 
-	/**
-	 * @returns {string}
-	 */
 	function getPreference() {
 		const stored = localStorage.getItem(STORAGE_KEY) || DEFAULT_PREFERENCE;
 		if (REMOVED_PREFERENCES.has(stored)) {
@@ -28,24 +25,16 @@ defineGlobalNamespaces("Theme");
 		return stored;
 	}
 
-	/**
-	 * @param {string} theme Resolved theme id written to data-theme
-	 */
 	function setTheme(theme) {
 		document.documentElement.setAttribute("data-theme", theme);
 	}
 
-	/**
-	 * @param {{matches: boolean}} event
-	 */
 	function onThemeChange(event) {
 		setTheme(event.matches ? "dark" : "light");
 	}
 
 	/**
 	 * Maps a stored preference to a concrete data-theme value.
-	 *
-	 * @param {string} preference
 	 */
 	function reflectPreference(preference) {
 		let theme;
@@ -70,9 +59,6 @@ defineGlobalNamespaces("Theme");
 		setTheme(theme);
 	}
 
-	/**
-	 * @param {string} preference
-	 */
 	function setPreference(preference) {
 		localStorage.setItem(STORAGE_KEY, preference);
 		reflectPreference(preference);

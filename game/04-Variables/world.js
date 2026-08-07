@@ -32,11 +32,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Moves a calendar date forward to the Monday on or after it.
-	 *
-	 * @param {number} year
-	 * @param {number} month 1–12
-	 * @param {number} day
-	 * @returns {{ year: number, month: number, day: number }}
 	 */
 	function mondayOnOrAfter(year, month, day) {
 		const date = new Date(year, month - 1, day, 12, 0, 0, 0);
@@ -52,9 +47,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Resolves $options.startingSeason into a concrete season id.
-	 *
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function resolveStartingSeason(variables) {
 		const vars = variables || V();
@@ -69,9 +61,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Applies the creator Starting Season choice to $world (date, weather, temp).
-	 *
-	 * @param {object} [variables]
-	 * @returns {object}
 	 */
 	function applyStartingSeason(variables) {
 		const vars = variables || V();
@@ -121,9 +110,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Home spawn / identity for the player's age.
-	 *
-	 * @param {object} [variables]
-	 * @returns {{ id: string, label: string, passage: string, locationIds: string[] }}
 	 */
 	function homeForAge(variables) {
 		const ageKey = typeof Player !== "undefined" && Player.isYounger(variables) ? "younger" : "older";
@@ -132,10 +118,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * True if locationId belongs to the player's gated home (safe zone).
-	 *
-	 * @param {string} locationId
-	 * @param {object} [variables]
-	 * @returns {boolean}
 	 */
 	function isPlayerHome(locationId, variables) {
 		const home = homeForAge(variables);
@@ -146,9 +128,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Fresh calendar for a new run from the character creator.
-	 *
-	 * @param {object} [variables]
-	 * @returns {object}
 	 */
 	function startNew(variables) {
 		const vars = variables || V();
@@ -157,10 +136,6 @@ defineGlobalNamespaces("World");
 		return vars.world;
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {object}
-	 */
 	function createDefaults(variables) {
 		const monday = mondayOnOrAfter(2048, 3, 21);
 		const home = homeForAge(variables);
@@ -177,10 +152,6 @@ defineGlobalNamespaces("World");
 		};
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {object}
-	 */
 	function ensure(variables) {
 		const vars = variables || V();
 		if (!vars.world || typeof vars.world !== "object") {
@@ -199,27 +170,15 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Days in a month (Gregorian, including leap years).
-	 *
-	 * @param {number} year
-	 * @param {number} month 1–12
-	 * @returns {number}
 	 */
 	function daysInMonth(year, month) {
 		return new Date(year, month, 0).getDate();
 	}
 
-	/**
-	 * @param {object} world
-	 * @returns {Date}
-	 */
 	function toDate(world) {
 		return new Date(world.year, world.month - 1, world.day, world.hour, world.minute, 0, 0);
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function weekdayName(variables) {
 		const world = ensure(variables);
 		return WEEKDAYS[toDate(world).getDay()];
@@ -227,9 +186,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Short weekday label for the HUD (Sun, Mon, …).
-	 *
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function weekdayShort(variables) {
 		return weekdayName(variables).slice(0, 3);
@@ -237,9 +193,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Analog clock hand angles (degrees) for the current world time.
-	 *
-	 * @param {object} [variables]
-	 * @returns {{ hour: number, minute: number }}
 	 */
 	function clockHandAngles(variables) {
 		const world = ensure(variables);
@@ -251,10 +204,6 @@ defineGlobalNamespaces("World");
 		};
 	}
 
-	/**
-	 * @param {number} month 1–12
-	 * @returns {string}
-	 */
 	function seasonForMonth(month) {
 		if (month >= 3 && month <= 5) return "spring";
 		if (month >= 6 && month <= 8) return "summer";
@@ -262,19 +211,12 @@ defineGlobalNamespaces("World");
 		return "winter";
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function season(variables) {
 		return seasonForMonth(ensure(variables).month);
 	}
 
 	/**
 	 * True when the current calendar day is Monday–Friday.
-	 *
-	 * @param {object} [variables]
-	 * @returns {boolean}
 	 */
 	function isWeekday(variables) {
 		const day = toDate(ensure(variables)).getDay();
@@ -283,9 +225,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Minutes past midnight for the current world clock.
-	 *
-	 * @param {object} [variables]
-	 * @returns {number}
 	 */
 	function minutesOfDay(variables) {
 		const world = ensure(variables);
@@ -295,11 +234,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * True when the clock is strictly before hour:minute.
-	 *
-	 * @param {number} hour
-	 * @param {number} minute
-	 * @param {object} [variables]
-	 * @returns {boolean}
 	 */
 	function isBefore(hour, minute, variables) {
 		const target = Math.max(0, Math.min(23, Math.floor(Number(hour) || 0))) * 60
@@ -309,11 +243,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Advances the clock by minutes and applies awake or asleep stat effects.
-	 *
-	 * @param {number} minutes
-	 * @param {object} [variables]
-	 * @param {{ asleep?: boolean }} [options]
-	 * @returns {object}
 	 */
 	function advance(minutes, variables, options) {
 		const vars = variables || V();
@@ -353,11 +282,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Minutes from now until the next occurrence of hour:minute (today or tomorrow).
-	 *
-	 * @param {number} targetHour
-	 * @param {number} targetMinute
-	 * @param {object} [variables]
-	 * @returns {number}
 	 */
 	function minutesUntil(targetHour, targetMinute, variables) {
 		const world = ensure(variables);
@@ -372,10 +296,6 @@ defineGlobalNamespaces("World");
 	/**
 	 * How long a requested sleep would actually last. On weekdays when exhausted,
 	 * the body wakes at 8:00 regardless of what was asked for.
-	 *
-	 * @param {number} hours
-	 * @param {object} [variables]
-	 * @returns {{ minutes: number, forcedWake: boolean }}
 	 */
 	function plannedSleep(hours, variables) {
 		const vars = variables || V();
@@ -389,10 +309,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Clock time the player would wake at, for previewing sleep options.
-	 *
-	 * @param {number} hours
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function wakeTimeFor(hours, variables) {
 		const vars = variables || V();
@@ -404,10 +320,6 @@ defineGlobalNamespaces("World");
 	/**
 	 * Sleep for a chosen number of hours, advancing the clock with asleep stat effects.
 	 * Writes an autosave after sleeping so rest is a progress checkpoint.
-	 *
-	 * @param {number} hours
-	 * @param {object} [variables]
-	 * @returns {{ minutes: number, hours: number, forcedWake: boolean }}
 	 */
 	function sleepFor(hours, variables) {
 		const vars = variables || V();
@@ -426,10 +338,6 @@ defineGlobalNamespaces("World");
 		return result;
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function formatDate(variables) {
 		const vars = variables || V();
 		const world = ensure(vars);
@@ -445,19 +353,12 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Long date for prose, e.g. "Monday, March 23, 2048".
-	 *
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function formatDateLong(variables) {
 		const world = ensure(variables);
 		return `${weekdayName(variables)}, ${MONTH_NAMES[world.month - 1]} ${world.day}, ${world.year}`;
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function formatTime(variables) {
 		const vars = variables || V();
 		const world = ensure(vars);
@@ -466,11 +367,6 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Formats an arbitrary clock time using $options.timeFormat.
-	 *
-	 * @param {number} hour
-	 * @param {number} minute
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function formatTimeAt(hour, minute, variables) {
 		const vars = variables || V();
@@ -488,19 +384,12 @@ defineGlobalNamespaces("World");
 
 	/**
 	 * Weather adjective for prose ("fair", "rainy", …).
-	 *
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function weatherText(variables) {
 		const world = ensure(variables);
 		return WEATHER_TEXT[world.weather] || world.weather || "fair";
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {string}
-	 */
 	function formatTemperature(variables) {
 		const vars = variables || V();
 		const world = ensure(vars);
@@ -512,11 +401,6 @@ defineGlobalNamespaces("World");
 		return `${Math.round(c * (9 / 5) + 32)}°F`;
 	}
 
-	/**
-	 * @param {string} id
-	 * @param {string} [label]
-	 * @param {object} [variables]
-	 */
 	function setLocation(id, label, variables) {
 		const world = ensure(variables);
 		world.location = id || "";

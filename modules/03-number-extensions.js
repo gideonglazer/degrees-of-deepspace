@@ -5,9 +5,6 @@
 Object.defineProperties(Number.prototype, {
 	/**
 	 * Rounds to a fixed number of decimal places, returning a number rather than a string.
-	 *
-	 * @param {number} [places]
-	 * @returns {number}
 	 */
 	roundTo: {
 		configurable: true,
@@ -21,10 +18,6 @@ Object.defineProperties(Number.prototype, {
 	/**
 	 * Position of this number within [min, max] as a 0–1 fraction, clamped at both ends.
 	 * Used for stat bars and threshold checks.
-	 *
-	 * @param {number} min
-	 * @param {number} max
-	 * @returns {number}
 	 */
 	fractionOf: {
 		configurable: true,
@@ -36,11 +29,7 @@ Object.defineProperties(Number.prototype, {
 	},
 
 	/**
-	 * Same as fractionOf but expressed as a whole percentage, ready for a CSS width.
-	 *
-	 * @param {number} min
-	 * @param {number} max
-	 * @returns {number}
+	 * Same as fractionOf but expressed as a whole percentage.
 	 */
 	percentOf: {
 		configurable: true,

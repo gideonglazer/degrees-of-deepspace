@@ -18,12 +18,6 @@ defineGlobalNamespaces("LoveInterests");
 		{ value: "kr", code: "KR" },
 	];
 
-	/**
-	 * @param {string} id Stable key used in $loveInterests and $liFocus
-	 * @param {string} title Short epithet shown after the name
-	 * @param {Object<string, string>} names Locale → display name (must include `en`)
-	 * @returns {{id: string, name: string, title: string, names: Object<string, string>}}
-	 */
 	function entry(id, title, names) {
 		return { id, name: names.en, title, names };
 	}
@@ -124,9 +118,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Fresh cosmetics + relationship object for one love interest.
-	 *
-	 * @param {string} [id] When set, also seeds that character's unique stats.
-	 * @returns {object}
 	 */
 	function createDefaults(id) {
 		const base = clone(C().loveInterests.defaults);
@@ -141,8 +132,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Ordered roster from constants.
-	 *
-	 * @returns {Array<{id: string, name: string, title: string, names: Object<string, string>}>}
 	 */
 	function roster() {
 		return C().loveInterests.roster || [];
@@ -150,8 +139,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Locale options available for Display Name radios.
-	 *
-	 * @returns {Array<{value: string, code: string}>}
 	 */
 	function nameLocales() {
 		return NAME_LOCALES;
@@ -160,9 +147,6 @@ defineGlobalNamespaces("LoveInterests");
 	/**
 	 * Map of current display name → id for SugarCube <<listbox>> / <<optionsfrom>>.
 	 * SugarCube uses object keys as labels and values as the stored selection.
-	 *
-	 * @param {object} [variables]
-	 * @returns {Object<string, string>}
 	 */
 	function listboxOptions(variables) {
 		const options = {};
@@ -174,9 +158,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Looks up a roster entry by id.
-	 *
-	 * @param {string} id
-	 * @returns {{id: string, name: string, title: string, names: Object<string, string>}|null}
 	 */
 	function get(id) {
 		return roster().find(li => li.id === id) || null;
@@ -184,10 +165,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Selected display name for a love interest (falls back to English / roster name).
-	 *
-	 * @param {string} id
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function displayName(id, variables) {
 		const vars = variables || V();
@@ -200,9 +177,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Epithet only, e.g. "the Deepspace Hunter".
-	 *
-	 * @param {string} id
-	 * @returns {string}
 	 */
 	function displayEpithet(id) {
 		const li = get(id);
@@ -211,10 +185,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Full header string, e.g. "Ao Yin the Werewolf".
-	 *
-	 * @param {string} id
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function displayTitle(id, variables) {
 		const li = get(id);
@@ -225,9 +195,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Flag id for first encounter, e.g. xavier → metXavier.
-	 *
-	 * @param {string} id
-	 * @returns {string}
 	 */
 	function metFlag(id) {
 		const key = String(id || "");
@@ -235,11 +202,6 @@ defineGlobalNamespaces("LoveInterests");
 		return "met" + key.charAt(0).toUpperCase() + key.slice(1);
 	}
 
-	/**
-	 * @param {string} id
-	 * @param {object} [variables]
-	 * @returns {boolean}
-	 */
 	function hasMet(id, variables) {
 		const flag = metFlag(id);
 		return flag ? Flags.get(flag, variables) : false;
@@ -247,10 +209,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Marks a love interest as met (unlocks them in Social).
-	 *
-	 * @param {string} id
-	 * @param {object} [variables]
-	 * @returns {boolean}
 	 */
 	function meet(id, variables) {
 		const flag = metFlag(id);
@@ -260,9 +218,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Roster entries the player has encountered.
-	 *
-	 * @param {object} [variables]
-	 * @returns {Array<{id: string, name: string, title: string, names: Object<string, string>}>}
 	 */
 	function known(variables) {
 		return roster().filter(li => hasMet(li.id, variables));
@@ -270,9 +225,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Stat keys shown for a love interest (universal + unique).
-	 *
-	 * @param {string} id
-	 * @returns {string[]}
 	 */
 	function statsFor(id) {
 		const universal = (C().loveInterests.universalStats || ["love", "longing"]).slice();
@@ -280,10 +232,6 @@ defineGlobalNamespaces("LoveInterests");
 		return universal.concat(unique.filter(key => !universal.includes(key)));
 	}
 
-	/**
-	 * @param {string} key
-	 * @returns {string}
-	 */
 	function statLabel(key) {
 		const labels = C().loveInterests.statLabels || {};
 		if (labels[key]) return labels[key];
@@ -292,9 +240,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Ensures `$loveInterests` and `$liFocus` exist. Safe on Start and after loads.
-	 *
-	 * @param {object} [variables] Defaults to live story variables.
-	 * @returns {object} The loveInterests map.
 	 */
 	function ensure(variables) {
 		const vars = variables || V();
@@ -346,18 +291,12 @@ defineGlobalNamespaces("LoveInterests");
 		return vars.loveInterests;
 	}
 
-	/**
-	 * @returns {number}
-	 */
 	function statMax() {
 		return Number(C().loveInterests.loveMax) || 100;
 	}
 
 	/**
 	 * Moves `$liFocus` by delta through the roster, wrapping at the ends.
-	 *
-	 * @param {number} delta Usually -1 (previous) or 1 (next)
-	 * @returns {string} The new focus id
 	 */
 	function stepFocus(delta) {
 		const ids = roster().map(li => li.id);
@@ -371,11 +310,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Current value for a relationship stat (0–loveMax).
-	 *
-	 * @param {string} id
-	 * @param {string} key
-	 * @param {object} [variables]
-	 * @returns {number}
 	 */
 	function getStat(id, key, variables) {
 		const vars = variables || V();
@@ -387,10 +321,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Current love value for a love interest (0–loveMax).
-	 *
-	 * @param {string} id
-	 * @param {object} [variables]
-	 * @returns {number}
 	 */
 	function love(id, variables) {
 		return getStat(id, "love", variables);
@@ -398,10 +328,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Current longing value for a love interest (0–loveMax).
-	 *
-	 * @param {string} id
-	 * @param {object} [variables]
-	 * @returns {number}
 	 */
 	function longing(id, variables) {
 		return getStat(id, "longing", variables);
@@ -409,12 +335,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Markup for a tiered relationship-stat change without applying it (link previews).
-	 *
-	 * @param {string} id
-	 * @param {string} key
-	 * @param {string} tier "+" / "++" / "+++" or "-" / "--" / "---"
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function effectMarkup(id, key, tier, variables) {
 		const parsed = typeof Stats !== "undefined" && Stats.parseTier ? Stats.parseTier(tier) : null;
@@ -443,12 +363,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Applies a tiered relationship-stat change and returns coloured indicator markup.
-	 *
-	 * @param {string} id
-	 * @param {string} key
-	 * @param {string} tier
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function applyStat(id, key, tier, variables) {
 		const vars = variables || V();
@@ -469,11 +383,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Markup for a tiered love change without applying it (link previews).
-	 *
-	 * @param {string} id
-	 * @param {string} tier "+" / "++" / "+++" or "-" / "--" / "---"
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function loveEffectMarkup(id, tier, variables) {
 		return effectMarkup(id, "love", tier, variables);
@@ -481,11 +390,6 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Applies a tiered love change and returns coloured indicator markup.
-	 *
-	 * @param {string} id
-	 * @param {string} tier
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function applyLove(id, tier, variables) {
 		return applyStat(id, "love", tier, variables);

@@ -1,4 +1,4 @@
-/* Sidebar HUD (DoL-style Current Condition) and journal */
+/* Sidebar HUD and journal */
 
 #story-caption .hud {
 	font-size: inherit;
@@ -111,7 +111,6 @@
 	cursor: help;
 }
 
-/* DoL-style hover chip: flat fill, thin theme border, soft radius */
 #story-caption .hud-weekday-tooltip,
 .hud-tooltip {
 	z-index: 100000;
@@ -205,7 +204,6 @@
 	background-color: #d64545;
 }
 
-/* DoL-like condition colour ramp (description only) */
 #story-caption .hud-stat-text.severity0 {
 	color: #8fbc8f;
 }
@@ -241,7 +239,6 @@
 	font-weight: 700;
 }
 
-/* Passage effect indicators — DoL paints +/name the same colour, no bold */
 .stat-effect-wrap {
 	white-space: nowrap;
 }
@@ -522,7 +519,6 @@
 	image-rendering: crisp-edges;
 }
 
-/* Dimmed underlayer + colour clipped left→right by --stat-fill. */
 #ui-dialog-body.social-dialog .social-stat-icon-img--base,
 #ui-dialog-body.social-dialog .social-stat-icon-svg--base {
 	opacity: 0.22;
@@ -544,7 +540,6 @@
 	color: var(--pink, #e40081);
 }
 
-/* Scale visually without changing layout box (keeps labels / % aligned). */
 #ui-dialog-body.social-dialog .social-stat-icon-dominance {
 	color: var(--purple-secondary, #aa4bc8);
 }

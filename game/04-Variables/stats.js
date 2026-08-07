@@ -32,9 +32,6 @@ defineGlobalNamespaces("Stats");
 		hunger: "Hunger",
 	};
 
-	/**
-	 * @returns {object}
-	 */
 	function createDefaults() {
 		return {
 			fatigue: 0,
@@ -47,10 +44,6 @@ defineGlobalNamespaces("Stats");
 		};
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {object}
-	 */
 	function ensure(variables) {
 		const vars = variables || V();
 		if (!vars.stats || typeof vars.stats !== "object") {
@@ -78,27 +71,16 @@ defineGlobalNamespaces("Stats");
 		return vars.stats;
 	}
 
-	/**
-	 * @param {number} energy 0–100
-	 * @returns {number}
-	 */
 	function energyToFatigue(energy) {
 		const e = Math.max(0, Math.min(PERCENT_MAX, Number(energy) || 0));
 		return Math.round((PERCENT_MAX - e) * (FATIGUE_MAX / PERCENT_MAX));
 	}
 
-	/**
-	 * @param {number} fatigue
-	 * @returns {number}
-	 */
 	function fatigueToEnergy(fatigue) {
 		const f = Math.max(0, Math.min(FATIGUE_MAX, Number(fatigue) || 0));
 		return Math.round(PERCENT_MAX - f / (FATIGUE_MAX / PERCENT_MAX));
 	}
 
-	/**
-	 * @param {object} stats
-	 */
 	function clampAll(stats) {
 		stats.fatigue = Math.max(0, Math.min(FATIGUE_MAX, Math.round(Number(stats.fatigue) || 0)));
 		stats.arousal = Math.max(0, Math.min(AROUSAL_MAX, Math.round(Number(stats.arousal) || 0)));
@@ -111,28 +93,18 @@ defineGlobalNamespaces("Stats");
 
 	/**
 	 * Public energy getter (0–100).
-	 *
-	 * @param {object} [variables]
-	 * @returns {number}
 	 */
 	function energy(variables) {
 		return fatigueToEnergy(ensure(variables).fatigue);
 	}
 
-	/**
-	 * @param {number} value 0–100
-	 * @param {object} [variables]
-	 */
 	function setEnergy(value, variables) {
 		const stats = ensure(variables);
 		stats.fatigue = energyToFatigue(value);
 	}
 
 	/**
-	 * Passive changes per minute while awake (DoL-aligned where applicable).
-	 *
-	 * @param {number} minutes
-	 * @param {object} [variables]
+	 * Passive changes per minute while awake
 	 */
 	function passiveDecay(minutes, variables) {
 		const stats = ensure(variables);
@@ -158,9 +130,6 @@ defineGlobalNamespaces("Stats");
 
 	/**
 	 * Stat changes per minute while asleep. Fatigue recovers.
-	 *
-	 * @param {number} minutes
-	 * @param {object} [variables]
 	 */
 	function sleepEffects(minutes, variables) {
 		const stats = ensure(variables);
@@ -181,9 +150,6 @@ defineGlobalNamespaces("Stats");
 
 	/**
 	 * True when Energy is at or below 20 (fatigue ≥ 1600).
-	 *
-	 * @param {object} [variables]
-	 * @returns {boolean}
 	 */
 	function isExhausted(variables) {
 		return energy(variables) <= 20;
@@ -191,9 +157,6 @@ defineGlobalNamespaces("Stats");
 
 	/**
 	 * Parses "+", "++", "+++", "-", "--", "---" into a signed multiplier of the base tier.
-	 *
-	 * @param {string} tier
-	 * @returns {{sign: number, key: string}|null}
 	 */
 	function parseTier(tier) {
 		const raw = String(tier || "").trim();
@@ -209,10 +172,6 @@ defineGlobalNamespaces("Stats");
 
 	/**
 	 * Markup for a tiered change without applying it. Use to preview an action's cost.
-	 *
-	 * @param {string} stat
-	 * @param {string} tier
-	 * @returns {string}
 	 */
 	function effectMarkup(stat, tier) {
 		const parsed = parseTier(tier);
@@ -241,11 +200,6 @@ defineGlobalNamespaces("Stats");
 
 	/**
 	 * Applies a tiered change and returns markup for the coloured indicator.
-	 *
-	 * @param {string} stat
-	 * @param {string} tier
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function applyEffect(stat, tier, variables) {
 		const stats = ensure(variables);
@@ -270,10 +224,6 @@ defineGlobalNamespaces("Stats");
 
 	/**
 	 * Sidebar / prose band description for a stat.
-	 *
-	 * @param {string} stat
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function describe(stat, variables) {
 		const stats = ensure(variables);
@@ -345,10 +295,6 @@ defineGlobalNamespaces("Stats");
 
 	/**
 	 * Severity class for sidebar colouring (0–4).
-	 *
-	 * @param {string} stat
-	 * @param {object} [variables]
-	 * @returns {number}
 	 */
 	function severity(stat, variables) {
 		const stats = ensure(variables);
@@ -372,10 +318,6 @@ defineGlobalNamespaces("Stats");
 
 	/**
 	 * Meter fill 0–100 for the sidebar progress rule under a stat.
-	 *
-	 * @param {string} stat
-	 * @param {object} [variables]
-	 * @returns {number}
 	 */
 	function fillPercent(stat, variables) {
 		const stats = ensure(variables);
@@ -391,11 +333,7 @@ defineGlobalNamespaces("Stats");
 	}
 
 	/**
-	 * HTML line for the sidebar Current Condition (DoL-style coloured description + meter).
-	 *
-	 * @param {string} stat
-	 * @param {object} [variables]
-	 * @returns {string}
+	 * HTML line for the sidebar Current Condition
 	 */
 	function hudLine(stat, variables) {
 		const sev = severity(stat, variables);
@@ -415,9 +353,6 @@ defineGlobalNamespaces("Stats");
 
 	/**
 	 * Snapshot for UI: includes computed energy.
-	 *
-	 * @param {object} [variables]
-	 * @returns {object}
 	 */
 	function snapshot(variables) {
 		const stats = ensure(variables);

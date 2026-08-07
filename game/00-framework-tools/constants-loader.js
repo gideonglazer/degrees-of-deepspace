@@ -17,9 +17,6 @@ defineGlobalNamespaces("ConstantsLoader");
 
 	/**
 	 * Recursively freezes an object and everything it holds.
-	 *
-	 * @param {*} value
-	 * @returns {*} The same value, frozen.
 	 */
 	function deepFreeze(value) {
 		if (value === null || typeof value !== "object" || Object.isFrozen(value)) return value;
@@ -29,10 +26,6 @@ defineGlobalNamespaces("ConstantsLoader");
 
 	/**
 	 * Registers static data under a dotted path below `Constants`.
-	 *
-	 * @param {string} path e.g. "stats" or "locations.ship".
-	 * @param {object} data
-	 * @returns {object} The frozen data as stored.
 	 */
 	function add(path, data) {
 		const parts = String(path).split(".");
@@ -56,10 +49,6 @@ defineGlobalNamespaces("ConstantsLoader");
 	/**
 	 * Reads a dotted path, returning `fallback` when any step is missing. Prefer direct access
 	 * (`C().stats.oxygen`) and reach for this only when the path is built at runtime.
-	 *
-	 * @param {string} path
-	 * @param {*} [fallback]
-	 * @returns {*}
 	 */
 	function get(path, fallback) {
 		const found = String(path)

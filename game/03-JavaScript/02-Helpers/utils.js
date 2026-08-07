@@ -12,11 +12,6 @@ defineGlobalNamespaces("Utils");
 
 	/**
 	 * Inclusive range test.
-	 *
-	 * @param {number} value
-	 * @param {number} min
-	 * @param {number} max
-	 * @returns {boolean}
 	 */
 	function between(value, min, max) {
 		return value >= min && value <= max;
@@ -25,10 +20,6 @@ defineGlobalNamespaces("Utils");
 	/**
 	 * Random integer in [min, max]. Uses SugarCube's seeded PRNG so results replay identically from a
 	 * save — never use Math.random() for anything that affects game state.
-	 *
-	 * @param {number} min
-	 * @param {number} max
-	 * @returns {number}
 	 */
 	function getRandomIntInclusive(min, max) {
 		return random(Math.ceil(min), Math.floor(max));
@@ -36,9 +27,6 @@ defineGlobalNamespaces("Utils");
 
 	/**
 	 * A random entry, or undefined for an empty array.
-	 *
-	 * @param {Array} array
-	 * @returns {*}
 	 */
 	function pickRandomItemInArray(array) {
 		if (!Array.isArray(array) || !array.length) return undefined;
@@ -48,10 +36,6 @@ defineGlobalNamespaces("Utils");
 	/**
 	 * Returns `value` unless it is null or undefined, in which case `fallback`.
 	 * Unlike `||` this keeps 0 and "" intact, which matters for stats and labels.
-	 *
-	 * @param {*} value
-	 * @param {*} fallback
-	 * @returns {*}
 	 */
 	function selfOr(value, fallback) {
 		return value === undefined || value === null ? fallback : value;
@@ -60,10 +44,6 @@ defineGlobalNamespaces("Utils");
 	/**
 	 * Throws when `value` is missing. Use for programmer errors — a passage naming a location that
 	 * does not exist — where failing loudly beats rendering something subtly wrong.
-	 *
-	 * @param {*} value
-	 * @param {string} message
-	 * @returns {*} The value.
 	 */
 	function ensure(value, message) {
 		if (value === undefined || value === null) throw new Error(message);
@@ -73,9 +53,6 @@ defineGlobalNamespaces("Utils");
 	/**
 	 * Wraps a non-array in an array; passes arrays through. Lets content authors write either
 	 * `requires: "patchKit"` or `requires: ["patchKit", "stim"]`.
-	 *
-	 * @param {*} value
-	 * @returns {Array}
 	 */
 	function ensureIsArray(value) {
 		if (Array.isArray(value)) return value;
@@ -84,11 +61,6 @@ defineGlobalNamespaces("Utils");
 
 	/**
 	 * Builds an element. `content` may be a string, a node, or an array of either.
-	 *
-	 * @param {string} tag
-	 * @param {object} [attributes] Applied with setAttribute; a `class` key sets className.
-	 * @param {string|Node|Array} [content]
-	 * @returns {HTMLElement}
 	 */
 	function element(tag, attributes, content) {
 		const node = document.createElement(tag);
@@ -107,10 +79,6 @@ defineGlobalNamespaces("Utils");
 	/**
 	 * Signed number for display, e.g. "+3" or "-2". Returns "" for zero so callers can concatenate
 	 * without producing "+0".
-	 *
-	 * @param {number} value
-	 * @param {number} [places]
-	 * @returns {string}
 	 */
 	function stringFrom(value, places) {
 		const rounded = Number(value).roundTo(places || 0);
@@ -120,9 +88,6 @@ defineGlobalNamespaces("Utils");
 
 	/**
 	 * Sentence-cases a string without touching the rest of it, so "Vesna's cabin" survives intact.
-	 *
-	 * @param {string} text
-	 * @returns {string}
 	 */
 	function sentenceCase(text) {
 		const value = String(selfOr(text, ""));
@@ -131,10 +96,6 @@ defineGlobalNamespaces("Utils");
 
 	/**
 	 * Joins a list into prose: "a", "a and b", "a, b, and c".
-	 *
-	 * @param {string[]} items
-	 * @param {string} [conjunction]
-	 * @returns {string}
 	 */
 	function listToProse(items, conjunction) {
 		const parts = ensureIsArray(items).filter(Boolean).map(String);

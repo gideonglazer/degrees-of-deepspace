@@ -1,16 +1,12 @@
 /*
  * Theme palettes (ported from Degrees of Lewdity) plus DoD semantic token bridge.
  * Preference is applied as data-theme on <html> by Theme.setPreference().
- * Default preference is Catppuccin Mocha (mocha).
+ * Default preference is currently Catppuccin Mocha (mocha).
  */
 
 /** Variables **/
 :root {
 	/* Primary Colours
-	These are the primary greyscale colours used in the default theme
-	--000 representing the lightest white and foreground
-	--900 representing the darkest black and background
-	The rest represent colours in the range of greyscale from light to dark ala Tailwind Naming Conventions
 	*/
 	--000: #eee;
 	--100: #ddd;
@@ -63,12 +59,12 @@
 	--link-hover: #8af;
 	--danger: #c62b2b;
 
-	/* Tooltip — DoL-style flat chip; border colour varies by theme */
+	/* Tooltip — flat chip; border colour varies by theme */
 	--tooltip-background: #1a1919;
 	--tooltip-border: #c9b896;
 
 	/*
-	 * Degrees of Deepspace semantic tokens, bridged to DoL greyscale/accent vars so every
+	 * Degrees of Deepspace semantic tokens, bridged to greyscale/accent vars so every
 	 * [data-theme] palette restyles the whole UI without duplicating rules.
 	 */
 	--surface-void: var(--900);

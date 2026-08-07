@@ -88,9 +88,6 @@ function build() {
  * Polling rather than fs.watch: recursive fs.watch is FSEvents-backed on macOS and inotify-backed on
  * Linux, and both can fail on limits or under sandboxing in ways that kill the process. The source
  * tree here is small enough that scanning it is cheaper than the bug reports.
- *
- * @param {string[]} relPaths
- * @returns {Map<string, number>}
  */
 function snapshot(relPaths) {
 	const seen = new Map();
@@ -120,9 +117,6 @@ function snapshot(relPaths) {
 
 /**
  * Calls `onChange` when any watched file is added, removed, or modified.
- *
- * @param {string[]} relPaths
- * @param {Function} onChange
  */
 function watch(relPaths, onChange) {
 	let previous = snapshot(relPaths);

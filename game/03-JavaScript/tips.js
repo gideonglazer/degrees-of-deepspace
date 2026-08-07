@@ -1,5 +1,5 @@
 /**
- * Sidebar tip pool (DoL-style rotating hints under Current Condition).
+ * Sidebar tip pool
  */
 
 defineGlobalNamespaces("Tips");
@@ -18,17 +18,12 @@ defineGlobalNamespaces("Tips");
 		"Hunger and hygiene drift over time — eat and wash up regularly when you can.",
 	];
 
-	/**
-	 * @returns {string[]}
-	 */
 	function list() {
 		return POOL.slice();
 	}
 
 	/**
 	 * Picks a tip for the sidebar. Uses the seeded PRNG so replays stay consistent.
-	 *
-	 * @returns {string}
 	 */
 	function pick() {
 		if (!POOL.length) return "";
@@ -36,9 +31,7 @@ defineGlobalNamespaces("Tips");
 	}
 
 	/**
-	 * Markup for the DoL-style tip block.
-	 *
-	 * @returns {string}
+	 * Markup for the tip block.
 	 */
 	function markup() {
 		const text = pick();

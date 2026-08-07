@@ -18,9 +18,6 @@ defineGlobalNamespaces("Versions");
 	/**
 	 * Converts a dotted version string into a sortable integer.
 	 * Each segment gets two digits, so 0.1.12 becomes 1_12 and 1.0.0 becomes 1_00_00.
-	 *
-	 * @param {string} version
-	 * @returns {number}
 	 */
 	function toNumeric(version) {
 		const parts = String(version)
@@ -32,10 +29,6 @@ defineGlobalNamespaces("Versions");
 
 	/**
 	 * Registers a migration that brings a save up to `version`.
-	 *
-	 * @param {string} version The build this migration produces a valid save for.
-	 * @param {string} describe Short note for the changelog and console output.
-	 * @param {Function} migrate Receives the save's `variables` object and mutates it in place.
 	 */
 	function register(version, describe, migrate) {
 		migrations.push({ version, numeric: toNumeric(version), describe, migrate });
@@ -44,9 +37,6 @@ defineGlobalNamespaces("Versions");
 
 	/**
 	 * Applies every migration newer than the save's own version.
-	 *
-	 * @param {object} variables A save's `State.variables` snapshot.
-	 * @returns {string[]} Descriptions of the migrations that ran.
 	 */
 	function update(variables) {
 		if (!variables) return [];
@@ -68,9 +58,6 @@ defineGlobalNamespaces("Versions");
 
 	/**
 	 * True when the save predates the running build and may need attention.
-	 *
-	 * @param {object} variables
-	 * @returns {boolean}
 	 */
 	function isOutdated(variables) {
 		if (!variables || !window.StartConfig) return false;

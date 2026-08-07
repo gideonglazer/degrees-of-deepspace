@@ -17,10 +17,6 @@ const args = process.argv.slice(2);
 
 /**
  * Spawns the platform compile script with the given args, inheriting stdio.
- *
- * @param {string[]} compileArgs
- * @param {NodeJS.ProcessEnv} [env]
- * @returns {Promise<number>}
  */
 export function runCompile(compileArgs = [], env = process.env) {
 	const isWin = process.platform === "win32";

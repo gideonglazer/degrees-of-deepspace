@@ -150,10 +150,14 @@ module.exports = {
 		"jsdoc/require-hyphen-before-param-description": ["error", "never", { tags: { property: "never" } }],
 		// Adding JSDoc is preferable but not required
 		"jsdoc/require-jsdoc": "off",
+		// Doc comments carry the note about what a method does; signatures speak for themselves
+		"jsdoc/require-param": "off",
 		"jsdoc/require-param-description": "off",
+		"jsdoc/require-param-type": "off",
 		"jsdoc/require-property-description": "off",
 		"jsdoc/require-returns-description": "off",
 		"jsdoc/require-returns": "off",
+		"jsdoc/require-returns-type": "off",
 
 		/* eslint-plugin-prettier */
 

@@ -19,7 +19,7 @@ body {
 	line-height: 1.55;
 }
 
-/* SugarCube's own chrome ------------------------------------------------- */
+/* SugarCube's chrome ------------------------------------------------- */
 
 #story {
 	margin: 0 0 0 var(--sidebar-width);
@@ -77,10 +77,6 @@ body {
 	color: var(--text-dim);
 }
 
-/*
- * SugarCube shows Continue whenever browser saves exist (including after Restart
- * back to Start). Resume lives in Saves instead — hide the duplicate control.
- */
 #menu-item-continue {
 	display: none;
 }
@@ -199,7 +195,6 @@ button:disabled {
 	border-left: 3px solid var(--danger);
 }
 
-/* Rendered by game/00-framework-tools/01-error/errors.js */
 #dod-errors {
 	background-color: var(--surface-panel);
 	border: 1px solid var(--danger);
@@ -215,7 +210,6 @@ button:disabled {
 	padding-left: var(--space-4);
 }
 
-/* Passage option icons — native ~30–32px art, sized in em so they track text scale */
 #passages img.icon {
 	display: inline-block;
 	width: 1.875em;
@@ -228,21 +222,18 @@ button:disabled {
 	image-rendering: crisp-edges;
 }
 
-/* LinkNumberify — DoL-style keyboard link prefixes */
 #passages a.link-internal .link-num {
 	color: var(--text-muted, #9aa3b2);
 	font-variant-numeric: tabular-nums;
 	user-select: none;
 }
 
-/* Clock cost of an action, e.g. "Leave Apartment (0:05)" — reads as prose, not as link */
 .action-time {
 	color: var(--text-primary);
 	font-variant-numeric: tabular-nums;
 	white-space: nowrap;
 }
 
-/* Spacer between passage link groups (room actions vs leave/travel) */
 .passage-gap {
 	display: block;
 	width: 100%;

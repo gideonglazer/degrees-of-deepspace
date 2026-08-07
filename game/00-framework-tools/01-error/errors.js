@@ -1,9 +1,5 @@
 /**
  * Collects errors raised during play and surfaces them in-page.
- *
- * A SugarCube story is one long-lived page, so an exception in a passage or widget can leave the
- * player stuck with no feedback and nothing in view to report. Errors are gathered here, shown once
- * per passage, and deduplicated so a per-turn failure does not bury the screen.
  */
 
 defineGlobalNamespaces("Errors");
@@ -17,9 +13,6 @@ defineGlobalNamespaces("Errors");
 
 	/**
 	 * Records an error. Repeats of an existing message bump its counter instead of adding a row.
-	 *
-	 * @param {Error|string} error
-	 * @param {string} [context] Where it happened, e.g. a passage or macro name.
 	 */
 	function report(error, context) {
 		const message = error instanceof Error ? error.message : String(error);
@@ -38,8 +31,6 @@ defineGlobalNamespaces("Errors");
 
 	/**
 	 * Clears collected errors and removes the report from the page.
-	 *
-	 * @param {boolean} [silent] Skip the console notice, used when loading a save.
 	 */
 	function hide(silent) {
 		collected = [];
@@ -84,10 +75,6 @@ defineGlobalNamespaces("Errors");
 	/**
 	 * Runs `fn`, reporting rather than propagating anything it throws. Use this at boundaries where a
 	 * failure should not abort the rest of the turn, such as a passage header.
-	 *
-	 * @param {string} context
-	 * @param {Function} fn
-	 * @returns {*} The return value of `fn`, or undefined if it threw.
 	 */
 	function guard(context, fn) {
 		try {

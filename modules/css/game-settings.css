@@ -3,7 +3,6 @@
  * Tokens come from theme.css; this file only owns settings-specific layout.
  */
 
-/* Widen the passage for the three-column Appearance panel */
 #passages.cc-wide {
 	max-width: 72rem;
 }
@@ -178,9 +177,7 @@
 
 .cc-option input[type="radio"],
 .cc-option input[type="checkbox"] {
-	/* stylelint-disable-next-line plugin/no-unsupported-browser-features -- custom radio chrome */
 	appearance: none;
-	/* stylelint-disable-next-line plugin/no-unsupported-browser-features -- Safari */
 	-webkit-appearance: none;
 	background-color: transparent;
 	border: 1.5px solid var(--text-primary);
@@ -250,7 +247,6 @@
 
 .cc-swatch {
 	font-weight: 500;
-	/* Keep pale swatches (white, porcelain, platinum…) readable on light themes */
 	text-shadow:
 		0 0 0.85px rgb(30 35 55 / 55%),
 		0 0.5px 0 rgb(30 35 55 / 35%),
@@ -312,7 +308,6 @@
 	max-width: none;
 }
 
-/* Love Interest Modifier */
 .cc-li-jump {
 	align-items: center;
 	display: flex;
@@ -359,14 +354,12 @@
 	margin: 0;
 }
 
-/* General tab */
 .cc-general hr {
 	border: 0;
 	border-top: 1px solid var(--border-subtle);
 	margin: var(--space-4) 0;
 }
 
-/* Character Creator / Themes toolbars */
 .cc-creator-toolbar,
 .cc-themes-toolbar {
 	display: flex;
@@ -424,7 +417,6 @@
 	margin: var(--space-4) 0;
 }
 
-/* Shared button skins — keep these after layout so specificity stays ordered */
 .cc-begin,
 .cc-begin-disabled {
 	border-radius: var(--radius);

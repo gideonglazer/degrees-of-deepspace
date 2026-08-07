@@ -10,9 +10,6 @@
 	"use strict";
 
 	class ObservableValue {
-		/**
-		 * @param {*} initial
-		 */
 		constructor(initial) {
 			this._value = initial;
 			this._listeners = [];
@@ -31,10 +28,6 @@
 
 		/**
 		 * Subscribes to changes.
-		 *
-		 * @param {Function} listener Receives (next, previous).
-		 * @param {boolean} [immediate] Also call the listener now with the current value.
-		 * @returns {Function} Call to unsubscribe.
 		 */
 		subscribe(listener, immediate) {
 			this._listeners.push(listener);

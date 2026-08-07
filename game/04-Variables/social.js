@@ -14,22 +14,12 @@ defineGlobalNamespaces("Social");
 		loyalty: "loyalty.png",
 	};
 
-	/**
-	 * @param {number} value
-	 * @returns {number} 0–100
-	 */
 	function fillPct(value) {
 		return Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
 	}
 
 	/**
 	 * Pixel icon with left→right colour reveal.
-	 *
-	 * @param {string} cls
-	 * @param {string} file Coloured / filled filename in img/ui-icons/
-	 * @param {number} value 0–100
-	 * @param {string} [baseFile] Dimmed underlayer (defaults to file)
-	 * @returns {string}
 	 */
 	function pngIcon(cls, file, value, baseFile) {
 		const fill = fillPct(value);
@@ -44,11 +34,6 @@ defineGlobalNamespaces("Social");
 
 	/**
 	 * SVG fallback with the same left→right reveal.
-	 *
-	 * @param {string} cls
-	 * @param {number} value
-	 * @param {string} svgInner Inner SVG markup (coloured / filled)
-	 * @returns {string}
 	 */
 	function svgIcon(cls, value, svgInner) {
 		const fill = fillPct(value);
@@ -62,11 +47,6 @@ defineGlobalNamespaces("Social");
 
 	/**
 	 * Glyph for a relationship stat. Prefers PNG assets; SVG fallback for missing files.
-	 *
-	 * @param {string} key
-	 * @param {number} value 0–100
-	 * @param {string} [liId] Love-interest id (needed for love-{id}.png)
-	 * @returns {string}
 	 */
 	function statIcon(key, value, liId) {
 		const cls = `social-stat-icon social-stat-icon-${key}`;
@@ -132,10 +112,6 @@ defineGlobalNamespaces("Social");
 
 	/**
 	 * Coloured keyword helper.
-	 *
-	 * @param {string} colour CSS colour class (pink, green, …)
-	 * @param {string} text
-	 * @returns {string}
 	 */
 	function tint(colour, text) {
 		return `<span class="${colour}">${text}</span>`;
@@ -143,10 +119,6 @@ defineGlobalNamespaces("Social");
 
 	/**
 	 * Subjective pronoun for an LI (he/she/they), lowercase.
-	 *
-	 * @param {string} id
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function subjectPronoun(id, variables) {
 		if (typeof Pronouns === "undefined") return "they";
@@ -155,10 +127,6 @@ defineGlobalNamespaces("Social");
 
 	/**
 	 * Possessive pronoun (his/her/their).
-	 *
-	 * @param {string} id
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function possessivePronoun(id, variables) {
 		if (typeof Pronouns === "undefined") return "their";
@@ -167,10 +135,6 @@ defineGlobalNamespaces("Social");
 
 	/**
 	 * Status sentence for a met love interest.
-	 *
-	 * @param {string} id
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function statusMarkup(id, variables) {
 		const vars = variables || V();
@@ -244,10 +208,6 @@ defineGlobalNamespaces("Social");
 
 	/**
 	 * HTML for one relationship card.
-	 *
-	 * @param {string} id
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function cardMarkup(id, variables) {
 		const vars = variables || V();

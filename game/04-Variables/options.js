@@ -26,9 +26,6 @@ defineGlobalNamespaces("Options");
 	const LINE_HEIGHT_CLASSES = ["lineHeight1", "lineHeight125", "lineHeight15", "lineHeight175", "lineHeight2"];
 	const FONT_SIZE_CLASSES = ["fontSize10", "fontSize12", "fontSize14", "fontSize16", "fontSize18", "fontSize20"];
 
-	/**
-	 * @returns {object}
-	 */
 	function createDefaults() {
 		return {
 			dateFormat: "MM/DD/YYYY",
@@ -53,9 +50,6 @@ defineGlobalNamespaces("Options");
 
 	/**
 	 * Ensures `$options` exists with every theme/display field.
-	 *
-	 * @param {object} [variables]
-	 * @returns {object}
 	 */
 	function ensure(variables) {
 		const vars = variables || V();
@@ -83,9 +77,6 @@ defineGlobalNamespaces("Options");
 		return vars.options;
 	}
 
-	/**
-	 * @returns {object|null}
-	 */
 	function loadSavedDefaults() {
 		try {
 			const raw = localStorage.getItem(DEFAULTS_KEY);
@@ -114,10 +105,6 @@ defineGlobalNamespaces("Options");
 		localStorage.removeItem(DEFAULTS_KEY);
 	}
 
-	/**
-	 * @param {number|string|undefined} value
-	 * @returns {string}
-	 */
 	function lineHeightClass(value) {
 		if (value == null || value === "") return "";
 		const n = Number(value);
@@ -129,10 +116,6 @@ defineGlobalNamespaces("Options");
 		return "";
 	}
 
-	/**
-	 * @param {number|string|undefined} value
-	 * @returns {string}
-	 */
 	function fontSizeClass(value) {
 		if (value == null || value === "") return "";
 		const n = Number(value);
@@ -174,8 +157,6 @@ defineGlobalNamespaces("Options");
 
 	/**
 	 * CSS class string for drunk-text previews / markup.
-	 *
-	 * @returns {string}
 	 */
 	function basicDrunkCss() {
 		const options = ensure();
@@ -183,18 +164,12 @@ defineGlobalNamespaces("Options");
 		return "drunk-text drunk-1";
 	}
 
-	/**
-	 * @returns {string}
-	 */
 	function basicJitterCss() {
 		const options = ensure();
 		if (!options.textAnimsAll || !options.textAnimsHeat) return "jitter-text";
 		return "jitter-text jitter-1";
 	}
 
-	/**
-	 * @returns {string}
-	 */
 	function basicHypnoCss() {
 		const options = ensure();
 		if (!options.textAnimsAll || !options.textAnimsHypno) return "hypno-text";
@@ -227,7 +202,6 @@ defineGlobalNamespaces("Options");
 		refreshAnimPreviews,
 	});
 
-	// SugarCube passage templates can call these by bare name like DoL
 	window.basicDrunkCss = basicDrunkCss;
 	window.basicJitterCss = basicJitterCss;
 	window.basicHypnoCss = basicHypnoCss;

@@ -24,9 +24,6 @@ defineGlobalNamespaces("SavesUI");
 	let hooksInstalled = false;
 	let prefs = loadPrefs();
 
-	/**
-	 * @returns {object}
-	 */
 	function loadPrefs() {
 		try {
 			const raw = localStorage.getItem(PREFS_KEY);
@@ -57,32 +54,20 @@ defineGlobalNamespaces("SavesUI");
 		}
 	}
 
-	/**
-	 * @returns {boolean}
-	 */
 	function isAutoSaveAllowed() {
 		return allowAutoSave;
 	}
 
-	/**
-	 * @returns {number}
-	 */
 	function slotsPerPage() {
 		const n = Math.trunc(Number(prefs.slotsPerPage)) || DEFAULT_PREFS.slotsPerPage;
 		return Math.max(1, Math.min(20, n));
 	}
 
-	/**
-	 * @returns {number}
-	 */
 	function slotCount() {
 		const configured = Config.saves.maxSlotSaves || 0;
 		return Math.min(configured, MAX_SLOTS);
 	}
 
-	/**
-	 * @returns {number}
-	 */
 	function pageCount() {
 		return Math.max(1, Math.ceil(slotCount() / slotsPerPage()));
 	}
@@ -93,26 +78,17 @@ defineGlobalNamespaces("SavesUI");
 		prefs.page = Math.max(1, Math.min(pages, page));
 	}
 
-	/**
-	 * @param {Error|string} ex
-	 */
 	function alertError(ex) {
 		const message = ex && ex.message ? ex.message : String(ex);
 		UI.alert(`${message.toUpperFirst()}.</p><p>${L10n.get("textAborting")}.`);
 	}
 
-	/**
-	 * @param {string} message
-	 * @returns {boolean}
-	 */
 	function confirmAction(message) {
 		return window.confirm(message);
 	}
 
 	/**
 	 * Optional custom save ID/name from Game Settings ($saveName).
-	 *
-	 * @returns {string}
 	 */
 	function customSaveName() {
 		try {
@@ -126,8 +102,6 @@ defineGlobalNamespaces("SavesUI");
 
 	/**
 	 * Current passage name. Do not use Passage#description() — in SugarCube 2.37 that is always "Turn N".
-	 *
-	 * @returns {string}
 	 */
 	function currentPassageTitle() {
 		try {
@@ -143,10 +117,7 @@ defineGlobalNamespaces("SavesUI");
 	}
 
 	/**
-	 * Story dialogue snippet for the Details column (DoL-style).
-	 *
-	 * @param {number} [maxLen]
-	 * @returns {string}
+	 * Story dialogue snippet for the Details column
 	 */
 	function passageExcerpt(maxLen) {
 		const limit = Math.max(24, Math.trunc(Number(maxLen)) || 72);
@@ -191,9 +162,6 @@ defineGlobalNamespaces("SavesUI");
 			.trim()}…`;
 	}
 
-	/**
-	 * @returns {{ desc: string, metadata: { saveName: string, detail: string } }}
-	 */
 	function savePayload() {
 		const saveName = customSaveName();
 		const detail = passageExcerpt(72);
@@ -205,8 +173,6 @@ defineGlobalNamespaces("SavesUI");
 
 	/**
 	 * Stamp ID name + dialogue excerpt onto every save (slot, auto, disk).
-	 *
-	 * @param {object} save
 	 */
 	function onSave(save) {
 		const payload = savePayload();
@@ -214,18 +180,10 @@ defineGlobalNamespaces("SavesUI");
 		save.metadata = Object.assign({}, save.metadata || {}, payload.metadata);
 	}
 
-	/**
-	 * @param {string} text
-	 * @returns {boolean}
-	 */
 	function isTurnLabel(text) {
 		return /^Turn\s+\d+/i.test(String(text || "").trim());
 	}
 
-	/**
-	 * @param {object|null|undefined} info
-	 * @returns {string}
-	 */
 	function displayName(info) {
 		if (!info) return "";
 		const fromMeta = info.metadata && info.metadata.saveName != null ? String(info.metadata.saveName).trim() : "";
@@ -233,10 +191,6 @@ defineGlobalNamespaces("SavesUI");
 		return "";
 	}
 
-	/**
-	 * @param {object|null|undefined} info
-	 * @returns {string}
-	 */
 	function displayDetail(info) {
 		if (!info) return "";
 		if (info.metadata && info.metadata.detail) {
@@ -248,11 +202,6 @@ defineGlobalNamespaces("SavesUI");
 		return "";
 	}
 
-	/**
-	 * @param {string} id
-	 * @param {Function} callback
-	 * @returns {HTMLInputElement}
-	 */
 	function createFileInput(id, callback) {
 		const input = document.createElement("input");
 		jQuery(input)
@@ -270,12 +219,6 @@ defineGlobalNamespaces("SavesUI");
 		return input;
 	}
 
-	/**
-	 * @param {string} label
-	 * @param {string} classNames
-	 * @param {Function|null} onClick
-	 * @returns {jQuery}
-	 */
 	function makeButton(label, classNames, onClick) {
 		const $btn = jQuery(document.createElement("button")).text(label);
 		if (classNames) $btn.addClass(classNames);
@@ -284,26 +227,14 @@ defineGlobalNamespaces("SavesUI");
 		return $btn;
 	}
 
-	/**
-	 * @param {number} index
-	 * @returns {Promise}
-	 */
 	function loadSlot(index) {
 		return Save.browser.slot.load(index).then(Engine.show, alertError);
 	}
 
-	/**
-	 * @param {number} index
-	 * @returns {Promise}
-	 */
 	function loadAuto(index) {
 		return Save.browser.auto.load(index).then(Engine.show, alertError);
 	}
 
-	/**
-	 * @param {number} index
-	 * @param {object|null|undefined} info
-	 */
 	function requestSave(index, info) {
 		const slotAllowed = typeof Config.saves.isAllowed !== "function" || Config.saves.isAllowed(Save.Type.Slot);
 		if (!slotAllowed) {
@@ -320,11 +251,6 @@ defineGlobalNamespaces("SavesUI");
 		}
 	}
 
-	/**
-	 * @param {"auto"|"slot"} kind
-	 * @param {number} index
-	 * @param {object} info
-	 */
 	function requestLoad(kind, index, info) {
 		if (!info) return;
 		const label = kind === "auto" ? "autosave" : `slot ${index + 1}`;
@@ -336,11 +262,6 @@ defineGlobalNamespaces("SavesUI");
 		Dialog.close();
 	}
 
-	/**
-	 * @param {"auto"|"slot"} kind
-	 * @param {number} index
-	 * @param {object} info
-	 */
 	function requestDelete(kind, index, info) {
 		if (!info) return;
 		const label = kind === "auto" ? "autosave" : `slot ${index + 1}`;
@@ -368,9 +289,6 @@ defineGlobalNamespaces("SavesUI");
 		render();
 	}
 
-	/**
-	 * @param {jQuery} $parent
-	 */
 	function appendPager($parent) {
 		clampPage();
 		const pages = pageCount();
@@ -437,9 +355,6 @@ defineGlobalNamespaces("SavesUI");
 		$parent.append($row);
 	}
 
-	/**
-	 * @param {jQuery} $parent
-	 */
 	function appendExportControls($parent) {
 		const $actions = jQuery(document.createElement("div")).addClass("dod-saves-export-actions");
 
@@ -488,9 +403,6 @@ defineGlobalNamespaces("SavesUI");
 		$parent.append($actions);
 	}
 
-	/**
-	 * @param {jQuery} $parent
-	 */
 	function appendConfirmRow($parent) {
 		const $confirm = jQuery(document.createElement("div")).addClass("dod-saves-confirm-row");
 		$confirm.append(jQuery(document.createElement("span")).text("Require confirmation on:"));
@@ -515,10 +427,6 @@ defineGlobalNamespaces("SavesUI");
 		$parent.append($confirm);
 	}
 
-	/**
-	 * @param {jQuery} $tbody
-	 * @param {object} opts
-	 */
 	function appendSlotRow($tbody, opts) {
 		const { label, kind, index, info } = opts;
 		const $tr = jQuery(document.createElement("tr")).addClass(info ? "dod-saves-filled" : "dod-saves-empty");
@@ -560,8 +468,6 @@ defineGlobalNamespaces("SavesUI");
 
 	/**
 	 * Rebuild dialog body.
-	 *
-	 * @returns {boolean}
 	 */
 	function render() {
 		prefs = Object.assign(prefs, loadPrefs());
@@ -635,19 +541,12 @@ defineGlobalNamespaces("SavesUI");
 		return true;
 	}
 
-	/**
-	 * @returns {boolean}
-	 */
 	function open() {
 		if (!render()) return false;
 		Dialog.open();
 		return true;
 	}
 
-	/**
-	 * @param {string} [desc]
-	 * @returns {boolean}
-	 */
 	function autosave(desc) {
 		if (!Save.browser.auto.isEnabled()) return false;
 		allowAutoSave = true;

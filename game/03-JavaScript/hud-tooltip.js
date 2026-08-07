@@ -15,9 +15,6 @@
 	let cursorX = 0;
 	let cursorY = 0;
 
-	/**
-	 * @param {Element} weekday
-	 */
 	function placeTip(weekday) {
 		const tip = weekday.querySelector(TIP);
 		if (!tip) return;
@@ -44,9 +41,6 @@
 		tip.style.left = `${Math.round(left)}px`;
 	}
 
-	/**
-	 * @param {Element} weekday
-	 */
 	function hideTip(weekday) {
 		const tip = weekday.querySelector(TIP);
 		if (!tip) return;

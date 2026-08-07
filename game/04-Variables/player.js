@@ -9,8 +9,6 @@ defineGlobalNamespaces("Player");
 
 	/**
 	 * Fresh cosmetics object matching the character creator fields.
-	 *
-	 * @returns {object}
 	 */
 	function createDefaults() {
 		return clone(C().character.defaults);
@@ -18,9 +16,6 @@ defineGlobalNamespaces("Player");
 
 	/**
 	 * Ensures `$player` exists with every cosmetics field. Safe to call on Start and after loads.
-	 *
-	 * @param {object} [variables] Defaults to live story variables.
-	 * @returns {object} The player object.
 	 */
 	function ensure(variables) {
 		const vars = variables || V();
@@ -47,9 +42,6 @@ defineGlobalNamespaces("Player");
 
 	/**
 	 * Picks a random catalogue value from Constants.character[listKey].
-	 *
-	 * @param {string} listKey
-	 * @returns {string|undefined}
 	 */
 	function pickCatalogue(listKey) {
 		const options = C().character[listKey];
@@ -59,9 +51,6 @@ defineGlobalNamespaces("Player");
 
 	/**
 	 * Overwrites `$player` cosmetics with a random pick from each character catalogue.
-	 *
-	 * @param {object} [variables] Defaults to live story variables.
-	 * @returns {object} The player object.
 	 */
 	function randomize(variables) {
 		const vars = variables || V();
@@ -100,9 +89,6 @@ defineGlobalNamespaces("Player");
 
 	/**
 	 * Resets `$player` cosmetics to Constants.character.defaults.
-	 *
-	 * @param {object} [variables] Defaults to live story variables.
-	 * @returns {object} The player object.
 	 */
 	function resetToDefaults(variables) {
 		const vars = variables || V();
@@ -110,38 +96,21 @@ defineGlobalNamespaces("Player");
 		return vars.player;
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {"younger"|"older"}
-	 */
 	function age(variables) {
 		const player = ensure(variables);
 		return player.age === "younger" ? "younger" : "older";
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {boolean}
-	 */
 	function isYounger(variables) {
 		return age(variables) === "younger";
 	}
 
-	/**
-	 * @param {object} [variables]
-	 * @returns {boolean}
-	 */
 	function isOlder(variables) {
 		return age(variables) === "older";
 	}
 
 	/**
 	 * Picks a short phrase by player age.
-	 *
-	 * @param {string} youngerText
-	 * @param {string} olderText
-	 * @param {object} [variables]
-	 * @returns {string}
 	 */
 	function aged(youngerText, olderText, variables) {
 		return isYounger(variables) ? String(youngerText || "") : String(olderText || "");

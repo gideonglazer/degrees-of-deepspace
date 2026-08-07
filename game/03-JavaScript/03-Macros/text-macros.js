@@ -1,5 +1,5 @@
 /**
- * Theme-aware passage text colour macros (DoL-style span classes).
+ * Theme-aware passage text colour macros
  *
  * Colours: <<yellow>>…<</yellow>>, <<red>>, <<green>>, <<blue>>, <<pink>>, …
  * Semantic: <<important>> (gold), <<warning>> (soft pink-red), <<success>>
