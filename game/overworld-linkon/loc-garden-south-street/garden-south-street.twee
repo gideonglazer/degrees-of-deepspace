@@ -1,14 +1,20 @@
 :: Garden South Street
 <<initPlayState>>\
 <<pronouns "xavier">>\
-<<if !Flags.get("xavierFirstWorkWalk") && World.isWeekday() && World.isBefore(8, 30)>>\
+<<if Player.isOlder() && !Flags.get("xavierFirstWorkWalk") && World.isWeekday() && World.isBefore(8, 30)>>\
 <<goto "Xavier First Morning Walk">>\
 <</if>>\
 <<run World.setLocation("garden-south-street", "Garden South Street")>>\
+<<if Player.isOlder()>>\
 You are on Garden South Street. You live in an apartment complex here, and it is close to Azure Square. There's a pet store and care center, as well as a café on this street, however, <<Xavier>> considers the café to be more of a "breakfast restaurant".
+<<else>>\
+You are on Garden South Street. The apartment complex here is close to Azure Square. There's a pet store and care center, as well as a café on this street—though some locals insist it's more of a "breakfast restaurant".
+<</if>>
 
 Places of Interest
+<<if Player.isOlder()>>\
 <<icon "apartment">><<link "Enter the apartment complex <span class='action-time'>(0:00)</span>">><<goto "Apartment Hallway Lower">><</link>>
+<</if>>\
 <<foodIcon "breakfast-restaurant" "omelette-dish">><<link "Enter the breakfast restaurant <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Breakfast Restaurant">><</link>>
 <<icon "pet-store">><<link "Visit the pet store <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Pet Store">><</link>>
 <<icon "pet-care-center">><<link "Visit the pet care center <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Pet Care Center">><</link>>
@@ -18,7 +24,7 @@ Travel
 
 :: Pet Store
 <<initPlayState>>\
-<<run World.setLocation("apartment-living-room", "Garden South Street — Pet Store")>>\
+<<run World.setLocation("garden-south-pet-store", "Garden South Street — Pet Store")>>\
 
 Coming Soon...
 
@@ -26,7 +32,7 @@ Coming Soon...
 
 :: Pet Care Center
 <<initPlayState>>\
-<<run World.setLocation("apartment-living-room", "Garden South Street — Pet Care Center")>>\
+<<run World.setLocation("garden-south-pet-care", "Garden South Street — Pet Care Center")>>\
 
 Coming Soon...
 

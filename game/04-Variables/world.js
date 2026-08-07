@@ -89,6 +89,53 @@ defineGlobalNamespaces("World");
 		return world;
 	}
 
+	const HOME_BY_AGE = {
+		older: {
+			id: "apartment-bedroom",
+			label: "Garden South Street — Apartment",
+			passage: "Apartment Bedroom",
+			locationIds: [
+				"apartment-bedroom",
+				"apartment-living-room",
+				"apartment-kitchen",
+				"apartment-hallway",
+				"apartment-hallway-upper",
+				"apartment-hallway-lower",
+			],
+		},
+		younger: {
+			id: "bloomshore-bedroom",
+			label: "Bloomshore District — Home",
+			passage: "Bloomshore Bedroom",
+			locationIds: ["bloomshore-bedroom", "bloomshore-living-room"],
+		},
+	};
+
+	/**
+	 * Home spawn / identity for the player's age.
+	 *
+	 * @param {object} [variables]
+	 * @returns {{ id: string, label: string, passage: string, locationIds: string[] }}
+	 */
+	function homeForAge(variables) {
+		const ageKey = typeof Player !== "undefined" && Player.isYounger(variables) ? "younger" : "older";
+		return HOME_BY_AGE[ageKey];
+	}
+
+	/**
+	 * True if locationId belongs to the player's gated home (safe zone).
+	 *
+	 * @param {string} locationId
+	 * @param {object} [variables]
+	 * @returns {boolean}
+	 */
+	function isPlayerHome(locationId, variables) {
+		const home = homeForAge(variables);
+		const id = String(locationId || "");
+		if (!id || !home || !home.locationIds) return false;
+		return home.locationIds.indexOf(id) !== -1;
+	}
+
 	/**
 	 * Fresh calendar for a new run from the character creator.
 	 *
@@ -97,16 +144,18 @@ defineGlobalNamespaces("World");
 	 */
 	function startNew(variables) {
 		const vars = variables || V();
-		vars.world = createDefaults();
+		vars.world = createDefaults(vars);
 		applyStartingSeason(vars);
 		return vars.world;
 	}
 
 	/**
+	 * @param {object} [variables]
 	 * @returns {object}
 	 */
-	function createDefaults() {
+	function createDefaults(variables) {
 		const monday = mondayOnOrAfter(2048, 3, 21);
+		const home = homeForAge(variables);
 		return {
 			year: monday.year,
 			month: monday.month,
@@ -115,8 +164,8 @@ defineGlobalNamespaces("World");
 			minute: 0,
 			weather: "fair",
 			temperatureC: 16,
-			location: "apartment-bedroom",
-			locationLabel: "Garden South Street — Apartment",
+			location: home.id,
+			locationLabel: home.label,
 		};
 	}
 
@@ -470,7 +519,10 @@ defineGlobalNamespaces("World");
 		WEATHER_TEXT,
 		SEASON_STARTS,
 		SEASON_IDS,
+		HOME_BY_AGE,
 		mondayOnOrAfter,
+		homeForAge,
+		isPlayerHome,
 		createDefaults,
 		ensure,
 		resolveStartingSeason,

@@ -1,0 +1,10 @@
+:: Linkon University
+<<initPlayState>>\
+<<run World.setLocation("linkon-university", "Bloomshore District — Linkon University")>>\
+<<if Player.isYounger()>>\
+You approach the gates of Linkon University.
+<<else>>\
+You arrive at Linkon University. Students move between buildings with backpacks and coffee cups. It makes you nostalgic thinking about your younger years here...
+<</if>>
+
+<<actionIcon "exit">><<link "Leave campus <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Bloomshore District">><</link>>

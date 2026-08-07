@@ -1,5 +1,6 @@
 :: Apartment Hallway
 <<initPlayState>>\
+<<if !Player.isOlder()>><<goto "Garden South Street">><</if>>\
 <<run World.setLocation("apartment-hallway", "Garden South Street — Apartment Hallway")>>\
 You are in the hallway outside of your apartment.
 
@@ -10,6 +11,7 @@ You are in the hallway outside of your apartment.
 
 :: Apartment Hallway Upper
 <<initPlayState>>\
+<<if !Player.isOlder()>><<goto "Garden South Street">><</if>>\
 <<pronouns "xavier">>\
 <<run World.setLocation("apartment-hallway-upper", "Garden South Street — Upper Hallway")>>\
 You are in the hallway on the floor above your apartment. <<Xavier>> lives on this floor.
@@ -20,6 +22,7 @@ You are in the hallway on the floor above your apartment. <<Xavier>> lives on th
 
 :: Xavier Door Knock
 <<initPlayState>>\
+<<if !Player.isOlder()>><<goto "Garden South Street">><</if>>\
 <<pronouns "xavier">>\
 <<run World.setLocation("apartment-hallway-upper", "Garden South Street — Upper Hallway")>>\
 You knock on <<Xavier>>'s door. Looks like <<he>> isn't home right now.
@@ -28,6 +31,7 @@ You knock on <<Xavier>>'s door. Looks like <<he>> isn't home right now.
 
 :: Apartment Hallway Lower
 <<initPlayState>>\
+<<if !Player.isOlder()>><<goto "Garden South Street">><</if>>\
 <<run World.setLocation("apartment-hallway-lower", "Garden South Street — Lower Hallway")>>\
 You are in the front lobby of your apartment complex.
 

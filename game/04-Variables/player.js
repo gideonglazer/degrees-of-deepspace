@@ -110,5 +110,51 @@ defineGlobalNamespaces("Player");
 		return vars.player;
 	}
 
-	Object.assign(Player, { createDefaults, ensure, randomize, resetToDefaults });
+	/**
+	 * @param {object} [variables]
+	 * @returns {"younger"|"older"}
+	 */
+	function age(variables) {
+		const player = ensure(variables);
+		return player.age === "younger" ? "younger" : "older";
+	}
+
+	/**
+	 * @param {object} [variables]
+	 * @returns {boolean}
+	 */
+	function isYounger(variables) {
+		return age(variables) === "younger";
+	}
+
+	/**
+	 * @param {object} [variables]
+	 * @returns {boolean}
+	 */
+	function isOlder(variables) {
+		return age(variables) === "older";
+	}
+
+	/**
+	 * Picks a short phrase by player age.
+	 *
+	 * @param {string} youngerText
+	 * @param {string} olderText
+	 * @param {object} [variables]
+	 * @returns {string}
+	 */
+	function aged(youngerText, olderText, variables) {
+		return isYounger(variables) ? String(youngerText || "") : String(olderText || "");
+	}
+
+	Object.assign(Player, {
+		createDefaults,
+		ensure,
+		randomize,
+		resetToDefaults,
+		age,
+		isYounger,
+		isOlder,
+		aged,
+	});
 })();

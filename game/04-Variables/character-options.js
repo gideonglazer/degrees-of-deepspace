@@ -231,7 +231,7 @@
 		defaults: {
 			gender: "female",
 			clothingPref: "feminine",
-			age: "younger",
+			age: "older",
 			height: "small",
 			hair: {
 				length: "long",

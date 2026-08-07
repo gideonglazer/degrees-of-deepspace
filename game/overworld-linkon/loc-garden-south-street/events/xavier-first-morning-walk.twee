@@ -1,5 +1,6 @@
 :: Xavier First Morning Walk
 <<initPlayState>>\
+<<if !Player.isOlder()>><<goto "Garden South Street">><</if>>\
 <<pronouns "xavier">>\
 <<run Flags.set("xavierFirstWorkWalk")>>\
 <<run World.setLocation("garden-south-street", "Garden South Street")>>\

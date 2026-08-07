@@ -1,5 +1,6 @@
 :: Apartment Bedroom
 <<initPlayState>>\
+<<if !Player.isOlder()>><<goto "Garden South Street">><</if>>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
 You stand in the bedroom of your apartment.
 
@@ -14,6 +15,7 @@ You stand in the bedroom of your apartment.
 
 :: Apartment Bedroom Sleep
 <<initPlayState>>\
+<<if !Player.isOlder()>><<goto "Garden South Street">><</if>>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
 You climb in bed, cuddling into the plush sheets.
 
@@ -27,6 +29,7 @@ You climb in bed, cuddling into the plush sheets.
 
 :: Apartment Bedroom Wake
 <<initPlayState>>\
+<<if !Player.isOlder()>><<goto "Garden South Street">><</if>>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
 <<if def $sleepHours>>\
 <<set $sleepResult to World.sleepFor($sleepHours)>>\

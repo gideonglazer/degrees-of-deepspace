@@ -1,0 +1,14 @@
+:: Bloomshore Living Room
+<<initPlayState>>\
+<<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
+<<run World.setLocation("bloomshore-living-room", "Bloomshore District — Home")>>\
+You stand in the living room. Grandma's things are neatly arranged; <<Caleb>>'s DAA jacket is draped over a chair.
+
+<<icon "bedroom">><<link "Go to Bedroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Bedroom">><</link>>
+<<gap>>
+<<icon "apartment-ml-door">><<link "Leave Home <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore District">><</link>>
+
+:: Bloomshore Home Entry
+<<initPlayState>>\
+<<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
+<<goto "Bloomshore Living Room">>

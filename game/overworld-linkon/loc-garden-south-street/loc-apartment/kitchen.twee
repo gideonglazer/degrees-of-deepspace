@@ -1,5 +1,6 @@
 :: Apartment Kitchen
 <<initPlayState>>\
+<<if !Player.isOlder()>><<goto "Garden South Street">><</if>>\
 <<run World.setLocation("apartment-kitchen", "Garden South Street — Apartment")>>\
 You stand in the kitchen of your apartment.
 

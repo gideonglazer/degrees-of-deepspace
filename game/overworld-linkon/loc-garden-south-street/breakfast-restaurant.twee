@@ -6,7 +6,7 @@
 <</if>>\
 <<if !World.isBefore(6, 0) && World.isBefore(15, 0)>>\
 <<run World.setLocation("breakfast-restaurant", "Garden South Street — Breakfast Restaurant")>>\
-You are in the breakfast restaurant that resides right next to your apartment complex. The scent of pancakes and warm maple syrup fills the air.<<if previous() === "Garden South Street">> A lady behind the counter greets you, welcoming you to sit.<</if>> You sit at a table, examining the menu, which lists what's currently being served.<<if $stats.hunger < 50>> <<orange>>You can feel your stomach growling.<</orange>><</if>>
+You are in the breakfast restaurant<<if Player.isOlder()>> that resides right next to your apartment complex<<else>> on Garden South Street<</if>>. The scent of pancakes and warm maple syrup fills the air.<<if previous() === "Garden South Street">> A lady behind the counter greets you, welcoming you to sit.<</if>> You sit at a table, examining the menu, which lists what's currently being served.<<if $stats.hunger < 50>> <<orange>>You can feel your stomach growling.<</orange>><</if>>
 
 Foods:
 <<if $breakfastDaily.food>>\

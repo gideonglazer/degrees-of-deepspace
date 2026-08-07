@@ -1,5 +1,6 @@
 :: Apartment Living Room
 <<initPlayState>>\
+<<if !Player.isOlder()>><<goto "Garden South Street">><</if>>\
 <<run World.setLocation("apartment-living-room", "Garden South Street — Apartment")>>\
 You stand in the living room of your apartment.
 

@@ -151,6 +151,11 @@
 		return Pronouns.activeGendered(String(args[0] || ""), String(args[1] || ""), String(args[2] || ""));
 	});
 
+	/** <<aged "student" "hunter">> — younger text, then older text. */
+	DefineMacroS("aged", function (args) {
+		return Player.aged(String(args[0] || ""), String(args[1] || ""));
+	});
+
 	DefineMacroS("liname", function (args) {
 		return LoveInterests.displayName(String(args[0] || ""));
 	});

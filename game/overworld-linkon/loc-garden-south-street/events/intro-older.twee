@@ -1,5 +1,6 @@
-:: Intro
+:: Intro Older
 <<initPlayState>>\
+<<if Player.isYounger()>><<goto "Intro Younger">><</if>>\
 <<pronouns "player">>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
 Welcome to Degrees of Deepspace, <<honorific>> Hunter!
@@ -14,6 +15,7 @@ Be diligent, and avoid going outside at night...
 
 :: Intro Xavier Morning
 <<initPlayState>>\
+<<if Player.isYounger()>><<goto "Intro Younger">><</if>>\
 <<pronouns "xavier">>\
 <<run LoveInterests.meet("xavier")>>\
 <<run World.setLocation("apartment-bedroom", "Garden South Street — Apartment")>>\
@@ -21,7 +23,7 @@ You wake to a sliver of sunlight peeking in through your bedroom window, sheets 
 
 "Good morning." <<Xavier>> speaks calmly, rubbing the back of <<his>> neck. <<His>> eyes awkwardly dart towards the floor, before they could meet yours. <<important>>"I know it isn't ideal, but in order to keep living here, I'll need <<money 500>> from you by the end of this week."<</important>>
 
-"I know you've always been very punctual with paying me on time. So, you know I won't be mad at you if you are a day late this time around." <<He>> pauses, <<warning>>"however, if you are unable to pay me back for the week… I suppose we'll have to come up with another arrangement for repayment, right?"<</warning>> <<His>> sweet smile sent a shiver down your spine, but you keep still. <<stress "+">>
+"I know you've always been very punctual with paying me on time. So, you know I won't be mad at you if you are a day late this time around." <<He>> pauses, "however, if you are unable to pay me back for the week… I suppose we'll have to come up with another arrangement for repayment, right?" <<His>> sweet smile sent a shiver down your spine, but you keep still. <<stress "+">>
 
 "It looks like you still need some time to get ready… I'll be waiting for you outside. That is… <i>if</i> you want to walk to work with me, of course." <<His>> cheeks flushed red.
 

@@ -1,0 +1,27 @@
+:: Intro Younger
+<<initPlayState>>\
+<<if Player.isOlder()>><<goto "Intro Older">><</if>>\
+<<pronouns "player">>\
+<<run World.setLocation("bloomshore-bedroom", "Bloomshore District — Home")>>\
+Welcome to Degrees of Deepspace!
+
+Today is <<worldDateLong>>. Linkon City is <<worldWeather>> this morning, inviting you in to explore and meet new friends.
+
+You live in the Bloomshore District with your grandma and <<Caleb>>. Linkon University is close by—your classes come first. Odd jobs around the city can help you earn a little extra, and your allowance stretches further when you're careful with it.
+
+Be diligent, and avoid going outside at night...
+
+<<link "Next">><<goto "Intro Younger Morning">><</link>>
+
+:: Intro Younger Morning
+<<initPlayState>>\
+<<if Player.isOlder()>><<goto "Intro Older">><</if>>\
+<<pronouns "caleb">>\
+<<run LoveInterests.meet("caleb")>>\
+<<run World.setLocation("bloomshore-bedroom", "Bloomshore District — Home")>>\
+
+Coming soon...
+
+<<run Journal.addReminder("linkon-university", "Attend Linkon University on weekdays. Campus is near your home in Bloomshore.", { permanent: true })>>\
+
+<<link "Continue">><<goto "Bloomshore Bedroom">><</link>>

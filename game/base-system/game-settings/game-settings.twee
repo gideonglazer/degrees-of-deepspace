@@ -14,7 +14,7 @@
 <<textbox "$saveName" "">>\
 <div class="small-description">Save files are stored in your browser's cache. Export your saves frequently to avoid losing them.</div>\
 </div>\
-<span id="ccBeginWrap"><<button "Begin">><<run World.startNew()>><<initPlayState>><<goto "Intro">><</button>></span>\
+<span id="ccBeginWrap"><<button "Begin">><<run World.startNew()>><<initPlayState>><<if Player.isYounger()>><<goto "Intro Younger">><<else>><<goto "Intro Older">><</if>><</button>></span>\
 <<run GameSettings.styleBegin()>>\
 <</widget>>
 
@@ -27,7 +27,7 @@
 <fieldset class="cc-fieldset"><legend class="cc-legend">Preferred Clothing</legend>\
 <<ccRadios "$player.clothingPref" "clothingPrefs">>\
 </fieldset>\
-<fieldset class="cc-fieldset"><legend class="cc-legend">Age</legend>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Age <span class="cc-info" tabindex="0" aria-label="Age determines gameplay. Selecting Younger starts you as a student living in the Bloomshore District. Select Older to be a Deepspace Hunter living on Garden South Street."><span class="cc-info-mark" aria-hidden="true">?</span><span class="cc-info-tip">Age determines gameplay. Selecting “Younger” allows you to be a student living in the Bloomshore District. Select “Older” to be a Deepspace Hunter living on Garden South Street.</span></span></legend>\
 <<ccRadios "$player.age" "ages">>\
 </fieldset>\
 <fieldset class="cc-fieldset"><legend class="cc-legend">Height</legend>\

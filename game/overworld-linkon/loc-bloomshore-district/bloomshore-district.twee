@@ -1,0 +1,17 @@
+:: Bloomshore District
+<<initPlayState>>\
+<<run World.setLocation("bloomshore-district", "Bloomshore District")>>\
+<<if Player.isYounger()>>\
+You are in the Bloomshore District. You live here with <<Caleb>> and grandma, not far from Linkon University's campus.
+<<else>>\
+You are in the Bloomshore District. Quiet streets lead toward Linkon University's campus and the homes nearby.
+<</if>>
+
+Places of Interest
+<<if Player.isYounger()>>\
+<<icon "apartment">><<link "Enter your home <span class='action-time'>(0:00)</span>">><<goto "Bloomshore Home Entry">><</link>>
+<</if>>\
+<<link "Visit Linkon University <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Linkon University">><</link>>
+
+Travel
+<<link "Tide Street <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Tide Street">><</link>>

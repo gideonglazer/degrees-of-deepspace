@@ -1,3 +1,8 @@
 :: Tide Street
 <<initPlayState>>\
 <<run World.setLocation("tide-street", "Tide Street")>>\
+You are on Tide Street, a stretch between Azure Square and the Bloomshore District.
+
+Travel
+<<link "Azure Square <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Azure Square">><</link>>
+<<link "Bloomshore District <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Bloomshore District">><</link>>

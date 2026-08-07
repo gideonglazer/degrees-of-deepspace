@@ -97,6 +97,67 @@
 	text-align: center;
 }
 
+.cc-info {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 0.25em;
+	vertical-align: middle;
+	cursor: help;
+}
+
+.cc-info-mark {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.05em;
+	height: 1.05em;
+	border: 1px solid var(--border-strong);
+	border-radius: 50%;
+	color: var(--text-muted);
+	font-size: 0.78em;
+	font-weight: 600;
+	line-height: 1;
+}
+
+.cc-info:hover .cc-info-mark,
+.cc-info:focus .cc-info-mark,
+.cc-info:focus-visible .cc-info-mark {
+	border-color: var(--warning);
+	color: var(--warning);
+}
+
+.cc-info-tip {
+	z-index: 100000;
+	display: none;
+	position: absolute;
+	left: 50%;
+	bottom: calc(100% + 0.45em);
+	box-sizing: border-box;
+	width: max-content;
+	max-width: min(22rem, 70vw);
+	padding: 0.45em 0.65em;
+	border: 1px solid var(--tooltip-border);
+	border-radius: 4px;
+	background-color: var(--tooltip-background);
+	color: var(--tooltip-color, var(--text-primary));
+	font-size: 0.88em;
+	font-weight: 400;
+	line-height: 1.4;
+	letter-spacing: 0.01em;
+	text-align: left;
+	white-space: normal;
+	pointer-events: none;
+	transform: translateX(-50%);
+}
+
+.cc-info:hover .cc-info-tip,
+.cc-info:focus .cc-info-tip,
+.cc-info:focus-visible .cc-info-tip {
+	display: block;
+}
+
 .cc-options {
 	display: flex;
 	flex-wrap: wrap;
