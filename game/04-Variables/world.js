@@ -51,11 +51,11 @@ defineGlobalNamespaces("World");
 	function resolveStartingSeason(variables) {
 		const vars = variables || V();
 		const options = typeof Options !== "undefined" ? Options.ensure(vars) : { startingSeason: "spring" };
-		let season = String(options.startingSeason || "spring");
+		let season = String(options.startingSeason || "autumn");
 		if (season === "random") {
 			season = SEASON_IDS[getRandomIntInclusive(0, SEASON_IDS.length - 1)];
 		}
-		if (!SEASON_STARTS[season]) season = "spring";
+		if (!SEASON_STARTS[season]) season = "autumn";
 		return season;
 	}
 

@@ -9,9 +9,8 @@ You are in the Bloomshore District. Quiet streets lead toward Linkon University'
 
 Places of Interest
 <<if Player.isYounger()>>\
-<<icon "apartment">><<link "Enter your home <span class='action-time'>(0:00)</span>">><<goto "Bloomshore Home Entry">><</link>>
+<<icon "bloomshore-home">><<link "Enter your home <span class='action-time'>(0:00)</span>">><<goto "Bloomshore Home Entry">><</link>>
 <</if>>\
-<<link "Visit Linkon University <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Linkon University">><</link>>
+<<icon "linkon-university">><<link `Player.aged("Go to Linkon University", "Visit Linkon University") + " <span class='action-time'>(0:03)</span>"`>><<run World.advance(3)>><<goto "Linkon University">><</link>>
 
-Travel
-<<link "Tide Street <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Tide Street">><</link>>
+<<linkonTravel>>

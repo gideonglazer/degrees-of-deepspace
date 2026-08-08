@@ -6,9 +6,7 @@ You stand in your bedroom.
 
 <<actionIcon "sleep-apt">><<link "Sleep in what you’re currently wearing">><<goto "Bloomshore Bedroom Sleep">><</link>>
 <<gap>>
-<<icon "apartment-hall">><<link "Exit Bedroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Hallway">><</link>>
-<<gap>>
-<<icon "apartment-ml-door">><<link "Leave Home <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Bloomshore District">><</link>>
+<<icon "apartment-hall">><<link "Leave the bedroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Downstairs">><</link>>
 
 
 :: Bloomshore Bedroom Sleep

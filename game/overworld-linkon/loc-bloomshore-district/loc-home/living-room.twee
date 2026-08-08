@@ -4,4 +4,4 @@
 <<run World.setLocation("bloomshore-living-room", "Bloomshore District — Home")>>\
 You stand in the living room. Grandma's things are neatly arranged; <<Caleb>>'s DAA jacket is draped over a chair.
 
-<<icon "apartment-hall">><<link "Return downstairs <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Downstairs">><</link>>
+<<icon "apartment-hall">><<link "Leave the living room <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Downstairs">><</link>>

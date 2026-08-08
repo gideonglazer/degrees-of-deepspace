@@ -19,8 +19,7 @@ Places of Interest
 <<icon "pet-store">><<link "Visit the pet store <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Pet Store">><</link>>
 <<icon "pet-care-center">><<link "Visit the pet care center <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Pet Care Center">><</link>>
 
-Travel
-<<link "Azure Square <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Azure Square">><</link>>
+<<linkonTravel>>
 
 :: Pet Store
 <<initPlayState>>\

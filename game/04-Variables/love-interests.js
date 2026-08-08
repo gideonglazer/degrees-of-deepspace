@@ -177,10 +177,20 @@ defineGlobalNamespaces("LoveInterests");
 
 	/**
 	 * Epithet only, e.g. "the Deepspace Hunter".
+	 * Caleb's title follows LI gender (brother / sister / sibling).
 	 */
-	function displayEpithet(id) {
+	function displayEpithet(id, variables) {
 		const li = get(id);
-		return li && li.title ? li.title : "";
+		if (!li || !li.title) return "";
+		if (id === "caleb" && typeof Pronouns !== "undefined") {
+			return Pronouns.gendered(
+				Pronouns.liGender("caleb", variables),
+				"your Big Brother",
+				"your Big Sister",
+				"your Sibling"
+			);
+		}
+		return li.title;
 	}
 
 	/**
@@ -190,7 +200,8 @@ defineGlobalNamespaces("LoveInterests");
 		const li = get(id);
 		if (!li) return "";
 		const name = displayName(id, variables);
-		return li.title ? `${name} ${li.title}` : name;
+		const epithet = displayEpithet(id, variables);
+		return epithet ? `${name} ${epithet}` : name;
 	}
 
 	/**

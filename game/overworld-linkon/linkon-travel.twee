@@ -1,0 +1,17 @@
+:: Linkon Travel Widgets [widget]
+
+<<widget "linkonTravel">>\
+Travel
+<<if passage() !== "Azure Square">>\
+<<link "Azure Square <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Azure Square">><</link>>
+<</if>>\
+<<if passage() !== "Bloomshore District">>\
+<<link "Bloomshore District <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Bloomshore District">><</link>>
+<</if>>\
+<<if passage() !== "Garden South Street">>\
+<<link "Garden South Street <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Garden South Street">><</link>>
+<</if>>\
+<<if passage() !== "Tide Street">>\
+<<link "Tide Street <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Tide Street">><</link>>
+<</if>>\
+<</widget>>

@@ -32,7 +32,7 @@ defineGlobalNamespaces("Options");
 			temperature: "fahrenheit",
 			timeFormat: "12",
 			currency: "$",
-			startingSeason: "spring",
+			startingSeason: "autumn",
 			sidebarHints: true,
 			passageLineHeight: undefined,
 			overlayLineHeight: undefined,

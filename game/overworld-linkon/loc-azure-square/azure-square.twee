@@ -15,6 +15,4 @@ The night chill consumes you, and gleaming lights surround you. As you look up, 
 Places of Interest
 <<icon "hunters-association">><<link "Enter the Hunter's Association <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Hunters Association">><</link>>
 
-Travel
-<<link "Tide Street <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Tide Street">><</link>>
-<<link "Garden South Street <span class='action-time'>(0:05)</span>">><<run World.advance(5)>><<goto "Garden South Street">><</link>>
+<<linkonTravel>>

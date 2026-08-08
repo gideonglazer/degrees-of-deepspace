@@ -213,7 +213,7 @@ defineGlobalNamespaces("Social");
 		const vars = variables || V();
 		LoveInterests.ensure(vars);
 		const name = LoveInterests.displayName(id, vars);
-		const epithet = LoveInterests.displayEpithet(id);
+		const epithet = LoveInterests.displayEpithet(id, vars);
 		const stats = LoveInterests.statsFor(id)
 			.map(key => ({ key, value: LoveInterests.getStat(id, key, vars) }))
 			.filter(stat => stat.value > 0);

@@ -15,7 +15,7 @@ You stand in the kitchen.<<if CalebBreakfast.available()>> Morning light catches
 <<blue>>You missed <<Caleb>>'s breakfast. <<He>> clears the kitchen after <<= World.formatTimeAt(9, 0)>>.<</blue>>
 <</if>>\
 <<gap>>
-<<icon "apartment-hall">><<link "Return downstairs <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Downstairs">><</link>>
+<<icon "apartment-hall">><<link "Leave the kitchen <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Downstairs">><</link>>
 
 :: Bloomshore Kitchen Breakfast
 <<initPlayState>>\

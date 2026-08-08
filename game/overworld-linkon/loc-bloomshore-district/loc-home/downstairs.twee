@@ -1,12 +1,19 @@
 :: Bloomshore Downstairs
 <<initPlayState>>\
 <<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
+<<pronouns "caleb">>\
 <<run World.setLocation("bloomshore-downstairs", "Bloomshore District — Home")>>\
-You are downstairs near the front of the house. The living room and kitchen open off this space; the stairs lead back up, and the front door waits behind you.
+You are home. Doors open onto the rooms upstairs and down; the front door waits behind you.
 
-<<actionIcon "stairs-up">><<link "Go upstairs <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Hallway">><</link>>
-<<icon "living-room">><<link "Go to Living Room <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Living Room">><</link>>
+<<icon "attic">><<link "Go up to the attic <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Attic Locked">><</link>>
+<<gap>>
+<<icon "apartment-door">><<link "Try the locked room <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Locked Room">><</link>>
+<<icon "bedroom">><<link "Enter Grandma's bedroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Grandma Bedroom">><</link>>
+<<icon "bedroom">><<link `"Enter " + LoveInterests.displayName("caleb") + "'s bedroom <span class='action-time'>(0:01)</span>"`>><<run World.advance(1)>><<goto "Bloomshore Caleb Bedroom">><</link>>
+<<icon "bedroom">><<link "Enter your bedroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Bedroom">><</link>>
+<<gap>>
 <<icon "kitchen">><<link "Go to Kitchen <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Kitchen">><</link>>
+<<icon "living-room">><<link "Go to Living Room <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore Living Room">><</link>>
 <<gap>>
 <<icon "apartment-ml-door">><<link "Leave Home <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Bloomshore District">><</link>>
 
