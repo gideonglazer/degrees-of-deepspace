@@ -25,7 +25,7 @@ You wake to a sliver of sunlight peeking in through your bedroom window, sheets 
 
 <<important>>"You do realize school starts at <<= World.formatTimeAt(9, 0)>>, right? You should probably get up soon if you want to make it in time."<</important>> You roll your eyes at <<his>> bleak observation. <<He>> sits beside you, placing a hand beside your leg.
 
-"I know you're gettin' older, and you probably want some more independence... <<important>>So, I decided I'm going to start giving you a <<money 50>> allowance<</important>>. It's important to learn the value of money while you're still young." <<He>> pauses, "But. That doesn't mean you have to stop relying on me when you need anything at all..." <<His>> smile leaves you feeling somewhat uneasy, but you keep still. <<stress "+">> <<love "caleb" "+">>
+"I know you're gettin' older, and you probably want some more independence... <<important>>So, I decided I'm going to start giving you a <<money 50>> allowance<</important>>. It's important to learn the value of money while you're still young." <<He>> pauses, "But. That doesn't mean you have to stop relying on me when you need anything at all..." <<His>> smile leaves you feeling somewhat uneasy, but you keep still. <<stress "+">> <<affinity "caleb" "+">>
 
 "I have to go to work now. I'll wait outside the University after school so we can walk back together, alright?" <<He>> grins, patting your head before leaving your bedroom. You pull yourself out of bed, stretching. 
 

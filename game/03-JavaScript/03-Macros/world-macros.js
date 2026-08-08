@@ -161,12 +161,12 @@
 	});
 
 	/**
-	 * <<love "xavier" "+">> — applies a love tier and prints the indicator.
+	 * <<affinity "xavier" "+">> — applies an affinity tier and prints the indicator.
 	 */
-	DefineMacroS("love", function (args) {
+	DefineMacroS("affinity", function (args) {
 		const id = args[0] != null ? String(args[0]) : "";
 		const tier = args[1] != null ? String(args[1]) : "+";
-		return LoveInterests.applyLove(id, tier);
+		return LoveInterests.applyAffinity(id, tier);
 	});
 
 	/**

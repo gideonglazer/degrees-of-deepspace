@@ -72,7 +72,7 @@ defineGlobalNamespaces("LoveInterests");
 		 * Relationship stats shared by every love interest.
 		 * Unique extras are listed under uniqueStats by id (Seiya = Xavier).
 		 */
-		universalStats: ["love", "longing"],
+		universalStats: ["affinity", "longing"],
 
 		/** Per-character extras beyond the universal stats. */
 		uniqueStats: {
@@ -86,7 +86,7 @@ defineGlobalNamespaces("LoveInterests");
 		},
 
 		statLabels: {
-			love: "Love",
+			affinity: "Affinity",
 			longing: "Longing",
 			vulnerability: "Vulnerability",
 			dominance: "Dominance",
@@ -103,7 +103,7 @@ defineGlobalNamespaces("LoveInterests");
 			gender: "male",
 			height: "tall",
 			skinTone: "fair",
-			love: 0,
+			affinity: 0,
 			longing: 0,
 			hair: {
 				length: "short",
@@ -111,9 +111,9 @@ defineGlobalNamespaces("LoveInterests");
 			},
 		},
 
-		/** Love / longing / unique-stat change magnitudes for +, ++, +++. */
-		loveTiers: { "+": 1, "++": 2, "+++": 3 },
-		loveMax: 100,
+		/** Affinity / longing / unique-stat change magnitudes for +, ++, +++. */
+		affinityTiers: { "+": 1, "++": 2, "+++": 3 },
+		affinityMax: 100,
 	});
 
 	/**
@@ -238,7 +238,7 @@ defineGlobalNamespaces("LoveInterests");
 	 * Stat keys shown for a love interest (universal + unique).
 	 */
 	function statsFor(id) {
-		const universal = (C().loveInterests.universalStats || ["love", "longing"]).slice();
+		const universal = (C().loveInterests.universalStats || ["affinity", "longing"]).slice();
 		const unique = (C().loveInterests.uniqueStats && C().loveInterests.uniqueStats[id]) || [];
 		return universal.concat(unique.filter(key => !universal.includes(key)));
 	}
@@ -266,6 +266,10 @@ defineGlobalNamespaces("LoveInterests");
 				return;
 			}
 			const target = vars.loveInterests[li.id];
+			if (target.love !== undefined) {
+				if (target.affinity === undefined) target.affinity = Number(target.love) || 0;
+				delete target.love;
+			}
 			Object.keys(base).forEach(key => {
 				if (target[key] === undefined) target[key] = clone(base[key]);
 			});
@@ -303,7 +307,11 @@ defineGlobalNamespaces("LoveInterests");
 	}
 
 	function statMax() {
-		return Number(C().loveInterests.loveMax) || 100;
+		return Number(C().loveInterests.affinityMax) || 100;
+	}
+
+	function affinityTiers() {
+		return C().loveInterests.affinityTiers || {};
 	}
 
 	/**
@@ -320,7 +328,7 @@ defineGlobalNamespaces("LoveInterests");
 	}
 
 	/**
-	 * Current value for a relationship stat (0–loveMax).
+	 * Current value for a relationship stat (0–affinityMax).
 	 */
 	function getStat(id, key, variables) {
 		const vars = variables || V();
@@ -331,14 +339,19 @@ defineGlobalNamespaces("LoveInterests");
 	}
 
 	/**
-	 * Current love value for a love interest (0–loveMax).
+	 * Current affinity value for a love interest (0–affinityMax).
 	 */
+	function affinity(id, variables) {
+		return getStat(id, "affinity", variables);
+	}
+
+	/** Alias for affinity(). */
 	function love(id, variables) {
-		return getStat(id, "love", variables);
+		return affinity(id, variables);
 	}
 
 	/**
-	 * Current longing value for a love interest (0–loveMax).
+	 * Current longing value for a love interest (0–affinityMax).
 	 */
 	function longing(id, variables) {
 		return getStat(id, "longing", variables);
@@ -349,7 +362,7 @@ defineGlobalNamespaces("LoveInterests");
 	 */
 	function effectMarkup(id, key, tier, variables) {
 		const parsed = typeof Stats !== "undefined" && Stats.parseTier ? Stats.parseTier(tier) : null;
-		const table = C().loveInterests.loveTiers || {};
+		const table = affinityTiers();
 		if (!parsed || !get(id) || !statsFor(id).includes(key)) return "";
 		const plusKey = parsed.key.replace(/-/g, "+");
 		if (table[plusKey] === undefined) return "";
@@ -360,7 +373,7 @@ defineGlobalNamespaces("LoveInterests");
 		const name = displayName(id, variables);
 		const label = name ? `${name}'s ${statLabel(key)}` : statLabel(key);
 		const tone = up ? "good" : "bad";
-		const cssKey = key === "love" ? "love" : `li-${key}`;
+		const cssKey = key === "affinity" ? "affinity" : `li-${key}`;
 		return (
 			`<span class="stat-effect-wrap">` +
 			` <span class="stat-effect-pipe">|</span> ` +
@@ -380,7 +393,7 @@ defineGlobalNamespaces("LoveInterests");
 		ensure(vars);
 		if (!vars.loveInterests[id] || !statsFor(id).includes(key)) return "";
 		const parsed = typeof Stats !== "undefined" && Stats.parseTier ? Stats.parseTier(tier) : null;
-		const table = C().loveInterests.loveTiers || {};
+		const table = affinityTiers();
 		const max = statMax();
 		if (!parsed) return "";
 		const plusKey = parsed.key.replace(/-/g, "+");
@@ -393,17 +406,17 @@ defineGlobalNamespaces("LoveInterests");
 	}
 
 	/**
-	 * Markup for a tiered love change without applying it (link previews).
+	 * Markup for a tiered affinity change without applying it (link previews).
 	 */
-	function loveEffectMarkup(id, tier, variables) {
-		return effectMarkup(id, "love", tier, variables);
+	function affinityEffectMarkup(id, tier, variables) {
+		return effectMarkup(id, "affinity", tier, variables);
 	}
 
 	/**
-	 * Applies a tiered love change and returns coloured indicator markup.
+	 * Applies a tiered affinity change and returns coloured indicator markup.
 	 */
-	function applyLove(id, tier, variables) {
-		return applyStat(id, "love", tier, variables);
+	function applyAffinity(id, tier, variables) {
+		return applyStat(id, "affinity", tier, variables);
 	}
 
 	Object.assign(LoveInterests, {
@@ -425,11 +438,13 @@ defineGlobalNamespaces("LoveInterests");
 		stepFocus,
 		statMax,
 		getStat,
+		affinity,
 		love,
 		longing,
-		effectMarkup: loveEffectMarkup,
+		effectMarkup: affinityEffectMarkup,
 		statEffectMarkup: effectMarkup,
-		applyLove,
+		applyAffinity,
+		applyLove: applyAffinity,
 		applyStat,
 	});
 

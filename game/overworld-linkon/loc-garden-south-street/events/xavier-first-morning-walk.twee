@@ -18,7 +18,7 @@ You rush over, and <<his>> eyes immediately fix onto you, a visible, calm smile 
 <<pronouns "xavier">>\
 <<run World.advance(25)>>\
 <<run World.setLocation("azure-square", "Azure Square")>>\
-You nod in agreement, mirroring the smile on <<Xavier>>'s face. <<He>> wags one finger in the direction of the Hunter's Association, motioning for the two of you to take off now. <<love "xavier" "+">>
+You nod in agreement, mirroring the smile on <<Xavier>>'s face. <<He>> wags one finger in the direction of the Hunter's Association, motioning for the two of you to take off now. <<affinity "xavier" "+">>
 
 You walk with <<Xavier>> to work, making quiet conversation. <<He>> shares a witty joke, which elicits quiet laughter from you, much to <<his>> delight. From the corner of your eye, you notice <<him>> staring at you, but you decide to not say anything.
 
@@ -30,7 +30,7 @@ You walk with <<Xavier>> to work, making quiet conversation. <<He>> shares a wit
 <<run World.setLocation("hunters-association", "Azure Square — Hunter's Association")>>\
 Engrossed in your discussion over which weapons are best against which wanderers, you stand outside of the Association with <<him>>, and he's happy to stay and listen for a little while longer.
 
-"Thanks for walking to work with me, I really enjoyed it." <<He>> reached a hand out, <<his>> fingers inches away from brushing against your arm, when suddenly <<he>> pulls back, instead offering a shy smile, <<his>> face flustering red. "I'll see you inside, okay?" <<love "xavier" "+">>
+"Thanks for walking to work with me, I really enjoyed it." <<He>> reached a hand out, <<his>> fingers inches away from brushing against your arm, when suddenly <<he>> pulls back, instead offering a shy smile, <<his>> face flustering red. "I'll see you inside, okay?" <<affinity "xavier" "+">>
 
 <<He>> walks into the building.
 

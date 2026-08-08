@@ -7,7 +7,7 @@ defineGlobalNamespaces("Social");
 (function () {
 	"use strict";
 
-	/** Shared unique-stat PNGs under img/ui-icons/ (love uses love-{id}.png). */
+	/** Shared unique-stat PNGs under img/ui-icons/ (affinity uses love-{id}.png assets). */
 	const STAT_ICON_FILES = {
 		dominance: "dominance.png",
 		jealousy: "jealousy.png",
@@ -51,7 +51,7 @@ defineGlobalNamespaces("Social");
 	function statIcon(key, value, liId) {
 		const cls = `social-stat-icon social-stat-icon-${key}`;
 
-		if (key === "love") {
+		if (key === "affinity") {
 			const safe = String(liId || "")
 				.trim()
 				.replace(/[^a-zA-Z0-9_-]/g, "");
@@ -142,7 +142,7 @@ defineGlobalNamespaces("Social");
 		const name = LoveInterests.displayName(id, vars);
 		if (!name) return "";
 
-		const love = LoveInterests.getStat(id, "love", vars);
+		const affinity = LoveInterests.getStat(id, "affinity", vars);
 		const longing = LoveInterests.getStat(id, "longing", vars);
 		const dominance = LoveInterests.statsFor(id).includes("dominance")
 			? LoveInterests.getStat(id, "dominance", vars)
@@ -168,7 +168,7 @@ defineGlobalNamespaces("Social");
 		const their = possessivePronoun(id, vars);
 
 		/* Unique-stat flavours take priority when elevated. */
-		if (jealousy >= 70 && love >= 40) {
+		if (jealousy >= 70 && affinity >= 40) {
 			return `${name}'s ${tint("orange", "is hysterical")}.`;
 		}
 		if (dominance >= 70) {
@@ -189,17 +189,17 @@ defineGlobalNamespaces("Social");
 		if (loyalty >= 80) {
 			return `${name}'s ${tint("green", "loyalty")} to you runs bone-deep.`;
 		}
-		if (longing >= 75 && love >= 40) {
+		if (longing >= 75 && affinity >= 40) {
 			return `${name} ${tint("pink", "aches")} for you when you're apart.`;
 		}
 
-		if (love >= 95) return `${name} ${tint("pink", "cherishes")} you.`;
-		if (love >= 80) return `${name} is ${tint("pink", "devoted")} to you.`;
-		if (love >= 65) return `${name} ${tint("pink", "adores")} you.`;
-		if (love >= 50) return `${name} ${tint("green", "cares deeply")} for you.`;
-		if (love >= 35) return `${name} ${tint("green", "likes")} you.`;
-		if (love >= 20) return `${name} is ${tint("blue", "warming up")} to you.`;
-		if (love >= 8) return `${name} is ${tint("teal", "beginning to trust")} you.`;
+		if (affinity >= 95) return `${name} ${tint("pink", "cherishes")} you.`;
+		if (affinity >= 80) return `${name} is ${tint("pink", "devoted")} to you.`;
+		if (affinity >= 65) return `${name} ${tint("pink", "adores")} you.`;
+		if (affinity >= 50) return `${name} ${tint("green", "cares deeply")} for you.`;
+		if (affinity >= 35) return `${name} ${tint("green", "likes")} you.`;
+		if (affinity >= 20) return `${name} is ${tint("blue", "warming up")} to you.`;
+		if (affinity >= 8) return `${name} is ${tint("teal", "beginning to trust")} you.`;
 		if (longing >= 20) {
 			return `Thoughts of you linger in the ${tint("blue", "back of " + their + " mind")}.`;
 		}

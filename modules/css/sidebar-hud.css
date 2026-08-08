@@ -532,6 +532,7 @@
 	clip-path: inset(0 calc(100% - var(--stat-fill, 0%)) 0 0);
 }
 
+#ui-dialog-body.social-dialog .social-stat-icon-affinity,
 #ui-dialog-body.social-dialog .social-stat-icon-love {
 	color: var(--red, #ec3535);
 }
