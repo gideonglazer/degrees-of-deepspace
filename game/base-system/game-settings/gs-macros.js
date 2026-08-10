@@ -123,12 +123,60 @@ defineGlobalNamespaces("GameSettings");
 	}
 
 	/**
-	 * Styles the Begin button after SugarCube renders it.
+	 * Styles the Begin button and wires Save Name required-field UX.
 	 */
 	function styleBegin() {
 		setTimeout(function () {
 			jQuery("#ccBeginWrap button").addClass("cc-begin");
+			bindSaveNameField();
 		}, 0);
+	}
+
+	function saveNameValue() {
+		const $input = jQuery("#ccSaveName input[type='text']");
+		const fromDom = $input.length ? String($input.val() || "") : "";
+		const fromVar = String((V() && V().saveName) || "");
+		return (fromDom || fromVar).trim().slice(0, 48);
+	}
+
+	function setSaveNameError(show) {
+		const $wrap = jQuery("#ccSaveName");
+		const $error = jQuery("#ccSaveNameError");
+		const $input = $wrap.find('input[type="text"]');
+		if (show) {
+			$wrap.addClass("is-invalid");
+			$error.removeAttr("hidden");
+			$input.attr("aria-invalid", "true");
+			if ($input.length) $input.trigger("focus");
+		} else {
+			$wrap.removeClass("is-invalid");
+			$error.attr("hidden", "hidden");
+			$input.removeAttr("aria-invalid");
+		}
+	}
+
+	function bindSaveNameField() {
+		const $input = jQuery("#ccSaveName input[type='text']");
+		if (!$input.length) return;
+		$input.off("input.ccSaveName change.ccSaveName").on("input.ccSaveName change.ccSaveName", function () {
+			if (String(this.value || "").trim()) setSaveNameError(false);
+		});
+	}
+
+	/**
+	 * Starts a new game after validating the required Save Name.
+	 */
+	function begin() {
+		const name = saveNameValue();
+		if (!name) {
+			setSaveNameError(true);
+			return;
+		}
+		V().saveName = name;
+		setSaveNameError(false);
+		World.startNew();
+		jQuery(document.createDocumentFragment()).wiki("<<initPlayState>>");
+		Engine.play(Player.isYounger() ? "Intro Younger" : "Intro Older");
 	}
 
 	/**
@@ -200,6 +248,7 @@ defineGlobalNamespaces("GameSettings");
 		bindShell,
 		bindThemes,
 		styleBegin,
+		begin,
 		randomizeCreator,
 		resetCreator,
 		refreshEyeColors,

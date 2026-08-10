@@ -20,8 +20,13 @@ defineGlobalNamespaces("SavesUI");
 		confirmDelete: true,
 	};
 
+	const NOTE_MAX = 48;
+	const SLOT_INFO_KEY = index => `save.slot.info:${index}`;
+	const AUTO_INFO_KEY = index => `save.auto.info:${index}`;
+
 	let allowAutoSave = false;
 	let hooksInstalled = false;
+	let pendingNote = null;
 	let prefs = loadPrefs();
 
 	function loadPrefs() {
@@ -94,9 +99,32 @@ defineGlobalNamespaces("SavesUI");
 		try {
 			const vars = typeof V === "function" ? V() : null;
 			const name = vars && vars.saveName != null ? String(vars.saveName).trim() : "";
-			return name.slice(0, 32);
+			return normalizeNote(name);
 		} catch (ex) {
 			return "";
+		}
+	}
+
+	function normalizeNote(text) {
+		return String(text == null ? "" : text)
+			.trim()
+			.slice(0, NOTE_MAX);
+	}
+
+	/**
+	 * Prompt for a per-slot note. Returns null if the user cancels.
+	 */
+	function promptNote(initial) {
+		const result = window.prompt("ID/Name for this save:", initial == null ? "" : String(initial));
+		if (result === null) return null;
+		return normalizeNote(result);
+	}
+
+	function storyStorage() {
+		try {
+			return typeof SugarCube !== "undefined" && SugarCube.storage ? SugarCube.storage : null;
+		} catch (ex) {
+			return null;
 		}
 	}
 
@@ -163,7 +191,7 @@ defineGlobalNamespaces("SavesUI");
 	}
 
 	function savePayload() {
-		const saveName = customSaveName();
+		const saveName = pendingNote != null ? pendingNote : customSaveName();
 		const detail = passageExcerpt(72);
 		return {
 			desc: detail || saveName || currentPassageTitle(),
@@ -172,7 +200,8 @@ defineGlobalNamespaces("SavesUI");
 	}
 
 	/**
-	 * Stamp ID name + dialogue excerpt onto every save (slot, auto, disk).
+	 * Stamp note + dialogue excerpt onto every save (slot, auto, disk).
+	 * pendingNote (from the Saves dialog) wins over Game Settings $saveName.
 	 */
 	function onSave(save) {
 		const payload = savePayload();
@@ -242,9 +271,47 @@ defineGlobalNamespaces("SavesUI");
 			return;
 		}
 		if (info && prefs.confirmOverwrite && !confirmAction(`Overwrite save on slot ${index + 1}?`)) return;
-		const payload = savePayload();
+
+		/* Keep an existing slot name on overwrite; otherwise use Game Settings $saveName. */
+		pendingNote = displayName(info) || customSaveName();
 		try {
+			const payload = savePayload();
 			Save.browser.slot.save(index, payload.desc, payload.metadata);
+			render();
+		} catch (ex) {
+			alertError(ex);
+		} finally {
+			pendingNote = null;
+		}
+	}
+
+	/**
+	 * Update note metadata on an existing save without rewriting game state.
+	 */
+	function requestEditNote(kind, index, info) {
+		if (!info) return;
+		const note = promptNote(displayName(info));
+		if (note === null) return;
+		if (!note) {
+			alertError(new Error("ID/Name cannot be empty."));
+			return;
+		}
+
+		const storage = storyStorage();
+		if (!storage) {
+			alertError(new Error("Save storage is unavailable."));
+			return;
+		}
+
+		try {
+			const stored = kind === "auto" ? Save.browser.auto.get(index) : Save.browser.slot.get(index);
+			if (!stored) throw new Error("Save not found.");
+
+			const metadata = Object.assign({}, stored.metadata || {}, { saveName: note });
+			stored.metadata = metadata;
+
+			const key = kind === "auto" ? AUTO_INFO_KEY(index) : SLOT_INFO_KEY(index);
+			if (!storage.set(key, stored)) throw new Error("Could not update the save name.");
 			render();
 		} catch (ex) {
 			alertError(ex);
@@ -444,7 +511,18 @@ defineGlobalNamespaces("SavesUI");
 		}
 		$tr.append($actions);
 
-		$tr.append(jQuery(document.createElement("td")).addClass("dod-saves-id").text(displayName(info)));
+		const $id = jQuery(document.createElement("td")).addClass("dod-saves-id");
+		if (info) {
+			const name = displayName(info);
+			const $note = jQuery(document.createElement("button"))
+				.addClass(`dod-saves-note-btn${name ? "" : " dod-saves-note-empty"}`)
+				.attr("type", "button")
+				.attr("title", name ? "Edit ID/Name" : "Add ID/Name")
+				.text(name || "Add name…");
+			$note.ariaClick({ label: name ? `Edit ID/Name for ${label}` : `Add ID/Name for ${label}` }, () => requestEditNote(kind, index, info));
+			$id.append($note);
+		}
+		$tr.append($id);
 
 		const $details = jQuery(document.createElement("td")).addClass("dod-saves-details");
 		if (info) {
@@ -486,11 +564,15 @@ defineGlobalNamespaces("SavesUI");
 			.addClass("dod-saves-warning")
 			.text("Warning: If your browser cache is cleared, saves here will be lost! Consider saving to file every so often!")
 			.appendTo($body);
+		jQuery(document.createElement("p"))
+			.addClass("dod-saves-warning")
+			.text("Game notes are optional and used to replace the set default ID. Click on an ID to replace it with a note!")
+			.appendTo($body);
 
 		const $table = jQuery(document.createElement("table")).addClass("dod-saves-table").attr("id", "saves-list");
 		const $thead = jQuery(document.createElement("thead")).appendTo($table);
 		const $headRow = jQuery(document.createElement("tr")).appendTo($thead);
-		["#", "Save/Load", "ID/Name", "Details", ""].forEach(text => {
+		["#", "Save/Load", "ID or Note", "Details", ""].forEach(text => {
 			$headRow.append(jQuery(document.createElement("th")).text(text));
 		});
 

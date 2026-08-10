@@ -11,6 +11,6 @@ Places of Interest
 <<if Player.isYounger()>>\
 <<icon "bloomshore-home">><<link "Enter your home <span class='action-time'>(0:00)</span>">><<goto "Bloomshore Home Entry">><</link>>
 <</if>>\
-<<icon "linkon-university">><<link `Player.aged("Go to Linkon University", "Visit Linkon University") + " <span class='action-time'>(0:03)</span>"`>><<run World.advance(3)>><<goto "Campus Front Courtyard">><</link>>
+<<icon "linkon-university">><<link `Player.aged("Go to Linkon University", "Visit Linkon University") + " <span class='action-time'>(0:10)</span>"`>><<run World.advance(10)>><<goto "Campus Front Courtyard">><</link>>
 
 <<linkonTravel>>

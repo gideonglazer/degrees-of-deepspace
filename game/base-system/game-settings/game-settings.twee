@@ -9,12 +9,13 @@
 <<widget "ccPanel">><<switch $ccPanel>><<case "loveInterest">><<ccLoveInterest>><<case "general">><<ccGeneral>><<case "themes">><<ccThemes>><<default>><<ccSelf>><</switch>><</widget>>
 
 <<widget "ccActions">>\
-<div class="cc-save-name">\
-<div class="cc-save-name-label"><span class="gold">Save Name:</span> <span class="cc-optional">(optional)</span></div>\
+<div class="cc-save-name" id="ccSaveName">\
+<div class="cc-save-name-label"><span class="gold">Save Name:</span></div>\
 <<textbox "$saveName" "">>\
+<div class="cc-save-name-error" id="ccSaveNameError" hidden>Please enter a save name.</div>\
 <div class="small-description">Save files are stored in your browser's cache. Export your saves frequently to avoid losing them.</div>\
 </div>\
-<span id="ccBeginWrap"><<button "Begin">><<run World.startNew()>><<initPlayState>><<if Player.isYounger()>><<goto "Intro Younger">><<else>><<goto "Intro Older">><</if>><</button>></span>\
+<span id="ccBeginWrap"><<button "Begin">><<run GameSettings.begin()>><</button>></span>\
 <<run GameSettings.styleBegin()>>\
 <</widget>>
 
