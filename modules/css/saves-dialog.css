@@ -2,20 +2,37 @@
 	width: min(58rem, 94vw) !important;
 	max-width: min(58rem, 94vw) !important;
 	min-width: min(42rem, 94vw) !important;
+	max-height: min(90vh, 52rem);
+	display: flex;
+	flex-direction: column;
 }
 
 #ui-dialog-body.dod-saves {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-height: 0;
 	padding: 0.5rem 0.35rem 0.55rem;
 	box-sizing: border-box;
-	overflow: visible;
+	overflow: hidden;
 	width: 100%;
 }
 
 #ui-dialog-body.dod-saves .dod-saves-warning {
+	flex: 0 0 auto;
 	margin: 0 0.35rem 0.55rem;
 	color: var(--text-primary, #eee);
 	font-size: 0.9rem;
 	line-height: 1.3;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-list {
+	flex: 1 1 auto;
+	min-height: 0;
+	max-height: min(58vh, 28rem);
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 #ui-dialog-body.dod-saves .dod-saves-table {
@@ -24,6 +41,13 @@
 	border-spacing: 0;
 	table-layout: fixed;
 	font-size: 0.95rem;
+}
+
+#ui-dialog-body.dod-saves .dod-saves-table thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: var(--surface-panel, #1a1a2e);
 }
 
 #ui-dialog-body.dod-saves .dod-saves-table th,
@@ -161,6 +185,7 @@
 #ui-dialog-body.dod-saves .dod-saves-export-actions {
 	display: flex;
 	flex-wrap: wrap;
+	flex: 0 0 auto;
 	gap: 0.5rem;
 	margin: 0.55rem 0.35rem 0;
 	padding-top: 0.55rem;
@@ -179,6 +204,7 @@
 #ui-dialog-body.dod-saves .dod-saves-pager {
 	display: flex;
 	flex-wrap: wrap;
+	flex: 0 0 auto;
 	align-items: center;
 	gap: 0.45rem 0.6rem;
 	margin: 0.5rem 0.35rem 0;
@@ -216,6 +242,7 @@
 #ui-dialog-body.dod-saves .dod-saves-confirm-row {
 	display: flex;
 	flex-wrap: wrap;
+	flex: 0 0 auto;
 	align-items: center;
 	gap: 0.45rem 0.65rem;
 	margin: 0.5rem 0.35rem 0;

@@ -533,7 +533,7 @@ defineGlobalNamespaces("SavesUI");
 			});
 		}
 
-		$body.append($table);
+		jQuery(document.createElement("div")).addClass("dod-saves-list").append($table).appendTo($body);
 		appendExportControls($body);
 		appendPager($body);
 		appendConfirmRow($body);
