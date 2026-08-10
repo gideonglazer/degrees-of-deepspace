@@ -1,0 +1,12 @@
+:: Campus Chemistry
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-chemistry", "Bloomshore District — Linkon University")>>\
+<<if School.earlyArrival("chemistry")>>\
+<<schoolEarly "chemistry">>\
+<<else>>\
+You are in the chem lab.
+<</if>>
+<<schoolFocus "chemistry">>
+
+<<actionIcon "exit">><<link "Leave the classroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>

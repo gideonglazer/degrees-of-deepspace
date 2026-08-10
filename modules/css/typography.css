@@ -214,6 +214,34 @@ html.Lexend {
 	color: var(--success);
 }
 
+.terrible {
+	color: var(--red);
+}
+
+.bad {
+	color: var(--pink);
+}
+
+.poor {
+	color: var(--purple);
+}
+
+.okay {
+	color: var(--blue);
+}
+
+.decent {
+	color: var(--teal);
+}
+
+.good {
+	color: var(--green);
+}
+
+.excellent {
+	color: var(--lime);
+}
+
 .small-description {
 	color: var(--text-muted);
 	font-size: 0.85rem;

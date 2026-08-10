@@ -1,0 +1,12 @@
+:: Campus Math
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-math", "Bloomshore District — Linkon University")>>\
+<<if School.earlyArrival("math")>>\
+<<schoolEarly "math">>\
+<<else>>\
+You are in the math classroom.
+<</if>>
+<<schoolFocus "math">>
+
+<<actionIcon "exit">><<link "Leave the classroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>

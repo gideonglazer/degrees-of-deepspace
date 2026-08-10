@@ -1,10 +1,11 @@
 :: StoryMenu
 <<link "Social">><<run Social.openDialog()>><</link>>
+<<if School.applies()>><<link "Skills">><<run School.openDialog()>><</link>><</if>>
 <<link "Journal">><<run Journal.openDialog()>><</link>>
 
 :: StoryCaption
 <<if passage() !== "Start">>\
-<<run World.ensure()>><<run Stats.ensure()>><<run LoveInterests.ensure()>><<run Flags.ensure()>><<run Journal.ensure()>><<run Options.ensure()>><<run Money.get()>>\
+<<run World.ensure()>><<run Stats.ensure()>><<run LoveInterests.ensure()>><<run Flags.ensure()>><<run Journal.ensure()>><<run School.ensure()>><<run Options.ensure()>><<run Money.get()>>\
 <<set _clockHands to World.clockHandAngles()>>\
 <<set _fullDate to World.formatDateLong()>>\
 <<set _hourHandStyle to "transform: rotate(" + _clockHands.hour + "deg)">>\
@@ -70,6 +71,11 @@
 </div>\
 <</if>>\
 </div>\
+<</widget>>
+
+:: Skills Widgets [widget]
+<<widget "skillsContents">>\
+<<if School.applies()>><<run School.ensure()>><<= School.skillsMarkup()>><</if>>\
 <</widget>>
 
 :: Journal Widgets [widget]

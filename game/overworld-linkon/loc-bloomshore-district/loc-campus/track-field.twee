@@ -1,0 +1,12 @@
+:: Campus PE Track
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-pe", "Bloomshore District — Linkon University")>>\
+<<if School.earlyArrival("track")>>\
+<<schoolEarly "track">>\
+<<else>>\
+You are at the track field.
+<</if>>
+<<schoolFocus "track">>
+
+<<actionIcon "exit">><<link "Leave the track <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>

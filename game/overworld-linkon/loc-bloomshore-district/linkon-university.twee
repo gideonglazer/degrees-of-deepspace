@@ -1,10 +1,41 @@
 :: Linkon University
 <<initPlayState>>\
 <<run World.setLocation("linkon-university", "Bloomshore District — Linkon University")>>\
+<<run School.ensure()>>\
 <<if Player.isYounger()>>\
-You approach the gates of Linkon University.
+<<if School.isSchoolDay()>>\
+You are outside of Linkon University. The clock tower reads <<= World.formatTime()>>.<<if !World.isBefore(7, 0) && World.isBefore(9, 0)>> Class starts at <<= World.formatTimeAt(9, 0)>>.<</if>>
+<<if School.isCalebWaitingWindow()>>\
+<<gap>>
+<<important>><<Caleb>> will be waiting outside the gates around <<= World.formatTimeAt(15, 0)>> — don't keep <<him>> too long.<</important>>
+<</if>>\
+<<set _outside to School.campusRooms("outside")>>\
+<<set _facilities to School.campusRooms("facilities")>>\
+<<set _classrooms to School.campusRooms("classrooms")>>\
+<<set _attend to School.gatePeriod()>>\
+<<if _attend>>\
+<<gap>>
+<<schoolIcon _attend.icon>><<link `_attend.attendLabel + " <span class='action-time'>(0:" + String(_attend.minutes).padStart(2, "0") + ")</span>"` `_attend.passage`>><<run World.advance(_attend.minutes)>><</link>><br>\
+<</if>>\
+<<gap>>
+Outside
+<<for _r range _outside>>\
+<<schoolIcon _r.icon>><<link `_r.label + " <span class='action-time'>(0:" + String(_r.minutes).padStart(2, "0") + ")</span>"` `_r.passage`>><<run World.advance(_r.minutes)>><</link>><br>\
+<</for>>\
+
+Facilities
+<<for _r range _facilities>>\
+<<schoolIcon _r.icon>><<link `_r.label + " <span class='action-time'>(0:" + String(_r.minutes).padStart(2, "0") + ")</span>"` `_r.passage`>><<run World.advance(_r.minutes)>><</link>><br>\
+<</for>>\
+
+Classrooms
+<<for _r range _classrooms>>\
+<<schoolIcon _r.icon>><<link `_r.label + " <span class='action-time'>(0:" + String(_r.minutes).padStart(2, "0") + ")</span>"` `_r.passage`>><<run World.advance(_r.minutes)>><</link>><br>\
+<</for>>\
+<<else>>\
+Campus is quiet on the weekend. The gates are open, but classrooms sit dark behind locked doors.
+<</if>>\
 <<else>>\
 You arrive at Linkon University. Students move between buildings with backpacks and coffee cups. It makes you nostalgic thinking about your younger years here...
 <</if>>
-
-<<actionIcon "exit">><<link "Leave campus <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Bloomshore District">><</link>>
+<<actionIcon "exit">><<link "Leave the school <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Campus Front Courtyard">><</link>>

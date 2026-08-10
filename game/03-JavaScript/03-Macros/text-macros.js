@@ -2,6 +2,7 @@
  * Theme-aware passage text colour macros
  *
  * Colours: <<yellow>>…<</yellow>>, <<red>>, <<green>>, <<blue>>, <<pink>>, …
+ * Color code quality: <<terrible>>…<<excellent>> (aliases of red→lime)
  * Semantic: <<important>> (gold), <<warning>> (soft pink-red), <<success>>
  *
  * Nested macros inside the body are fine. Same classes also work as @@.yellow;text@@.
@@ -27,6 +28,14 @@
 		"important",
 		"warning",
 		"success",
+		/* Colour-code aliases (Terrible → Excellent) */
+		"terrible",
+		"bad",
+		"poor",
+		"okay",
+		"decent",
+		"good",
+		"excellent",
 	];
 
 	DefineMacro(

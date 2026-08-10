@@ -257,6 +257,9 @@ defineGlobalNamespaces("World");
 		world.minute = total % 60;
 
 		while (dayDelta > 0) {
+			if (typeof School !== "undefined" && School.processMidnight) {
+				School.processMidnight(vars);
+			}
 			world.day += 1;
 			const dim = daysInMonth(world.year, world.month);
 			if (world.day > dim) {
@@ -266,6 +269,9 @@ defineGlobalNamespaces("World");
 					world.month = 1;
 					world.year += 1;
 				}
+			}
+			if (typeof School !== "undefined" && School.processNewDay) {
+				School.processNewDay(vars);
 			}
 			dayDelta -= 1;
 		}

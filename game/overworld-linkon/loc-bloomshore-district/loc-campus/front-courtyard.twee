@@ -1,0 +1,14 @@
+:: Campus Front Courtyard
+<<initPlayState>>\
+<<run World.setLocation("campus-front-courtyard", "Bloomshore District — Linkon University")>>\
+<<run School.ensure()>>\
+<<if Player.isYounger() && School.isSchoolDay()>>\
+You stand in the front courtyard of Linkon University. The overarching clock tower reads <<= World.formatTime()>>.<<if !World.isBefore(7, 0) && World.isBefore(9, 0)>> Class starts at <<= World.formatTimeAt(9, 0)>>.<</if>>
+<<else>>\
+You stand in the front courtyard of Linkon University.
+<</if>>
+
+<<icon "linkon-university">><<link "Enter the school <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Linkon University">><</link>>
+<<link "Rear courtyard <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Campus Rear Courtyard">><</link>>
+
+<<actionIcon "exit">><<link "Leave campus <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Bloomshore District">><</link>>

@@ -2,7 +2,7 @@
 
 <<widget "initGameSettings">><<run Player.ensure()>><<run LoveInterests.ensure()>><<run Options.ensure()>><<run Options.applyTypography()>><<if ndef $ccPanel>><<set $ccPanel to "creator">><</if>><<if ndef $saveName>><<set $saveName to "">><</if>><<set $gameVersion to StartConfig.version>><<run jQuery("#passages").addClass("cc-wide")>><</widget>>
 
-<<widget "initPlayState">><<run Player.ensure()>><<run LoveInterests.ensure()>><<run Options.ensure()>><<run World.ensure()>><<run Stats.ensure()>><<run Journal.ensure()>><<run Flags.ensure()>><<run Money.get()>><<if ndef $saveName>><<set $saveName to "">><</if>><<run Options.applyTypography()>><<run jQuery("#passages").removeClass("cc-wide")>><</widget>>
+<<widget "initPlayState">><<run Player.ensure()>><<run LoveInterests.ensure()>><<run Options.ensure()>><<run World.ensure()>><<run Stats.ensure()>><<run Journal.ensure()>><<run Flags.ensure()>><<run School.ensure()>><<run Money.get()>><<if ndef $saveName>><<set $saveName to "">><</if>><<run Options.applyTypography()>><<run jQuery("#passages").removeClass("cc-wide")>><</widget>>
 
 <<widget "gameSettings">><div class="cc"><div class="cc-shell"><div class="cc-tabs" role="tablist"><<button "Character Creator">><<ccPanelSwitch "creator">><</button>><<button "Love Interest Modifier">><<ccPanelSwitch "loveInterest">><</button>><<button "General">><<ccPanelSwitch "general">><</button>><<button "Themes">><<ccPanelSwitch "themes">><</button>></div><div id="ccPanel" class="cc-panel" role="tabpanel"><<ccPanel>></div></div><div id="ccActions" class="cc-actions"><<ccActions>></div></div><<run GameSettings.bindShell()>><</widget>>
 

@@ -1,0 +1,7 @@
+:: Campus Restroom
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-restroom", "Bloomshore District — Linkon University")>>\
+You are in the restroom.
+
+<<actionIcon "exit">><<link "Leave the restroom <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Linkon University">><</link>>

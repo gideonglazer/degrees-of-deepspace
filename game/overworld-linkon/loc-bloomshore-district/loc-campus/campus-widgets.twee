@@ -1,0 +1,77 @@
+:: Campus Widgets [widget]
+
+<<widget "schoolEarly">>\
+<<set _early to School.earlyArrival(_args[0])>>\
+<<if _early>>\
+<<= _early.enter>>
+<<if _early.letter>>\
+
+Your current <<= _early.subject>> grade is <span @class="School.gradeColourClass(_early.letter)"><<= _early.letter>></span>. <<= _early.comment>>
+<</if>>\
+
+Your <<= _early.lesson>> starts at <<= _early.startLabel>>.
+<</if>>\
+<</widget>>
+
+<<widget "schoolFocus">>\
+<<set _focusPeriod to School.periodForRoom(_args[0])>>\
+<<if _focusPeriod && _focusPeriod.gradeKey>>\
+<<set _focusStars to School.getDailyProgress(_focusPeriod.gradeKey)>>\
+<<if School.canFocus(_focusPeriod.key) || School.canTakeExam(_focusPeriod.key)>>\
+<<set _focusMins to School.focusMinutes(_focusPeriod.key)>>\
+<<set _examChance to School.examPassChance(_focusPeriod.gradeKey)>>\
+<<gap>>
+<div class="school-focus">\
+<<= School.dailyStarsMarkup(_focusStars)>>\
+<<if School.canFocus(_focusPeriod.key)>>\
+<<link `"Focus on the lesson <span class='action-time'>(0:" + String(_focusMins).padStart(2, "0") + ")</span>"`>>\
+<<run School.focus(_focusPeriod.key)>>\
+<<goto passage()>>\
+<</link>>\
+<</if>>\
+<<if School.canTakeExam(_focusPeriod.key)>>\
+<<link `"Take the exam <span class='action-time'>(rest of class)</span> — pass chance: " + Math.round(_examChance) + "%"`>>\
+<<run School.takeExam(_focusPeriod.key)>>\
+<<goto "Campus Exam Result">>\
+<</link>>\
+<</if>>\
+</div>
+<</if>>\
+<</if>>\
+<</widget>>
+
+<<widget "schoolStudy">>\
+<<set _studyOpts to School.studyOptions()>>\
+<<if _studyOpts.length>>\
+<<gap>>
+Study
+<<for _opt range _studyOpts>>\
+<<schoolIcon _opt.icon>><<link `"Study " + _opt.label + " <span class='action-time'>(0:" + String(_opt.minutes).padStart(2, "0") + ")</span>"`>>\
+<<run School.study(_opt.key)>>\
+<<goto passage()>>\
+<</link>> <<= School.dailyStarsMarkup(_opt.stars)>> <span @class="School.scoreColourClass(_opt.understanding)"><<= Math.round(_opt.understanding)>>%</span><br>
+<</for>>\
+<</if>>\
+<</widget>>
+
+:: Campus Exam Result
+<<initPlayState>>\
+<<set _exam to $schoolExamResult>>\
+<<if !_exam>>\
+<<goto "Linkon University">>\
+<</if>>\
+<<run World.setLocation("linkon-university", "Bloomshore District — Linkon University")>>\
+<<if _exam.passed>>\
+<<if _exam.distinction>>\
+You finish the <<= _exam.label>> exam with a <<lime>>distinction<</lime>>. At this level there is nowhere higher to climb — for now, your understanding resets as you look toward the next challenge.
+<<else>>\
+You pass the <<= _exam.label>> exam. Your grade rises from <span @class="School.gradeColourClass(_exam.before)"><<= _exam.before>></span> to <span @class="School.gradeColourClass(_exam.after)"><<= _exam.after>></span>. Your understanding in the subject resets as you start working toward the next letter.
+<</if>>\
+<<else>>\
+You do not pass the <<= _exam.label>> exam. Your grade stays at <span @class="School.gradeColourClass(_exam.before)"><<= _exam.before>></span>. More studying — in class or in the library — will raise your pass chance before the next test.
+<</if>>\
+
+<span class="small-description"><i>Rolled <<= _exam.roll>> against <<= _exam.chance>>% understanding.</i></span>
+
+<<gap>>
+<<actionIcon "exit">><<link "Leave for the gates">><<unset $schoolExamResult>><<goto "Linkon University">><</link>>

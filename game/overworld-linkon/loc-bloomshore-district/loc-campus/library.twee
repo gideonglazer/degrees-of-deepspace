@@ -1,0 +1,8 @@
+:: Campus Library
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-library", "Bloomshore District — Linkon University")>>\
+You are in the library. Quiet shelves and study carrels give you room to catch up on classwork between periods — or after school, if the lights are still on.
+<<schoolStudy>>
+
+<<actionIcon "exit">><<link "Leave the library <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Linkon University">><</link>>

@@ -87,6 +87,19 @@ body {
 	overflow: hidden;
 }
 
+#menu-story {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+#menu-story > li:first-child {
+	grid-column: 1 / -1;
+}
+
+#menu-story > li:nth-child(3) {
+	border-left: 1px solid var(--border-subtle);
+}
+
 #menu li:not(:first-child) {
 	border-top: 1px solid var(--border-subtle);
 }
@@ -106,11 +119,99 @@ body {
 #ui-dialog-body {
 	background-color: var(--surface-panel);
 	color: var(--text-primary);
+	border: 1px solid var(--border-strong);
+	border-top: none;
 }
 
 #ui-dialog-titlebar {
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+	min-height: 2rem;
+	padding: 0.55em 3.6em 0.55em 1em;
 	background-color: var(--surface-raised);
+	border: 1px solid var(--border-strong);
+	border-bottom: none;
 	color: var(--text-primary);
+	box-sizing: border-box;
+}
+
+#ui-dialog-title {
+	flex: 0 1 auto;
+	margin: 0;
+	padding: 0.1em 0;
+	font-size: 1.05em;
+	font-weight: 400;
+	letter-spacing: 0.01em;
+	line-height: 1.3;
+	text-align: left;
+	text-transform: none;
+	color: var(--text-primary);
+}
+
+#ui-dialog-titlebar .colour-codes-tip {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	flex: 0 0 auto;
+	outline: none;
+	cursor: help;
+}
+
+#ui-dialog-titlebar .colour-codes-label {
+	font-size: 0.78em;
+	font-weight: 400;
+	line-height: 1.2;
+	color: var(--blue-secondary, var(--blue));
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	text-underline-offset: 0.18em;
+	white-space: nowrap;
+}
+
+#ui-dialog-titlebar .colour-codes-tip:hover .colour-codes-label,
+#ui-dialog-titlebar .colour-codes-tip:focus .colour-codes-label,
+#ui-dialog-titlebar .colour-codes-tip:focus-within .colour-codes-label {
+	color: var(--accent-strong, var(--blue));
+}
+
+#ui-dialog-titlebar .colour-codes-legend {
+	z-index: 100200;
+	display: none;
+	position: absolute;
+	top: calc(100% + 0.35rem);
+	left: 0;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.3rem 0.4rem;
+	min-width: max-content;
+	max-width: min(92vw, 36rem);
+	padding: 0.45rem 0.65rem;
+	border: 1px solid var(--tooltip-border, var(--gold, #c9b896));
+	background: var(--tooltip-background, rgba(0, 0, 0, 0.92));
+	color: var(--tooltip-color, var(--text-primary));
+	font-size: 0.85em;
+	font-weight: 400;
+	line-height: 1.35;
+	white-space: nowrap;
+	pointer-events: none;
+	box-shadow: none;
+}
+
+#ui-dialog-titlebar .colour-codes-tip:hover .colour-codes-legend,
+#ui-dialog-titlebar .colour-codes-tip:focus .colour-codes-legend,
+#ui-dialog-titlebar .colour-codes-tip:focus-within .colour-codes-legend {
+	display: flex;
+}
+
+#ui-dialog-titlebar .colour-codes-sep {
+	color: var(--text-muted, #aaa);
+	font-style: normal;
+	user-select: none;
+}
+
+#ui-dialog-titlebar .colour-codes-item {
+	white-space: nowrap;
 }
 
 /* Typography ------------------------------------------------------------- */
@@ -220,6 +321,31 @@ button:disabled {
 	object-position: center;
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
+}
+
+#passages img.icon.icon-school {
+	width: 1.4em;
+	height: 1.4em;
+}
+
+#passages .school-focus {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.45rem 0.75rem;
+	margin: 0.35em 0 0.15em;
+}
+
+#passages .school-focus .skills-stars {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.12rem;
+}
+
+#passages .school-focus .skills-stars .icon-school {
+	width: 1.25em;
+	height: 1.25em;
+	margin-right: 0;
 }
 
 #passages a.link-internal .link-num {

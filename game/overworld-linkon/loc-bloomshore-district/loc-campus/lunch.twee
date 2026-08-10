@@ -1,0 +1,11 @@
+:: Campus Lunch
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-lunch", "Bloomshore District — Linkon University")>>\
+<<if School.earlyArrival("lunch")>>\
+<<schoolEarly "lunch">>\
+<<else>>\
+You are in the cafeteria.
+<</if>>
+
+<<actionIcon "exit">><<link "Leave the cafeteria <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>

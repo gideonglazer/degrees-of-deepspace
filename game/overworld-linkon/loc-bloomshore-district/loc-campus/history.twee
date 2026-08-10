@@ -1,0 +1,12 @@
+:: Campus History
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-history", "Bloomshore District — Linkon University")>>\
+<<if School.earlyArrival("history")>>\
+<<schoolEarly "history">>\
+<<else>>\
+You are in the history classroom.
+<</if>>
+<<schoolFocus "history">>
+
+<<actionIcon "exit">><<link "Leave the classroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>

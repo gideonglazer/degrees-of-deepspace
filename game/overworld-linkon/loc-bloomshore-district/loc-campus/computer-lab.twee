@@ -1,0 +1,12 @@
+:: Campus Computer Lab
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-computer-lab", "Bloomshore District — Linkon University")>>\
+<<if School.earlyArrival("computerLab")>>\
+<<schoolEarly "computerLab">>\
+<<else>>\
+You stand in the computer lab. Rows of monitors glow under cold fluorescent light; cables snake behind desks toward a server rack humming in the corner.
+<</if>>
+<<schoolFocus "computerLab">>
+
+<<actionIcon "exit">><<link "Leave the lab <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>

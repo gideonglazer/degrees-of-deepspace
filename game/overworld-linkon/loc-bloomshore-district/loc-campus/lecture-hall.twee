@@ -1,0 +1,24 @@
+:: Campus Lecture Hall
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-lecture-hall", "Bloomshore District — Linkon University")>>\
+<<set _lectureToday to School.period3Subject() === "Guest Lecture">>\
+<<if School.earlyArrival("lectureHall")>>\
+<<schoolEarly "lectureHall">>\
+<<elseif _lectureToday>>\
+<<set _guest to School.fridayGuestId()>>\
+<<set _guestName to LoveInterests.displayName(_guest)>>\
+<<pronouns _guest>>\
+You are in the lecture hall. Tiered seats slope down towards the stage, where today's guest speaker is <<= _guestName>>.
+<<if _guest === "rafayel">>\
+<<Rafayel>> talks about light, color, and the stubborn honesty of a blank canvas — half lecture, half performance.
+<<elseif _guest === "zayne">>\
+<<Zayne>> keeps the tone clinical and calm, walking through cardiac health with the patience of someone used to translating hard science.
+<<elseif _guest === "valko">>\
+<<Valko>> covers EonCore tech in plain language — systems, safeguards, and what happens when elegant machines meet messy humans.
+<</if>>\
+<<else>>\
+You stand in the lecture hall. Tiered seats slope down toward an empty stage; without a guest speaker booked, the room is dim and quiet.
+<</if>>
+
+<<actionIcon "exit">><<link "Leave the lecture hall <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>

@@ -1,0 +1,7 @@
+:: Campus Principal's Office
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-principals-office", "Bloomshore District — Linkon University")>>\
+You are in the principal's office.
+
+<<actionIcon "exit">><<link "Leave the office <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Linkon University">><</link>>

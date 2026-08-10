@@ -76,6 +76,7 @@ module.exports = {
 		Player: "readonly",
 		Pronouns: "readonly",
 		SavesUI: "readonly",
+		School: "readonly",
 		StartConfig: "readonly",
 		Stats: "readonly",
 		Theme: "readonly",

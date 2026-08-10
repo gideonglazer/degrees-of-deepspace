@@ -1,0 +1,7 @@
+:: Campus Rear Courtyard
+<<initPlayState>>\
+<<run World.setLocation("campus-rear-courtyard", "Bloomshore District — Linkon University")>>\
+You are in the rear courtyard.
+
+<<icon "linkon-university">><<link "Enter the school <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Linkon University">><</link>>
+<<link "Front courtyard <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Campus Front Courtyard">><</link>>

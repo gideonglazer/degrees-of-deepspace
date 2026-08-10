@@ -1,0 +1,13 @@
+:: Campus Art
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<pronouns "rafayel">>\
+<<run World.setLocation("campus-art", "Bloomshore District — Linkon University")>>\
+<<if School.earlyArrival("art")>>\
+<<schoolEarly "art">>\
+<<else>>\
+You are in the art studio.
+<</if>>
+<<schoolFocus "art">>
+
+<<actionIcon "exit">><<link "Leave the classroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>

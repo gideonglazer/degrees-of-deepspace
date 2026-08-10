@@ -30,7 +30,7 @@ You wake to a sliver of sunlight peeking in through your bedroom window, sheets 
 "I have to go to work now. I'll wait outside the University after school so we can walk back together, alright?" <<He>> grins, patting your head before leaving your bedroom. You pull yourself out of bed, stretching. 
 
 <<important>><<Caleb>> will wait for you outside the University at <<= World.formatTimeAt(15, 0)>>. You shouldn't keep <<him>> waiting!<</important>>
-<<run Journal.addReminder("linkon-university", "Attend Linkon University on weekdays. Campus is near your home in Bloomshore.", { permanent: true })>>\
+<<run Journal.addReminder("linkon-university", "Attend Linkon University on weekdays from " + World.formatTimeAt(9, 0) + " to " + World.formatTimeAt(15, 0) + ". The main campus is near your home in Bloomshore.", { permanent: true })>>\
 <<run Journal.addReminder("caleb-after-school", LoveInterests.displayName("caleb") + " waits outside Linkon University after school at " + World.formatTimeAt(15, 0) + " so you can walk home together.", { permanent: true })>>\
 
 <<link "Continue">><<goto "Bloomshore Bedroom">><</link>>

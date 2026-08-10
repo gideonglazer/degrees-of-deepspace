@@ -30,6 +30,7 @@
 	 * <<icon "apartment-door" "gif">> → .gif in the same folder
 	 * <<actionIcon "sleep-apt">> → img/action-icons/sleep-apt.png
 	 * <<foodIcon "breakfast" "pancakes">> → img/food-icons/breakfast/pancakes.png
+	 * <<schoolIcon "math">> → img/school-icons/math.png
 	 */
 	function iconImg(folder, args) {
 		const name = args[0] != null ? String(args[0]).trim() : "";
@@ -47,6 +48,16 @@
 
 	DefineMacroS("actionIcon", function (args) {
 		return iconImg("action-icons", args);
+	});
+
+	DefineMacroS("schoolIcon", function (args) {
+		const name = args[0] != null ? String(args[0]).trim() : "";
+		if (!name) return "";
+		const safe = name.replace(/[^a-zA-Z0-9_-]/g, "");
+		if (!safe) return "";
+		const rawExt = args[1] != null ? String(args[1]).trim().replace(/^\./, "").toLowerCase() : "png";
+		const ext = rawExt === "gif" || rawExt === "webp" || rawExt === "jpg" || rawExt === "jpeg" ? rawExt : "png";
+		return `<img class="icon icon-school" src="img/school-icons/${safe}.${ext}" alt="" aria-hidden="true">`;
 	});
 
 	DefineMacroS("foodIcon", function (args) {

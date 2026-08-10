@@ -1,0 +1,7 @@
+:: Campus Infirmary
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-infirmary", "Bloomshore District — Linkon University")>>\
+You are in the infirmary.
+
+<<actionIcon "exit">><<link "Leave the infirmary <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Linkon University">><</link>>
