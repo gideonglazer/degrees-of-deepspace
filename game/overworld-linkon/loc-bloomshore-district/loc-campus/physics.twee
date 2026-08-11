@@ -1,0 +1,100 @@
+:: Campus Physics
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-physics", "Bloomshore District — Linkon University")>>\
+<<if School.earlyArrival("physics")>>\
+<<schoolEarly "physics">>\
+<<schoolStudyBefore "physics">>\
+<<actionIcon "exit">><<link "Leave the classroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>
+<<elseif $schoolStudyBefore && $schoolStudyBefore.roomKey === "physics">>\
+<<goto "Physics Study Transition">>\
+<<elseif !Flags.get(PhysicsClass.FIRST_FLAG) && PhysicsClass.isInSession()>>\
+<<goto "Physics Class Begin">>\
+<<elseif PhysicsClass.needsEnd()>>\
+<<run PhysicsClass.rollEnd()>>\
+<<run PhysicsClass.markEndDone()>>\
+<<goto "Physics Class End">>\
+<<else>>\
+You are in the physics classroom.<<if PhysicsClass.isInSession()>>\
+<<run PhysicsClass.rollDuring()>>\
+ <<= $physicsDuringText>><<= $physicsDuringEffects>>
+<<schoolFocus "physics">>\
+<<else>>\
+<<actionIcon "exit">><<link "Leave the classroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>
+<</if>>\
+<</if>>
+
+:: Physics Study Transition
+<<initPlayState>>\
+<<if !$schoolStudyBefore || $schoolStudyBefore.roomKey !== "physics">><<goto "Campus Physics">><</if>>\
+<<run World.setLocation("campus-physics", "Bloomshore District — Linkon University")>>\
+<<set _sb to $schoolStudyBefore>>\
+<<unset $schoolStudyBefore>>\
+You study diligently, until the bell rings. <<= _sb.effectMarkup>>
+
+<<link "Next">>\
+<<if !Flags.get(PhysicsClass.FIRST_FLAG) && PhysicsClass.isInSession()>>\
+<<goto "Physics Class Begin">>\
+<<else>>\
+<<goto "Campus Physics">>\
+<</if>>\
+<</link>>
+
+:: Physics Class Begin
+<<initPlayState>>\
+<<if !School.isSchoolDay() || !PhysicsClass.isInSession()>><<goto "Campus Physics">><</if>>\
+<<run Flags.set(PhysicsClass.FIRST_FLAG)>>\
+<<run World.setLocation("campus-physics", "Bloomshore District — Linkon University")>>\
+The bell rings, signalling that class has begun. With the final signal, Professor Lorenz walks into the classroom, his handsome face stern and stoic. He sets a stack of papers on his desk, sweeping a hand through his tousled, white locks of hair.
+
+“All right everyone, class has begun. Take your seats at once.”
+
+<<pronouns "player">>\
+Golden eyes scan the room, before they finally fall on you. He turns his chin up, speaking lowly. “Another Xia… You are <<Caleb>>’s little <<gendered "brother" "sister" "sibling">>, aren’t you?” <<pronouns "caleb">>\
+You sink into your seat at the mention of your older <<gendered "brother" "sister" "sibling">>. The last thing you wanted was to be compared to <<Caleb>> and <<his>> exceptional grades, looks, and athletics… <<stress "+">>
+
+“... <<He>> was always quite the show off with <<his>> gravity evol,” Professor Lorenz began, “I have high hopes you won’t be as much of a nuisance as <<he>> was.”
+
+Students began to whisper pointedly amongst each other, your face and ears burning with heat. With a simple raise and sweep of his hand, Professor Lorenz silenced the class once more.
+
+<<link "Next">><<goto "Campus Physics">><</link>>
+
+:: Physics Class End
+<<initPlayState>>\
+<<if !$physicsEnd>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-physics", "Bloomshore District — Linkon University")>>\
+<<print $physicsEnd.text>>
+<<gap>>
+<<link `"Next <span class='action-time'>(" + School.formatActionMinutes($physicsEnd.minutes) + ")</span>"`>>\
+<<run World.advance($physicsEnd.minutes)>>\
+<<unset $physicsEnd>>\
+<<goto "Linkon University">>\
+<</link>>
+
+:: Physics Focus Event
+<<initPlayState>>\
+<<if !$physicsFocus>><<goto "Campus Physics">><</if>>\
+<<run World.setLocation("campus-physics", "Bloomshore District — Linkon University")>>\
+<<= $physicsFocus.text>>
+<<gap "sm">>
+<div class="physics-focus-choices">\
+<<for _choice range $physicsFocus.choices>>\
+<<capture _choice>>\
+<div class="physics-focus-choice"><<link `_choice.label`>>\
+<<run PhysicsClass.applyFocusChoice(_choice.id)>>\
+<<goto "Physics Focus Result">>\
+<</link>><<= _choice.previewMarkup>></div>\
+<</capture>>\
+<</for>>\
+</div>
+
+:: Physics Focus Result
+<<initPlayState>>\
+<<if !$physicsFocusResult>><<goto "Campus Physics">><</if>>\
+<<run World.setLocation("campus-physics", "Bloomshore District — Linkon University")>>\
+<<= $physicsFocusResult.text>><<= $physicsFocusResult.effectsMarkup>>
+<<gap>>
+<<link "Next">>\
+<<run PhysicsClass.clearFocusEvent()>>\
+<<goto "Campus Physics">>\
+<</link>>

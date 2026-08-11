@@ -24,7 +24,7 @@ defineGlobalNamespaces("School");
 	/** Discrete letter grades. Understanding % is stored separately. */
 	const GRADE_ORDER = ["F", "D", "C", "B", "A", "A*", "S"];
 	const DEFAULT_LETTERS = {
-		chemistry: "D",
+		physics: "D",
 		math: "D",
 		tech: "D",
 		history: "D",
@@ -32,7 +32,7 @@ defineGlobalNamespaces("School");
 		pe: "D",
 	};
 	const DEFAULT_UNDERSTANDING = {
-		chemistry: 0,
+		physics: 0,
 		math: 0,
 		tech: 0,
 		history: 0,
@@ -41,13 +41,37 @@ defineGlobalNamespaces("School");
 	};
 	/** Midnight understanding from daily stars: none / bronze / silver / gold. */
 	const STAR_UNDERSTANDING = [0, 3, 7, 12];
+	/** Cap on daily star progress (bronze / silver / gold). */
+	const MAX_DAILY_STARS = 3;
+	/** Classroom turns per normal class period (last turn can be understanding-only, no star). */
+	const TURNS_PER_CLASS = 4;
+	/** Classroom turns before the exam on exam days (stars only; exam finishes the period). */
+	const TURNS_PER_EXAM_CLASS = 2;
 	/** Immediate understanding gained each time you Focus in class. */
 	const FOCUS_UNDERSTANDING = 2;
 	/** Free-time library study: minutes and understanding per session. */
 	const STUDY_MINUTES = 20;
 	const STUDY_UNDERSTANDING = 4;
+	/** Rooms/subjects that offer "Study before class" when arriving early. */
+	const STUDY_BEFORE_SUBJECTS = ["physics", "math", "history"];
+	const STUDY_BEFORE_LABELS = {
+		physics: "Physics",
+		math: "Math",
+		history: "History",
+	};
+	const STUDY_BEFORE_GENERAL =
+		"You crack open your textbook, thumbing through the pages before class starts.";
+	const STUDY_BEFORE_BY_GRADE = {
+		F: "The words jumble around on the pages, and in your mind. You are barely able to make sense of anything you read, desperate to just give up.",
+		D: "You reread each passage of the unit until you can form some understandings. Even then, you aren’t sure if you are *really* getting it.",
+		C: "The chapter is relatively easy to understand. And with each passage you read, new ideas come together, forming coherent, cohesive thoughts.",
+		B: "You read through each paragraph fluently, making sense of terms and definitions you overlooked. You feel like there’s still so much to be learned.",
+		A: "Your fingers brush over words, solidifying your understanding of the unit entirely. It makes you wonder if you really needed to study this subject more.",
+		"A*": "As you read through the chapter, you can’t help but let your mind drift elsewhere. Eventually, you pull your focus back onto the book in front of you.",
+		S: "A yawn escapes your lips, brushing over the redundant, droning paragraphs. There’s no reason for you to study something you already understand.",
+	};
 	const UNDERSTANDING_MIN = -100;
-	/** DoL-style cap; 200%+ auto-promotes on Sunday without an exam. */
+	/** Cap; 200%+ auto-promotes on Sunday without an exam. */
 	const UNDERSTANDING_MAX = 200;
 	/** Understanding at or below this demotes one letter on Sunday. */
 	const DEMOTE_AT = -100;
@@ -56,15 +80,12 @@ defineGlobalNamespaces("School");
 	/** Sunday decay by letter (higher grades are harder to maintain). */
 	const WEEKLY_DECAY = { F: 2, D: 4, C: 6, B: 8, A: 10, "A*": 12, S: 14 };
 
-	/** @deprecated Legacy numeric defaults; migrated to letter + understanding in ensure(). */
-	const DEFAULT_GRADES = DEFAULT_LETTERS;
-
 	/**
 	 * School skills shown in the Skills modal (class subject → skill label).
 	 * Times match the weekday timetable periods.
 	 */
 	const SKILLS = [
-		{ key: "chemistry", label: "Science", icon: "chemistry", start: 9 * 60, end: 9 * 60 + 50 },
+		{ key: "physics", label: "Physics", icon: "physics", start: 9 * 60, end: 9 * 60 + 50 },
 		{ key: "math", label: "Math", icon: "math", start: 10 * 60, end: 10 * 60 + 50 },
 		{ key: "tech", label: "Handiness", icon: "computer", start: 11 * 60, end: 11 * 60 + 50 },
 		{ key: "history", label: "History", icon: "history", start: 13 * 60 + 10, end: 14 * 60 },
@@ -109,11 +130,11 @@ defineGlobalNamespaces("School");
 		{ key: "lectureHall", label: "Lecture Hall", passage: "Campus Lecture Hall", section: "facilities", minutes: 1, icon: "lecture" },
 		{ key: "lunch", label: "Cafeteria", passage: "Campus Lunch", section: "facilities", minutes: 1, icon: "cafeteria" },
 		{ key: "track", label: "Track Field", passage: "Campus PE Track", section: "facilities", minutes: 1, icon: "track" },
-		{ key: "library", label: "Library", passage: "Campus Library", section: "facilities", minutes: 2, icon: "library" },
-		{ key: "principalsOffice", label: "Principal's Office", passage: "Campus Principal's Office", section: "facilities", minutes: 2, icon: "principal" },
-		{ key: "infirmary", label: "Infirmary", passage: "Campus Infirmary", section: "facilities", minutes: 2, icon: "infirmary" },
-		{ key: "restroom", label: "Restroom", passage: "Campus Restroom", section: "facilities", minutes: 2, icon: "restroom" },
-		{ key: "chemistry", label: "Chemistry Lab", passage: "Campus Chemistry", section: "classrooms", minutes: 1, icon: "chemistry" },
+		{ key: "library", label: "Library", passage: "Campus Library", section: "facilities", minutes: 2, icon: "library", hidden: true },
+		{ key: "principalsOffice", label: "Principal's Office", passage: "Campus Principal's Office", section: "facilities", minutes: 2, icon: "principal", hidden: true },
+		{ key: "infirmary", label: "Infirmary", passage: "Campus Infirmary", section: "facilities", minutes: 2, icon: "infirmary", hidden: true },
+		{ key: "restroom", label: "Restroom", passage: "Campus Restroom", section: "facilities", minutes: 2, icon: "restroom", hidden: true },
+		{ key: "physics", label: "Physics Lab", passage: "Campus Physics", section: "classrooms", minutes: 1, icon: "physics" },
 		{ key: "math", label: "Math Classroom", passage: "Campus Math", section: "classrooms", minutes: 1, icon: "math" },
 		{ key: "computerLab", label: "Computer Lab", passage: "Campus Computer Lab", section: "classrooms", minutes: 1, icon: "computer" },
 		{ key: "history", label: "History Classroom", passage: "Campus History", section: "classrooms", minutes: 1, icon: "history" },
@@ -122,10 +143,10 @@ defineGlobalNamespaces("School");
 
 	/** Early-arrival copy keyed by campus room. */
 	const EARLY_COPY = {
-		chemistry: {
-			enter: "You enter the chemistry lab. No one else has arrived yet. You could use the extra time to study.",
-			subject: "chemistry",
-			lesson: "chemistry lesson",
+		physics: {
+			enter: "You enter the physics lab. No one else has arrived yet. You could use the extra time to study.",
+			subject: "physics",
+			lesson: "physics lesson",
 		},
 		math: {
 			enter: "You enter the math classroom. No one else has arrived yet. You could use the extra time to study.",
@@ -191,6 +212,7 @@ defineGlobalNamespaces("School");
 		return {
 			attended: {},
 			dailyProgress: {},
+			periodTurns: {},
 			grades: Object.assign({}, DEFAULT_LETTERS),
 			understanding: Object.assign({}, DEFAULT_UNDERSTANDING),
 		};
@@ -236,12 +258,47 @@ defineGlobalNamespaces("School");
 		if (!vars.school.dailyProgress || typeof vars.school.dailyProgress !== "object") {
 			vars.school.dailyProgress = {};
 		}
+		if (!vars.school.periodTurns || typeof vars.school.periodTurns !== "object") {
+			vars.school.periodTurns = {};
+		}
+		/* periodFocuses → periodTurns rename (legacy saves) */
+		if (vars.school.periodFocuses && typeof vars.school.periodFocuses === "object") {
+			Object.keys(vars.school.periodFocuses).forEach(day => {
+				if (!vars.school.periodTurns[day] || typeof vars.school.periodTurns[day] !== "object") {
+					vars.school.periodTurns[day] = vars.school.periodFocuses[day];
+				}
+			});
+			delete vars.school.periodFocuses;
+		}
 		if (!vars.school.understanding || typeof vars.school.understanding !== "object") {
 			vars.school.understanding = Object.assign({}, DEFAULT_UNDERSTANDING);
 		}
 		if (!vars.school.grades || typeof vars.school.grades !== "object") {
 			vars.school.grades = Object.assign({}, DEFAULT_LETTERS);
 		}
+		/* chemistry → physics rename (legacy saves) */
+		if (Object.prototype.hasOwnProperty.call(vars.school.grades, "chemistry")) {
+			if (!Object.prototype.hasOwnProperty.call(vars.school.grades, "physics")) {
+				vars.school.grades.physics = vars.school.grades.chemistry;
+			}
+			delete vars.school.grades.chemistry;
+		}
+		if (Object.prototype.hasOwnProperty.call(vars.school.understanding, "chemistry")) {
+			if (!Object.prototype.hasOwnProperty.call(vars.school.understanding, "physics")) {
+				vars.school.understanding.physics = vars.school.understanding.chemistry;
+			}
+			delete vars.school.understanding.chemistry;
+		}
+		Object.keys(vars.school.dailyProgress).forEach(key => {
+			const day = vars.school.dailyProgress[key];
+			if (!day || typeof day !== "object") return;
+			if (Object.prototype.hasOwnProperty.call(day, "chemistry")) {
+				if (!Object.prototype.hasOwnProperty.call(day, "physics")) {
+					day.physics = day.chemistry;
+				}
+				delete day.chemistry;
+			}
+		});
 		Object.keys(DEFAULT_LETTERS).forEach(key => {
 			const raw = vars.school.grades[key];
 			if (typeof raw === "number") {
@@ -259,12 +316,6 @@ defineGlobalNamespaces("School");
 			}
 		});
 		return vars.school;
-	}
-
-	/** @deprecated Use normalizeLetter / stored letter grades. Kept for callers expecting score→letter. */
-	function gradeLetter(scoreOrLetter) {
-		if (typeof scoreOrLetter === "string") return normalizeLetter(scoreOrLetter);
-		return letterFromLegacyScore(scoreOrLetter);
 	}
 
 	function gradeComment(letter) {
@@ -332,7 +383,7 @@ defineGlobalNamespaces("School");
 		const day = weekdayNum(variables);
 		if (subject === "history") return day === 3;
 		if (subject === "art") return day === 4;
-		if (subject === "chemistry" || subject === "math" || subject === "tech" || subject === "pe") {
+		if (subject === "physics" || subject === "math" || subject === "tech" || subject === "pe") {
 			return day === 5;
 		}
 		return false;
@@ -455,6 +506,8 @@ defineGlobalNamespaces("School");
 			});
 		}
 		delete vars.school.dailyProgress[key];
+		delete vars.school.periodTurns[key];
+		delete vars.school.periodFocuses;
 	}
 
 	/**
@@ -508,6 +561,25 @@ defineGlobalNamespaces("School");
 		return (
 			`<span class="skills-stars" role="img" aria-label="${label}">` +
 			dailyStarIcons(n).map(schoolIconImg).join("") +
+			`</span>`
+		);
+	}
+
+	/**
+	 * Link/result chip: | ★ SubjectName for a daily star at the given level.
+	 */
+	function dailyStarEffectMarkup(subject, level) {
+		const n = clampDaily(level);
+		if (!n) return "";
+		const skill = SKILLS.find(s => s.key === subject);
+		const label = (skill && skill.label) || STUDY_BEFORE_LABELS[subject] || subject;
+		return (
+			`<span class="stat-effect-wrap">` +
+			` <span class="stat-effect-pipe">|</span> ` +
+			`<span class="stat-effect stat-effect-good">` +
+			schoolIconImg(dailyStarIcon(n)) +
+			`<span class="stat-name">${label}</span>` +
+			`</span>` +
 			`</span>`
 		);
 	}
@@ -578,10 +650,6 @@ defineGlobalNamespaces("School");
 			colourCodesLegendMarkup() +
 			`</span></span>`
 		);
-	}
-
-	function colourCodesMarkup() {
-		return colourCodesTipMarkup();
 	}
 
 	function schoolIconImg(name) {
@@ -720,7 +788,7 @@ defineGlobalNamespaces("School");
 		const elective = period3Subject(vars);
 		const electiveRoom = period3Room(vars);
 
-		const chem = room("chemistry");
+		const physics = room("physics");
 		const math = room("math");
 		const tech = room("computerLab");
 		const lunch = room("lunch");
@@ -729,14 +797,14 @@ defineGlobalNamespaces("School");
 		return [
 			{
 				key: "p1",
-				title: "Chemistry",
-				attendLabel: "Attend Chemistry Class",
-				roomKey: chem.key,
-				classroomLabel: chem.label,
-				passage: chem.passage,
-				icon: chem.icon,
-				minutes: chem.minutes,
-				gradeKey: "chemistry",
+				title: "Physics",
+				attendLabel: "Attend Physics Class",
+				roomKey: physics.key,
+				classroomLabel: physics.label,
+				passage: physics.passage,
+				icon: physics.icon,
+				minutes: physics.minutes,
+				gradeKey: "physics",
 				start: 9 * 60,
 				end: 9 * 60 + 50,
 			},
@@ -819,7 +887,7 @@ defineGlobalNamespaces("School");
 	function campusRooms(section, variables) {
 		const vars = variables || V();
 		if (!isSchoolDay(vars)) return [];
-		return ROOMS.filter(r => !section || r.section === section).map(r => ({
+		return ROOMS.filter(r => !r.hidden && (!section || r.section === section)).map(r => ({
 			key: r.key,
 			label: r.label,
 			passage: r.passage,
@@ -852,41 +920,23 @@ defineGlobalNamespaces("School");
 		return true;
 	}
 
-	/**
-	 * Marks the period attended and advances the clock to its end (or ~50 min if already past).
-	 */
-	function completePeriod(periodKey, variables) {
-		const vars = variables || V();
-		if (!applies(vars)) return;
-		const period = periodByKey(periodKey, vars);
-		attendClass(periodKey, vars);
-		if (!period) {
-			World.advance(50, vars);
-			return;
-		}
-		const now = World.minutesOfDay(vars);
-		const delta = now < period.end ? period.end - now : 50;
-		World.advance(Math.max(1, delta), vars);
-	}
-
-	function periodAt(variables) {
-		const vars = variables || V();
-		if (!isSchoolDay(vars)) return null;
-		const now = World.minutesOfDay(vars);
-		return periodsForDay(vars).find(p => now >= p.start && now < p.end) || null;
-	}
-
-	function nextPeriod(variables) {
-		const vars = variables || V();
-		if (!isSchoolDay(vars)) return null;
-		const now = World.minutesOfDay(vars);
-		return periodsForDay(vars).find(p => now < p.start) || null;
-	}
-
 	function periodForRoom(roomKey, variables) {
 		const vars = variables || V();
 		if (!roomKey) return null;
 		return periodsForDay(vars).find(p => p.roomKey === roomKey) || null;
+	}
+
+	/**
+	 * Whether this classroom's graded period is in session and not yet attended.
+	 */
+	function isRoomInSession(roomKey, variables) {
+		const vars = variables || V();
+		if (!isSchoolDay(vars)) return false;
+		const period = periodForRoom(roomKey, vars);
+		if (!period || !period.gradeKey) return false;
+		if (hasAttended(period.key, vars)) return false;
+		const now = World.minutesOfDay(vars);
+		return now >= period.start && now < period.end;
 	}
 
 	/**
@@ -934,63 +984,57 @@ defineGlobalNamespaces("School");
 	}
 
 	/**
-	 * Periods still joinable today (not attended, clock still before period end, after 8:00).
+	 * How many classroom turns this period allows (4 on normal days, 2 before an exam).
 	 */
-	function availablePeriods(variables) {
+	function maxTurnsForPeriod(periodKey, variables) {
+		const period = periodByKey(periodKey, variables);
+		if (!period || !period.gradeKey) return TURNS_PER_CLASS;
+		return isExamDayForSubject(period.gradeKey, variables) ? TURNS_PER_EXAM_CLASS : TURNS_PER_CLASS;
+	}
+
+	function getPeriodTurns(periodKey, variables) {
 		const vars = variables || V();
-		if (!isSchoolDay(vars)) return [];
+		if (!applies(vars) || !periodKey) return 0;
 		ensure(vars);
-		const now = World.minutesOfDay(vars);
-		if (now < GATE_OPEN) return [];
-		return periodsForDay(vars)
-			.filter(p => !hasAttended(p.key, vars) && now < p.end)
-			.map(p => ({
-				key: p.key,
-				title: p.title,
-				classroomLabel: p.classroomLabel,
-				passage: p.passage,
-			}));
+		const day = vars.school.periodTurns[dayKey(vars)];
+		const n = day && typeof day === "object" ? Number(day[periodKey]) || 0 : 0;
+		return Math.max(0, Math.floor(n));
 	}
 
-	/**
-	 * Sits through a period from wherever the PC is standing. Guest lectures also
-	 * introduce Rafayel on a first meeting and give the speaker affinity.
-	 * Graded classes earn daily stars via focus(), not here.
-	 */
-	function attendPeriod(periodKey, variables) {
+	function addPeriodTurn(periodKey, variables) {
 		const vars = variables || V();
-		if (!canAttend(periodKey, vars)) return false;
-		if (periodKey === "p4" && period3Subject(vars) === "Guest Lecture" && typeof LoveInterests !== "undefined") {
-			const guest = fridayGuestId(vars);
-			if (guest === "rafayel" && !LoveInterests.hasMet("rafayel", vars)) {
-				LoveInterests.meet("rafayel", vars);
-			}
-			LoveInterests.applyAffinity(guest, "+", vars);
+		if (!applies(vars) || !periodKey) return 0;
+		ensure(vars);
+		const key = dayKey(vars);
+		if (!vars.school.periodTurns[key] || typeof vars.school.periodTurns[key] !== "object") {
+			vars.school.periodTurns[key] = {};
 		}
-		completePeriod(periodKey, vars);
-		return true;
+		const day = vars.school.periodTurns[key];
+		const next = getPeriodTurns(periodKey, vars) + 1;
+		day[periodKey] = next;
+		return next;
 	}
 
 	/**
-	 * Minutes the next Focus action will advance for this period.
-	 * On exam days, only two study blocks (stars) before the test.
+	 * Minutes the next classroom turn will advance for this period.
+	 * Splits remaining class time across turns left (4 on normal days).
 	 */
-	function focusMinutes(periodKey, variables) {
+	function turnMinutes(periodKey, variables) {
 		const vars = variables || V();
 		if (!applies(vars)) return 15;
 		const period = periodByKey(periodKey, vars);
 		if (!period || !period.gradeKey) return 15;
 		const now = World.minutesOfDay(vars);
 		const remaining = Math.max(1, period.end - Math.max(now, period.start));
-		const before = getDailyProgress(period.gradeKey, vars);
-		const maxStars = isExamDayForSubject(period.gradeKey, vars) ? 2 : 3;
-		const focusesLeft = Math.max(1, maxStars - before);
-		return Math.max(1, Math.ceil(remaining / focusesLeft));
+		const done = getPeriodTurns(periodKey, vars);
+		const turnsLeft = Math.max(1, maxTurnsForPeriod(periodKey, vars) - done);
+		return Math.max(1, Math.ceil(remaining / turnsLeft));
 	}
 
 	/**
-	 * Whether the PC can Focus during this graded period (in-session).
-	 * Exam days: up to 2 stars (bronze/silver) before the test; other days: up to 3 (gold).
+	 * Whether the PC can take a Focus turn during this graded period (in-session).
+	 * Normal days: up to 4 turns (stars only while under gold, on Focus).
+	 * Exam days: up to 2 turns before the test.
 	 */
 	function canFocus(periodKey, variables) {
 		const vars = variables || V();
@@ -999,28 +1043,33 @@ defineGlobalNamespaces("School");
 		if (!period || !period.gradeKey) return false;
 		ensure(vars);
 		if (hasAttended(periodKey, vars)) return false;
-		const maxStars = isExamDayForSubject(period.gradeKey, vars) ? 2 : 3;
-		if (getDailyProgress(period.gradeKey, vars) >= maxStars) return false;
+		if (getPeriodTurns(periodKey, vars) >= maxTurnsForPeriod(periodKey, vars)) return false;
 		const now = World.minutesOfDay(vars);
 		return now >= period.start && now < period.end;
 	}
 
 	/**
-	 * Focus in class: earn the next daily star and a little understanding.
-	 * Stars also convert at midnight. Non-exam days: third focus finishes the lesson.
-	 * Exam days: study blocks do not finish the class — takeExam does.
+	 * Focus in class: spend one classroom turn, advance time, and gain understanding.
+	 * Awards a daily star only while under gold (max 3). Later turns can be
+	 * understanding-only; the final turn finishes a normal lesson.
+	 * Exam days: study turns do not finish the class — takeExam does.
 	 */
 	function focus(periodKey, variables) {
 		const vars = variables || V();
 		if (!canFocus(periodKey, vars)) return null;
 		const period = periodByKey(periodKey, vars);
 		const examDay = isExamDayForSubject(period.gradeKey, vars);
-		const minutes = focusMinutes(periodKey, vars);
-		const stars = addDailyProgress(period.gradeKey, 1, vars);
+		const minutes = turnMinutes(periodKey, vars);
+		const turns = addPeriodTurn(periodKey, vars);
+		let stars = getDailyProgress(period.gradeKey, vars);
+		if (stars < MAX_DAILY_STARS) {
+			stars = addDailyProgress(period.gradeKey, 1, vars);
+		}
 		addUnderstanding(period.gradeKey, FOCUS_UNDERSTANDING, vars);
 		World.advance(minutes, vars);
 		const now = World.minutesOfDay(vars);
-		if (!examDay && (stars >= 3 || now >= period.end)) {
+		const maxTurns = maxTurnsForPeriod(periodKey, vars);
+		if (!examDay && (turns >= maxTurns || now >= period.end)) {
 			attendClass(periodKey, vars);
 			const after = World.minutesOfDay(vars);
 			if (after < period.end) {
@@ -1125,17 +1174,79 @@ defineGlobalNamespaces("School");
 		}));
 	}
 
+	function formatActionMinutes(minutes) {
+		const n = Math.max(0, Math.floor(Number(minutes) || 0));
+		const h = Math.floor(n / 60);
+		const m = n % 60;
+		return `${h}:${String(m).padStart(2, "0")}`;
+	}
+
 	/**
-	 * Whether the PC can still sit through this period today (from 8:00 until it ends).
+	 * Early study in Physics / Math / History: only while waiting for that class,
+	 * and only if another daily star can still be earned.
 	 */
-	function canAttend(periodKey, variables) {
+	function canStudyBeforeClass(roomKey, variables) {
 		const vars = variables || V();
-		if (!isSchoolDay(vars)) return false;
-		const period = periodByKey(periodKey, vars);
-		if (!period) return false;
-		ensure(vars);
+		const early = earlyArrival(roomKey, vars);
+		if (!early || !early.periodKey) return false;
+		const period = periodByKey(early.periodKey, vars);
+		if (!period || !period.gradeKey) return false;
+		if (STUDY_BEFORE_SUBJECTS.indexOf(period.gradeKey) < 0) return false;
+		if (period.roomKey !== roomKey) return false;
+		return canStudy(period.gradeKey, vars);
+	}
+
+	function studyBeforeMinutes(roomKey, variables) {
+		const vars = variables || V();
+		const early = earlyArrival(roomKey, vars);
+		if (!early) return 0;
+		const period = periodByKey(early.periodKey, vars);
+		if (!period) return 0;
 		const now = World.minutesOfDay(vars);
-		return !hasAttended(periodKey, vars) && now >= GATE_OPEN && now < period.end;
+		return Math.max(1, period.start - now);
+	}
+
+	/**
+	 * Link reward markup: | + (bronze/silver/gold star) ClassName
+	 */
+	function studyBeforeEffectMarkup(roomKey, variables) {
+		const vars = variables || V();
+		const early = earlyArrival(roomKey, vars);
+		if (!early) return "";
+		const period = periodByKey(early.periodKey, vars);
+		if (!period || !period.gradeKey) return "";
+		const subject = period.gradeKey;
+		const next = clampDaily(getDailyProgress(subject, vars) + 1);
+		return dailyStarEffectMarkup(subject, next);
+	}
+
+	/**
+	 * Study until the period starts: consume all wait time, earn one daily star.
+	 * Stores $schoolStudyBefore for classroom flavor text.
+	 */
+	function studyBeforeClass(roomKey, variables) {
+		const vars = variables || V();
+		if (!canStudyBeforeClass(roomKey, vars)) return null;
+		const early = earlyArrival(roomKey, vars);
+		const period = periodByKey(early.periodKey, vars);
+		const subject = period.gradeKey;
+		const letter = getLetter(subject, vars);
+		const minutes = studyBeforeMinutes(roomKey, vars);
+		const stars = addDailyProgress(subject, 1, vars);
+		World.advance(minutes, vars);
+		const result = {
+			roomKey,
+			subject,
+			label: STUDY_BEFORE_LABELS[subject] || subject,
+			letter,
+			stars,
+			minutes,
+			general: STUDY_BEFORE_GENERAL,
+			detail: STUDY_BEFORE_BY_GRADE[letter] || STUDY_BEFORE_BY_GRADE.D,
+			effectMarkup: dailyStarEffectMarkup(subject, stars),
+		};
+		vars.schoolStudyBefore = result;
+		return result;
 	}
 
 	function isCalebWaitingWindow(variables) {
@@ -1155,13 +1266,14 @@ defineGlobalNamespaces("School");
 		campusRooms,
 		periodByKey,
 		periodForRoom,
+		isRoomInSession,
 		hasAttended,
 		attendClass,
-		completePeriod,
-		attendPeriod,
 		canFocus,
 		focus,
-		focusMinutes,
+		turnMinutes,
+		getPeriodTurns,
+		maxTurnsForPeriod,
 		isExamDayForSubject,
 		examPassChance,
 		canTakeExam,
@@ -1169,8 +1281,11 @@ defineGlobalNamespaces("School");
 		canStudy,
 		study,
 		studyOptions,
-		periodAt,
-		nextPeriod,
+		canStudyBeforeClass,
+		studyBeforeMinutes,
+		studyBeforeEffectMarkup,
+		studyBeforeClass,
+		formatActionMinutes,
 		earlyArrival,
 		getGrade,
 		getLetter,
@@ -1180,7 +1295,6 @@ defineGlobalNamespaces("School");
 		demoteGrade,
 		processMidnight,
 		processNewDay,
-		gradeLetter,
 		gradeColourClass,
 		scoreColourClass,
 		qualityTier,
@@ -1190,15 +1304,13 @@ defineGlobalNamespaces("School");
 		dailyStarIcon,
 		dailyStarIcons,
 		dailyStarsMarkup,
+		dailyStarEffectMarkup,
 		skillsList,
 		skillsMarkup,
 		colourCodesLegendMarkup,
 		colourCodesTipMarkup,
-		colourCodesMarkup,
 		openDialog,
 		gatePeriod,
-		availablePeriods,
-		canAttend,
 		isCalebWaitingWindow,
 		QUALITY_CLASSES,
 		QUALITY_LABELS,
@@ -1206,6 +1318,8 @@ defineGlobalNamespaces("School");
 		SUNDAY_PROMOTE_AT,
 		DEMOTE_AT,
 		STUDY_MINUTES,
+		MAX_DAILY_STARS,
+		TURNS_PER_CLASS,
 		SKILLS,
 	});
 })();

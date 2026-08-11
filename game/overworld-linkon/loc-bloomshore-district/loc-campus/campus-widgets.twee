@@ -13,21 +13,52 @@ Your <<= _early.lesson>> starts at <<= _early.startLabel>>.
 <</if>>\
 <</widget>>
 
+<<widget "schoolStudyBefore">>\
+<<set _studyRoom to _args[0]>>\
+<<if $schoolStudyBefore && $schoolStudyBefore.roomKey === _studyRoom>>\
+<<set _sb to $schoolStudyBefore>>\
+<<unset $schoolStudyBefore>>\
+<<= _sb.general>>
+
+<<= _sb.detail>> <<= _sb.effectMarkup>>
+<<gap>>
+<<elseif School.canStudyBeforeClass(_studyRoom)>>\
+<<set _sbMins to School.studyBeforeMinutes(_studyRoom)>>\
+<<gap>>
+<<link `"Study before class <span class='action-time'>(" + School.formatActionMinutes(_sbMins) + ")</span>"`>>\
+<<run School.studyBeforeClass(_studyRoom)>>\
+<<goto `passage()`>>\
+<</link>> <<= School.studyBeforeEffectMarkup(_studyRoom)>>
+<</if>>\
+<</widget>>
+
 <<widget "schoolFocus">>\
 <<set _focusPeriod to School.periodForRoom(_args[0])>>\
+<<set _focusRoom to _args[0]>>\
 <<if _focusPeriod && _focusPeriod.gradeKey>>\
 <<set _focusStars to School.getDailyProgress(_focusPeriod.gradeKey)>>\
 <<if School.canFocus(_focusPeriod.key) || School.canTakeExam(_focusPeriod.key)>>\
-<<set _focusMins to School.focusMinutes(_focusPeriod.key)>>\
+<<set _focusMins to School.turnMinutes(_focusPeriod.key)>>\
 <<set _examChance to School.examPassChance(_focusPeriod.gradeKey)>>\
 <<gap>>
 <div class="school-focus">\
 <<= School.dailyStarsMarkup(_focusStars)>>\
 <<if School.canFocus(_focusPeriod.key)>>\
+<<capture _focusRoom, _focusPeriod>>\
 <<link `"Focus on the lesson <span class='action-time'>(0:" + String(_focusMins).padStart(2, "0") + ")</span>"`>>\
+<<if _focusRoom === "physics">>\
+<<run PhysicsClass.focus()>>\
+<<if $physicsFocus>>\
+<<goto "Physics Focus Event">>\
+<<else>>\
+<<goto `passage()`>>\
+<</if>>\
+<<else>>\
 <<run School.focus(_focusPeriod.key)>>\
-<<goto passage()>>\
+<<goto `passage()`>>\
+<</if>>\
 <</link>>\
+<</capture>>\
 <</if>>\
 <<if School.canTakeExam(_focusPeriod.key)>>\
 <<link `"Take the exam <span class='action-time'>(rest of class)</span> — pass chance: " + Math.round(_examChance) + "%"`>>\
@@ -48,7 +79,7 @@ Study
 <<for _opt range _studyOpts>>\
 <<schoolIcon _opt.icon>><<link `"Study " + _opt.label + " <span class='action-time'>(0:" + String(_opt.minutes).padStart(2, "0") + ")</span>"`>>\
 <<run School.study(_opt.key)>>\
-<<goto passage()>>\
+<<goto `passage()`>>\
 <</link>> <<= School.dailyStarsMarkup(_opt.stars)>> <span @class="School.scoreColourClass(_opt.understanding)"><<= Math.round(_opt.understanding)>>%</span><br>
 <</for>>\
 <</if>>\

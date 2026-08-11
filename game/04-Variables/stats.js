@@ -111,8 +111,8 @@ defineGlobalNamespaces("Stats");
 		const m = Math.max(0, Math.floor(Number(minutes) || 0));
 		if (!m) return;
 
-		/* +1 fatigue per minute awake */
-		stats.fatigue += m;
+		/* +1.25 fatigue per minute awake (~4% energy/hr; empty in ~27h) */
+		stats.fatigue += 1.25 * m;
 		/* Arousal decays ~10 per minute */
 		stats.arousal -= 10 * m;
 		/* Eases over time (~1 per 2 minutes on 0–200 scale) */
@@ -223,6 +223,30 @@ defineGlobalNamespaces("Stats");
 	}
 
 	/**
+	 * Preview markup for a map of stat → tier (no state change).
+	 */
+	function effectsMarkup(effects) {
+		if (!effects || typeof effects !== "object") return "";
+		let markup = "";
+		Object.keys(effects).forEach(stat => {
+			markup += effectMarkup(stat, effects[stat]);
+		});
+		return markup;
+	}
+
+	/**
+	 * Applies a map of stat → tier and returns concatenated effect markup.
+	 */
+	function applyEffects(effects, variables) {
+		if (!effects || typeof effects !== "object") return "";
+		let markup = "";
+		Object.keys(effects).forEach(stat => {
+			markup += applyEffect(stat, effects[stat], variables);
+		});
+		return markup;
+	}
+
+	/**
 	 * Sidebar / prose band description for a stat.
 	 */
 	function describe(stat, variables) {
@@ -269,7 +293,7 @@ defineGlobalNamespaces("Stats");
 		if (stat === "control") {
 			const c = stats.control;
 			if (c <= 0) return "You are in control.";
-			if (c < 1000) return "You feel slightly off-balance.";
+			if (c < 1000) return "You feel a little off.";
 			if (c < 2000) return "You feel pressured.";
 			if (c < 4000) return "You feel constrained.";
 			if (c < 6000) return "You are losing your grip.";
@@ -388,6 +412,8 @@ defineGlobalNamespaces("Stats");
 		parseTier,
 		effectMarkup,
 		applyEffect,
+		effectsMarkup,
+		applyEffects,
 		describe,
 		severity,
 		fillPercent,

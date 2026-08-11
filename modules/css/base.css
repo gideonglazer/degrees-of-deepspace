@@ -336,6 +336,18 @@ button:disabled {
 	margin: 0.35em 0 0.15em;
 }
 
+#passages .physics-focus-choices {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.2em;
+	margin: 0;
+}
+
+#passages .physics-focus-choice {
+	line-height: 1.35;
+}
+
 #passages .school-focus .skills-stars {
 	display: inline-flex;
 	align-items: center;
@@ -346,6 +358,14 @@ button:disabled {
 	width: 1.25em;
 	height: 1.25em;
 	margin-right: 0;
+}
+
+#passages .stat-effect img.icon.icon-school {
+	display: inline-block;
+	width: 1.6em;
+	height: 1.6em;
+	margin: 0 0.12em 0 0;
+	vertical-align: -0.3em;
 }
 
 #passages a.link-internal .link-num {

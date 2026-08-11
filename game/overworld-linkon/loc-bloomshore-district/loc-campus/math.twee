@@ -4,6 +4,9 @@
 <<run World.setLocation("campus-math", "Bloomshore District — Linkon University")>>\
 <<if School.earlyArrival("math")>>\
 <<schoolEarly "math">>\
+<<schoolStudyBefore "math">>\
+<<elseif $schoolStudyBefore && $schoolStudyBefore.roomKey === "math">>\
+<<schoolStudyBefore "math">>\
 <<else>>\
 You are in the math classroom.
 <</if>>
