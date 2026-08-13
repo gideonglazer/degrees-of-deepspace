@@ -19,7 +19,8 @@ You are in the physics classroom.<<if PhysicsClass.isInSession()>>\
 <<run PhysicsClass.rollDuring()>>\
  <<= $physicsDuringText>><<= $physicsDuringEffects>>
 <<schoolFocus "physics">>\
-<<else>>\
+<<else>>
+
 <<actionIcon "exit">><<link "Leave the classroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>
 <</if>>\
 <</if>>
@@ -77,10 +78,10 @@ Students began to whisper pointedly amongst each other, your face and ears burni
 <<run World.setLocation("campus-physics", "Bloomshore District — Linkon University")>>\
 <<= $physicsFocus.text>>
 <<gap "sm">>
-<div class="physics-focus-choices">\
+<div class="class-focus-choices">\
 <<for _choice range $physicsFocus.choices>>\
 <<capture _choice>>\
-<div class="physics-focus-choice"><<link `_choice.label`>>\
+<div class="class-focus-choice"><<link `_choice.label`>>\
 <<run PhysicsClass.applyFocusChoice(_choice.id)>>\
 <<goto "Physics Focus Result">>\
 <</link>><<= _choice.previewMarkup>></div>\

@@ -38,7 +38,7 @@ defineGlobalNamespaces("Stats");
 			arousal: 0,
 			pain: 0,
 			stress: 0,
-			control: 0,
+			control: CONTROL_MAX,
 			hygiene: 100,
 			hunger: 80,
 		};
@@ -57,10 +57,11 @@ defineGlobalNamespaces("Stats");
 			if (vars.stats.energy !== undefined && vars.stats.fatigue === undefined) {
 				vars.stats.fatigue = energyToFatigue(vars.stats.energy);
 			}
-			/* Migrate legacy trauma into control if present */
+			/* Migrate legacy trauma into control if present (high control = composed). */
 			if (vars.stats.trauma !== undefined) {
 				if (vars.stats.control === undefined) {
-					vars.stats.control = vars.stats.trauma;
+					const trauma = Math.max(0, Math.min(CONTROL_MAX, Math.round(Number(vars.stats.trauma) || 0)));
+					vars.stats.control = CONTROL_MAX - trauma;
 				}
 				delete vars.stats.trauma;
 			}
@@ -119,8 +120,8 @@ defineGlobalNamespaces("Stats");
 		stats.pain -= Math.floor(m / 2);
 		/* Stress usually decreases over time (~2 per minute on 0–10000) */
 		stats.stress -= 2 * m;
-		/* Control eases slowly (~1 per 5 minutes) */
-		stats.control -= Math.floor(m / 5);
+		/* Control recovers slowly toward composure (~1 per 5 minutes) */
+		stats.control += Math.floor(m / 5);
 		/* Day-to-day needs: meal every few hours, wash about once a day */
 		stats.hygiene -= m / 12;
 		stats.hunger -= m / 6;
@@ -141,7 +142,7 @@ defineGlobalNamespaces("Stats");
 		stats.arousal -= 10 * m;
 		stats.pain -= Math.floor(m / 2);
 		stats.stress -= 2 * m;
-		stats.control -= Math.floor(m / 5);
+		stats.control += Math.floor(m / 5);
 		stats.hygiene -= m / 24;
 		stats.hunger -= m / 15;
 
@@ -168,7 +169,7 @@ defineGlobalNamespaces("Stats");
 	}
 
 	/** Stats that are "harmful" when they rise. */
-	const NEGATIVE_STATS = ["stress", "arousal", "pain", "control", "fatigue"];
+	const NEGATIVE_STATS = ["stress", "arousal", "pain", "fatigue"];
 
 	/**
 	 * Markup for a tiered change without applying it. Use to preview an action's cost.
@@ -292,12 +293,12 @@ defineGlobalNamespaces("Stats");
 		}
 		if (stat === "control") {
 			const c = stats.control;
-			if (c <= 0) return "You are in control.";
-			if (c < 1000) return "You feel a little off.";
-			if (c < 2000) return "You feel pressured.";
-			if (c < 4000) return "You feel constrained.";
-			if (c < 6000) return "You are losing your grip.";
-			if (c < 8000) return "You are losing control.";
+			if (c >= CONTROL_MAX) return "You are in control.";
+			if (c > 9000) return "You feel a little off.";
+			if (c > 8000) return "You feel pressured.";
+			if (c > 6000) return "You feel constrained.";
+			if (c > 4000) return "You are losing your grip.";
+			if (c > 2000) return "You are losing control.";
 			return "You are out of control.";
 		}
 		if (stat === "hygiene") {
@@ -326,8 +327,9 @@ defineGlobalNamespaces("Stats");
 			if (stat === "energy" || stat === "hygiene" || stat === "hunger") {
 				return 1 - value / PERCENT_MAX;
 			}
+			if (stat === "control") return 1 - value / CONTROL_MAX;
 			if (stat === "pain") return value / PAIN_MAX;
-			if (stat === "arousal" || stat === "stress" || stat === "control") return value / AROUSAL_MAX;
+			if (stat === "arousal" || stat === "stress") return value / AROUSAL_MAX;
 			return 0;
 		};
 		let r;
@@ -347,8 +349,11 @@ defineGlobalNamespaces("Stats");
 		const stats = ensure(variables);
 		if (stat === "energy") return Math.max(0, Math.min(100, energy(variables)));
 		if (stat === "pain") return Math.max(0, Math.min(100, Math.round((stats.pain / PAIN_MAX) * 100)));
-		if (stat === "arousal" || stat === "stress" || stat === "control") {
+		if (stat === "arousal" || stat === "stress") {
 			return Math.max(0, Math.min(100, Math.round(((Number(stats[stat]) || 0) / AROUSAL_MAX) * 100)));
+		}
+		if (stat === "control") {
+			return Math.max(0, Math.min(100, Math.round(((Number(stats.control) || 0) / CONTROL_MAX) * 100)));
 		}
 		if (stat === "hygiene" || stat === "hunger") {
 			return Math.max(0, Math.min(100, Math.round(Number(stats[stat]) || 0)));

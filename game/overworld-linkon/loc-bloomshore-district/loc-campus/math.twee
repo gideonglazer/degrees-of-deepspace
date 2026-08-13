@@ -5,11 +5,93 @@
 <<if School.earlyArrival("math")>>\
 <<schoolEarly "math">>\
 <<schoolStudyBefore "math">>\
+<<actionIcon "exit">><<link "Leave the classroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>
 <<elseif $schoolStudyBefore && $schoolStudyBefore.roomKey === "math">>\
-<<schoolStudyBefore "math">>\
+<<goto "Math Study Transition">>\
+<<elseif !Flags.get(MathClass.FIRST_FLAG) && MathClass.isInSession()>>\
+<<goto "Math Class Begin">>\
+<<elseif MathClass.needsEnd()>>\
+<<run MathClass.rollEnd()>>\
+<<run MathClass.markEndDone()>>\
+<<goto "Math Class End">>\
 <<else>>\
-You are in the math classroom.
-<</if>>
-<<schoolFocus "math">>
+You are in the math classroom.<<if MathClass.isInSession()>>\
+<<run MathClass.rollDuring()>>\
+ <<= $mathDuringText>><<= $mathDuringEffects>>
+<<schoolFocus "math">>\
+<<else>>
 
 <<actionIcon "exit">><<link "Leave the classroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>
+<</if>>\
+<</if>>
+
+:: Math Study Transition
+<<initPlayState>>\
+<<if !$schoolStudyBefore || $schoolStudyBefore.roomKey !== "math">><<goto "Campus Math">><</if>>\
+<<run World.setLocation("campus-math", "Bloomshore District — Linkon University")>>\
+<<set _sb to $schoolStudyBefore>>\
+<<unset $schoolStudyBefore>>\
+You study diligently, until the bell rings. <<= _sb.effectMarkup>>
+
+<<link "Next">>\
+<<if !Flags.get(MathClass.FIRST_FLAG) && MathClass.isInSession()>>\
+<<goto "Math Class Begin">>\
+<<else>>\
+<<goto "Campus Math">>\
+<</if>>\
+<</link>>
+
+:: Math Class Begin
+<<initPlayState>>\
+<<if !School.isSchoolDay() || !MathClass.isInSession()>><<goto "Campus Math">><</if>>\
+<<run Flags.set(MathClass.FIRST_FLAG)>>\
+<<run World.setLocation("campus-math", "Bloomshore District — Linkon University")>>\
+The bell rings, signalling that class has begun. With the final signal, the teacher is still nowhere in sight, until the door flies open, revealing a handsome, middle-aged man with long, curly black hair and wispy strands that fall over his forehead. He has stunning red eyes and alabaster skin, akin to how you think a vampire would look. The sleeves of his button-down are rolled up to his elbows, a cup of tea in one hand, a stack of books in the other.
+
+“Apologies, my young friends!” he chuckles, frantically setting his belongings onto his desk. “I experienced… let’s say, a complication this morning. The new hot water machine in the teachers’ lounge is far too advanced to even be considered a hot water machine. Oh, technology just has a way of going over my head. It’s tragical!” His smile reveals a pair of imperfectly perfect teeth. You can’t help but feel charmed by his natural charisma. <<arousal "+">>
+
+“Ah, I should introduce myself, huh? I’m Professor Zhang, and I will be your math teacher for the foreseeable future. I only ask that you all study hard and show up on time. I don’t want to have a reason to hold any of you bright, young souls back.” He realizes the irony in his statement, his lilted smile falling.
+
+“<i>Ahem…</i> Well then, shall we begin?”
+
+<<link "Next">><<goto "Campus Math">><</link>>
+
+:: Math Class End
+<<initPlayState>>\
+<<if !$mathEnd>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-math", "Bloomshore District — Linkon University")>>\
+<<print $mathEnd.text>>
+<<gap>>
+<<link `"Next <span class='action-time'>(" + School.formatActionMinutes($mathEnd.minutes) + ")</span>"`>>\
+<<run World.advance($mathEnd.minutes)>>\
+<<unset $mathEnd>>\
+<<goto "Linkon University">>\
+<</link>>
+
+:: Math Focus Event
+<<initPlayState>>\
+<<if !$mathFocus>><<goto "Campus Math">><</if>>\
+<<run World.setLocation("campus-math", "Bloomshore District — Linkon University")>>\
+<<= $mathFocus.text>>
+<<gap "sm">>
+<div class="class-focus-choices">\
+<<for _choice range $mathFocus.choices>>\
+<<capture _choice>>\
+<div class="class-focus-choice"><<link `_choice.label`>>\
+<<run MathClass.applyFocusChoice(_choice.id)>>\
+<<goto "Math Focus Result">>\
+<</link>><<= _choice.previewMarkup>></div>\
+<</capture>>\
+<</for>>\
+</div>
+
+:: Math Focus Result
+<<initPlayState>>\
+<<if !$mathFocusResult>><<goto "Campus Math">><</if>>\
+<<run World.setLocation("campus-math", "Bloomshore District — Linkon University")>>\
+<<= $mathFocusResult.text>><<= $mathFocusResult.effectsMarkup>>
+<<gap>>
+<<link "Next">>\
+<<run MathClass.clearFocusEvent()>>\
+<<goto "Campus Math">>\
+<</link>>

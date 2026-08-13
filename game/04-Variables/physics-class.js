@@ -329,11 +329,7 @@ defineGlobalNamespaces("PhysicsClass");
 	}
 
 	function understandingChance(mode, variables) {
-		const understanding = Math.round(School.getUnderstanding(ROOM_KEY, variables) || 0);
-		if (mode === "understandingHard") {
-			return Math.max(15, Math.min(80, understanding - 15));
-		}
-		return Math.max(20, Math.min(90, understanding));
+		return School.focusSuccessChance(ROOM_KEY, mode, variables);
 	}
 
 	function outcomeForPreview(choice) {

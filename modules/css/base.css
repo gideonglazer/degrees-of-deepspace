@@ -336,7 +336,7 @@ button:disabled {
 	margin: 0.35em 0 0.15em;
 }
 
-#passages .physics-focus-choices {
+#passages .class-focus-choices {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -344,7 +344,7 @@ button:disabled {
 	margin: 0;
 }
 
-#passages .physics-focus-choice {
+#passages .class-focus-choice {
 	line-height: 1.35;
 }
 
