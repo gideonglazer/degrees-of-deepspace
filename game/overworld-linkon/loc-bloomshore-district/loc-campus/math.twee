@@ -17,7 +17,7 @@
 <<else>>\
 You are in the math classroom.<<if MathClass.isInSession()>>\
 <<run MathClass.rollDuring()>>\
- <<= $mathDuringText>><<= $mathDuringEffects>>
+ <<= $mathDuringText>><<= $mathDuringEffects>>\
 <<schoolFocus "math">>\
 <<else>>
 

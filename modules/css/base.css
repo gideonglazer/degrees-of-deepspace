@@ -328,6 +328,17 @@ button:disabled {
 	height: 1.4em;
 }
 
+#passages .school-early {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	margin: 0;
+}
+
+#passages .school-early > div {
+	margin: 0;
+}
+
 #passages .school-focus {
 	display: flex;
 	flex-wrap: wrap;
@@ -360,12 +371,21 @@ button:disabled {
 	margin-right: 0;
 }
 
-#passages .stat-effect img.icon.icon-school {
+#passages .stat-effect img.icon.icon-school,
+#passages .stat-effect img.icon.icon-skill {
 	display: inline-block;
 	width: 1.6em;
 	height: 1.6em;
 	margin: 0 0.12em 0 0;
 	vertical-align: -0.3em;
+}
+
+#passages .school-focus .skills-daily-dash {
+	display: inline-block;
+	min-width: 3.6em;
+	text-align: center;
+	color: var(--text-muted, #aaa);
+	letter-spacing: 0.08em;
 }
 
 #passages a.link-internal .link-num {

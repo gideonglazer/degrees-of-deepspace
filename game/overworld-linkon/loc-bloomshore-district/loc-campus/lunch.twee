@@ -2,13 +2,30 @@
 <<initPlayState>>\
 <<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
 <<run World.setLocation("campus-lunch", "Bloomshore District — Linkon University")>>\
+<<run Cafeteria.ensure()>>\
 <<if School.earlyArrival("lunch")>>\
 <<schoolEarly "lunch">>\
 <<else>>\
-You are in the cafeteria.
-<</if>>
-<<if School.isInLunchPeriod()>>\
-<<schoolStudy>>
-<</if>>
+You are in the cafeteria.<<if School.isInLunchPeriod()>><<run Cafeteria.rollDuring()>> <<= $cafeteriaDuringText>><</if>><</if>>
 
+<<if School.isInLunchPeriod() && Cafeteria.canEatAlone()>>\
+<<schoolIcon "cafeteria">><<link `"Eat lunch alone <span class='action-time'>(" + School.formatActionMinutes(Cafeteria.EAT_MINUTES) + ")</span>"`>><<goto "Campus Lunch Eat Alone">><</link>> <<= Cafeteria.eatPreviewMarkup()>>
+<<elseif School.isInLunchPeriod() && Cafeteria.hasEaten()>>\
+<<blue>>You've already eaten lunch today.<</blue>>
+<</if>>\
+<<gap>>
 <<actionIcon "exit">><<link "Leave the cafeteria <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>
+
+:: Campus Lunch Eat Alone
+<<initPlayState>>\
+<<if !School.isSchoolDay()>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-lunch", "Bloomshore District — Linkon University")>>\
+<<run Cafeteria.ensure()>>\
+<<if Cafeteria.canEatAlone()>>\
+<<set _fx to Cafeteria.eatAlone()>>\
+After getting your lunch, you sit at a quiet table in the corner and eat. <<= _fx>>
+<<gap>>
+<<link "Finish eating">><<goto "Campus Lunch">><</link>>
+<<else>>\
+<<goto "Campus Lunch">>
+<</if>>

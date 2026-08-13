@@ -53,13 +53,16 @@ defineGlobalNamespaces("School");
 	const STUDY_MINUTES = 20;
 	const STUDY_UNDERSTANDING = 4;
 	/** Rooms/subjects that offer "Study before class" when arriving early. */
-	const STUDY_BEFORE_SUBJECTS = ["physics", "math", "history"];
-	/** How close to class start (minutes) before "Study before class" appears. */
+	const STUDY_BEFORE_SUBJECTS = ["physics", "math", "history", "art"];
+	/** First period: study/setup from campus open until class starts (1 hour). */
+	const FIRST_STUDY_WINDOW = 60;
+	/** Later periods: study/setup only in the passing window before that class. */
 	const STUDY_BEFORE_WINDOW = 10;
 	const STUDY_BEFORE_LABELS = {
 		physics: "Physics",
 		math: "Math",
 		history: "History",
+		art: "Art",
 	};
 	const STUDY_BEFORE_GENERAL =
 		"You crack open your textbook, thumbing through the pages before class starts.";
@@ -89,7 +92,7 @@ defineGlobalNamespaces("School");
 	const SKILLS = [
 		{ key: "physics", label: "Physics", icon: "physics", start: 9 * 60, end: 9 * 60 + 50 },
 		{ key: "math", label: "Math", icon: "math", start: 10 * 60, end: 10 * 60 + 50 },
-		{ key: "tech", label: "Handiness", icon: "computer", start: 11 * 60, end: 11 * 60 + 50 },
+		{ key: "tech", label: "Tech", icon: "computer", start: 11 * 60, end: 11 * 60 + 50 },
 		{ key: "history", label: "History", icon: "history", start: 13 * 60 + 10, end: 14 * 60 },
 		{ key: "art", label: "Creativity", icon: "art", start: 13 * 60 + 10, end: 14 * 60 },
 		{ key: "pe", label: "Athletics", icon: "track", start: 14 * 60 + 10, end: 15 * 60 },
@@ -503,12 +506,14 @@ defineGlobalNamespaces("School");
 
 	/**
 	 * Adds daily study progress (max 3 → gold star). Returns the new level.
+	 * Tech never earns daily stars.
 	 */
 	function addDailyProgress(subject, amount, variables) {
 		const vars = variables || V();
 		if (!applies(vars)) return 0;
 		ensure(vars);
 		if (!subject || !(subject in DEFAULT_LETTERS)) return 0;
+		if (subject === "tech") return 0;
 		const key = dayKey(vars);
 		if (!vars.school.dailyProgress[key] || typeof vars.school.dailyProgress[key] !== "object") {
 			vars.school.dailyProgress[key] = {};
@@ -700,14 +705,19 @@ defineGlobalNamespaces("School");
 		ensure(vars);
 		const rows = skillsList(vars)
 			.map(skill => {
-				const starLabel =
-					skill.daily >= 3
+				const noStars = skill.key === "tech";
+				const starLabel = noStars
+					? "No daily stars"
+					: skill.daily >= 3
 						? "Gold star earned"
 						: skill.daily >= 2
 							? "Silver star earned"
 							: skill.daily >= 1
 								? "Bronze star earned"
 								: "No daily progress";
+				const dailyCell = noStars
+					? `<span class="skills-daily-dash" aria-hidden="true">—</span>`
+					: dailyStarsMarkup(skill.daily);
 				return (
 					`<div class="skills-row" role="row">` +
 					`<div class="skills-cell skills-cell-icon" role="cell">` +
@@ -717,7 +727,7 @@ defineGlobalNamespaces("School");
 					`<div class="skills-cell skills-cell-time" role="cell">${skill.timeLabel}</div>` +
 					`<div class="skills-cell skills-cell-daily" role="cell" title="${starLabel}">` +
 					`<span class="skills-daily-label">Daily</span>` +
-					dailyStarsMarkup(skill.daily) +
+					dailyCell +
 					`</div>` +
 					`<div class="skills-cell skills-cell-grade" role="cell">` +
 					`<span class="${skill.colour} skills-grade-letter">${skill.letter}</span>` +
@@ -733,6 +743,11 @@ defineGlobalNamespaces("School");
 			})
 			.join("");
 
+		const lifeSkills =
+			typeof Skills !== "undefined" && Skills.skillsSectionMarkup
+				? Skills.skillsSectionMarkup(vars)
+				: "";
+
 		return (
 			`<div class="skills">` +
 			`<h3 class="skills-section">School</h3>` +
@@ -745,7 +760,9 @@ defineGlobalNamespaces("School");
 			`<div class="skills-cell skills-cell-score" role="columnheader">Pass Chance</div>` +
 			`</div>` +
 			rows +
-			`</div></div>`
+			`</div>` +
+			lifeSkills +
+			`</div>`
 		);
 	}
 
@@ -868,14 +885,14 @@ defineGlobalNamespaces("School");
 			{
 				key: "lunch",
 				title: "Lunch",
-				attendLabel: "Take Lunch",
+				attendLabel: "Go to the cafeteria",
 				roomKey: lunch.key,
 				classroomLabel: lunch.label,
 				passage: lunch.passage,
 				icon: lunch.icon,
 				minutes: lunch.minutes,
 				gradeKey: null,
-				start: 12 * 60,
+				start: 11 * 60 + 50,
 				end: 13 * 60,
 			},
 			{
@@ -971,16 +988,73 @@ defineGlobalNamespaces("School");
 	}
 
 	/**
-	 * Early-arrival blurb for a campus room: before that room's period starts,
-	 * if it still runs today and hasn't been attended.
+	 * Minutes before a period starts when early arrival / study / setup is allowed.
+	 * First period: 1 hour (from campus open). After-lunch elective: lunch + passing.
+	 * Other periods: passing window only.
+	 */
+	function earlyWindowMinutes(period, variables) {
+		if (!period) return STUDY_BEFORE_WINDOW;
+		if (period.key === "p1") return FIRST_STUDY_WINDOW;
+		if (period.key === "p4") {
+			const lunch = periodByKey("lunch", variables);
+			if (lunch) return Math.max(STUDY_BEFORE_WINDOW, period.start - lunch.start);
+		}
+		return STUDY_BEFORE_WINDOW;
+	}
+
+	/**
+	 * Period to use for early arrival in a room. Usually the gate period; the
+	 * after-lunch elective also opens once lunch starts so you can go study there.
+	 */
+	function earlyPeriodForRoom(roomKey, variables) {
+		const vars = variables || V();
+		const gate = gatePeriod(vars);
+		if (gate && gate.roomKey === roomKey) return gate;
+		const elective = periodByKey("p4", vars);
+		if (!elective || elective.roomKey !== roomKey) return null;
+		if (hasAttended(elective.key, vars)) return null;
+		const now = World.minutesOfDay(vars);
+		if (now >= elective.start) return null;
+		return elective;
+	}
+
+	/**
+	 * After-lunch room (History / Art / Lecture Hall) while lunch is the gate period.
+	 */
+	function gateElective(variables) {
+		const vars = variables || V();
+		if (!isSchoolDay(vars)) return null;
+		const gate = gatePeriod(vars);
+		if (!gate || gate.key !== "lunch") return null;
+		const elective = periodByKey("p4", vars);
+		if (!elective || hasAttended(elective.key, vars)) return null;
+		const now = World.minutesOfDay(vars);
+		if (now >= elective.start) return null;
+		const roomLabel = String(elective.classroomLabel || "").toLowerCase();
+		return {
+			key: elective.key,
+			roomKey: elective.roomKey,
+			goLabel: "Go to the " + roomLabel,
+			passage: elective.passage,
+			icon: elective.icon,
+			minutes: elective.minutes,
+		};
+	}
+
+	/**
+	 * Early-arrival blurb for a campus room: only the next class in the timetable,
+	 * and only inside that period's early window.
 	 */
 	function earlyArrival(roomKey, variables) {
 		const vars = variables || V();
 		if (!isSchoolDay(vars)) return null;
-		const period = periodForRoom(roomKey, vars);
-		if (!period || hasAttended(period.key, vars)) return null;
+		const period = earlyPeriodForRoom(roomKey, vars);
+		if (!period || period.roomKey !== roomKey) return null;
+		if (hasAttended(period.key, vars)) return null;
 		const now = World.minutesOfDay(vars);
 		if (now >= period.start) return null;
+		const wait = period.start - now;
+		if (wait > earlyWindowMinutes(period, vars)) return null;
 		const copy = EARLY_COPY[roomKey] || {
 			enter: "You arrive early. No one else is here yet.",
 			subject: period.gradeKey,
@@ -1093,7 +1167,8 @@ defineGlobalNamespaces("School");
 		const minutes = turnMinutes(periodKey, vars);
 		const turns = addPeriodTurn(periodKey, vars);
 		let stars = getDailyProgress(period.gradeKey, vars);
-		if (stars < MAX_DAILY_STARS) {
+		/* Tech uses life-skill Focus tracks instead of daily stars. */
+		if (period.gradeKey !== "tech" && stars < MAX_DAILY_STARS) {
 			stars = addDailyProgress(period.gradeKey, 1, vars);
 		}
 		addUnderstanding(period.gradeKey, FOCUS_UNDERSTANDING, vars);
@@ -1173,18 +1248,20 @@ defineGlobalNamespaces("School");
 	}
 
 	/**
-	 * Free-time study (library / lunch): earn a daily star (up to gold) and understanding.
+	 * Free-time study (library): earn a daily star (up to gold) and understanding.
 	 */
 	function canStudy(subject, variables) {
 		const vars = variables || V();
 		if (!isSchoolDay(vars)) return false;
 		if (!subject || !(subject in DEFAULT_LETTERS)) return false;
+		/* Tech has no daily stars; progress comes from class Focus skill tracks. */
+		if (subject === "tech") return false;
 		ensure(vars);
 		return getDailyProgress(subject, vars) < 3;
 	}
 
 	/**
-	 * True while the lunch period is underway (12:00–13:00).
+	 * True while the lunch period is underway (after Tech ends until 13:00).
 	 */
 	function isInLunchPeriod(variables) {
 		const vars = variables || V();
@@ -1197,24 +1274,15 @@ defineGlobalNamespaces("School");
 
 	/**
 	 * Minutes a free-time study action advances.
-	 * During lunch you can study through the remaining lunch window (instead of eating).
 	 */
-	function studySessionMinutes(variables) {
-		const vars = variables || V();
-		const lunch = periodByKey("lunch", vars);
-		if (lunch) {
-			const now = World.minutesOfDay(vars);
-			if (now >= lunch.start && now < lunch.end) {
-				return Math.max(1, lunch.end - now);
-			}
-		}
+	function studySessionMinutes() {
 		return STUDY_MINUTES;
 	}
 
 	function study(subject, variables) {
 		const vars = variables || V();
 		if (!canStudy(subject, vars)) return null;
-		const minutes = studySessionMinutes(vars);
+		const minutes = studySessionMinutes();
 		const stars = addDailyProgress(subject, 1, vars);
 		const understanding = addUnderstanding(subject, STUDY_UNDERSTANDING, vars);
 		World.advance(minutes, vars);
@@ -1224,7 +1292,7 @@ defineGlobalNamespaces("School");
 	function studyOptions(variables) {
 		const vars = variables || V();
 		if (!isSchoolDay(vars)) return [];
-		const minutes = studySessionMinutes(vars);
+		const minutes = studySessionMinutes();
 		return SKILLS.filter(skill => canStudy(skill.key, vars)).map(skill => ({
 			key: skill.key,
 			label: skill.label,
@@ -1243,8 +1311,9 @@ defineGlobalNamespaces("School");
 	}
 
 	/**
-	 * Early study in Physics / Math / History: only within STUDY_BEFORE_WINDOW
-	 * minutes of that class starting, and only if another daily star can still be earned.
+	 * Early study in Physics / Math / History / Art: that class's early window
+	 * (1 hour before first period, lunch-through-start for the after-lunch elective,
+	 * 10 minutes otherwise).
 	 */
 	function canStudyBeforeClass(roomKey, variables) {
 		const vars = variables || V();
@@ -1254,9 +1323,6 @@ defineGlobalNamespaces("School");
 		if (!period || !period.gradeKey) return false;
 		if (STUDY_BEFORE_SUBJECTS.indexOf(period.gradeKey) < 0) return false;
 		if (period.roomKey !== roomKey) return false;
-		const now = World.minutesOfDay(vars);
-		const wait = period.start - now;
-		if (wait <= 0 || wait > STUDY_BEFORE_WINDOW) return false;
 		return canStudy(period.gradeKey, vars);
 	}
 
@@ -1267,7 +1333,7 @@ defineGlobalNamespaces("School");
 		const period = periodByKey(early.periodKey, vars);
 		if (!period) return 0;
 		const now = World.minutesOfDay(vars);
-		return Math.max(1, Math.min(STUDY_BEFORE_WINDOW, period.start - now));
+		return Math.max(1, period.start - now);
 	}
 
 	/**
@@ -1328,6 +1394,7 @@ defineGlobalNamespaces("School");
 		fridayGuestId,
 		periodsForDay,
 		campusRooms,
+		gateElective,
 		periodByKey,
 		periodForRoom,
 		isRoomInSession,
@@ -1386,6 +1453,7 @@ defineGlobalNamespaces("School");
 		DEMOTE_AT,
 		STUDY_MINUTES,
 		STUDY_BEFORE_WINDOW,
+		FIRST_STUDY_WINDOW,
 		MAX_DAILY_STARS,
 		TURNS_PER_CLASS,
 		SKILLS,

@@ -5,9 +5,11 @@
 <<run World.setLocation("campus-art", "Bloomshore District — Linkon University")>>\
 <<if School.earlyArrival("art")>>\
 <<schoolEarly "art">>\
+<<schoolStudyBefore "art">>\
+<<elseif $schoolStudyBefore && $schoolStudyBefore.roomKey === "art">>\
+<<schoolStudyBefore "art">>\
 <<else>>\
 You are in the art studio.
 <</if>>
 <<schoolFocus "art">>
-
 <<actionIcon "exit">><<link "Leave the classroom <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>

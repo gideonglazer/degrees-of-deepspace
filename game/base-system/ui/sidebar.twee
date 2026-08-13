@@ -75,7 +75,7 @@
 
 :: Skills Widgets [widget]
 <<widget "skillsContents">>\
-<<if School.applies()>><<run School.ensure()>><<= School.skillsMarkup()>><</if>>\
+<<if School.applies()>><<run School.ensure()>><<run Skills.ensure()>><<= School.skillsMarkup()>><</if>>\
 <</widget>>
 
 :: Journal Widgets [widget]

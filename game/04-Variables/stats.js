@@ -40,7 +40,8 @@ defineGlobalNamespaces("Stats");
 			stress: 0,
 			control: CONTROL_MAX,
 			hygiene: 100,
-			hunger: 80,
+			hunger: 0,
+			hungerAsNeed: true,
 		};
 	}
 
@@ -51,13 +52,12 @@ defineGlobalNamespaces("Stats");
 		} else {
 			const defaults = createDefaults();
 			Object.keys(defaults).forEach(key => {
+				if (key === "hungerAsNeed") return;
 				if (vars.stats[key] === undefined) vars.stats[key] = defaults[key];
 			});
-			/* Migrate legacy energy field into fatigue if present */
 			if (vars.stats.energy !== undefined && vars.stats.fatigue === undefined) {
 				vars.stats.fatigue = energyToFatigue(vars.stats.energy);
 			}
-			/* Migrate legacy trauma into control if present (high control = composed). */
 			if (vars.stats.trauma !== undefined) {
 				if (vars.stats.control === undefined) {
 					const trauma = Math.max(0, Math.min(CONTROL_MAX, Math.round(Number(vars.stats.trauma) || 0)));
@@ -67,6 +67,10 @@ defineGlobalNamespaces("Stats");
 			}
 			delete vars.stats.energy;
 			delete vars.stats.comfort;
+			if (vars.stats.hungerAsNeed !== true) {
+				vars.stats.hunger = PERCENT_MAX - (Number(vars.stats.hunger) || 0);
+				vars.stats.hungerAsNeed = true;
+			}
 		}
 		clampAll(vars.stats);
 		return vars.stats;
@@ -124,7 +128,7 @@ defineGlobalNamespaces("Stats");
 		stats.control += Math.floor(m / 5);
 		/* Day-to-day needs: meal every few hours, wash about once a day */
 		stats.hygiene -= m / 12;
-		stats.hunger -= m / 6;
+		stats.hunger += m / 6;
 
 		clampAll(stats);
 	}
@@ -144,7 +148,7 @@ defineGlobalNamespaces("Stats");
 		stats.stress -= 2 * m;
 		stats.control += Math.floor(m / 5);
 		stats.hygiene -= m / 24;
-		stats.hunger -= m / 15;
+		stats.hunger += m / 15;
 
 		clampAll(stats);
 	}
@@ -169,7 +173,7 @@ defineGlobalNamespaces("Stats");
 	}
 
 	/** Stats that are "harmful" when they rise. */
-	const NEGATIVE_STATS = ["stress", "arousal", "pain", "fatigue"];
+	const NEGATIVE_STATS = ["stress", "arousal", "pain", "fatigue", "hunger"];
 
 	/**
 	 * Markup for a tiered change without applying it. Use to preview an action's cost.
@@ -310,9 +314,9 @@ defineGlobalNamespaces("Stats");
 		}
 		if (stat === "hunger") {
 			const h = stats.hunger;
-			if (h >= 80) return "You are full.";
-			if (h >= 50) return "You are satisfied.";
-			if (h >= 25) return "You are hungry.";
+			if (h <= 20) return "You are full.";
+			if (h <= 50) return "You are satisfied.";
+			if (h <= 75) return "You are hungry.";
 			return "You are starving.";
 		}
 		return "";
@@ -324,9 +328,10 @@ defineGlobalNamespaces("Stats");
 	function severity(stat, variables) {
 		const stats = ensure(variables);
 		const ratio = value => {
-			if (stat === "energy" || stat === "hygiene" || stat === "hunger") {
+			if (stat === "energy" || stat === "hygiene") {
 				return 1 - value / PERCENT_MAX;
 			}
+			if (stat === "hunger") return value / PERCENT_MAX;
 			if (stat === "control") return 1 - value / CONTROL_MAX;
 			if (stat === "pain") return value / PAIN_MAX;
 			if (stat === "arousal" || stat === "stress") return value / AROUSAL_MAX;
@@ -355,8 +360,11 @@ defineGlobalNamespaces("Stats");
 		if (stat === "control") {
 			return Math.max(0, Math.min(100, Math.round(((Number(stats.control) || 0) / CONTROL_MAX) * 100)));
 		}
-		if (stat === "hygiene" || stat === "hunger") {
-			return Math.max(0, Math.min(100, Math.round(Number(stats[stat]) || 0)));
+		if (stat === "hygiene") {
+			return Math.max(0, Math.min(100, Math.round(Number(stats.hygiene) || 0)));
+		}
+		if (stat === "hunger") {
+			return Math.max(0, Math.min(100, Math.round(PERCENT_MAX - (Number(stats.hunger) || 0))));
 		}
 		return 0;
 	}

@@ -266,6 +266,17 @@
 	font-weight: 400;
 }
 
+.stat-effect img.icon.icon-skill {
+	display: inline-block;
+	width: 1.35em;
+	height: 1.35em;
+	margin: 0 0.12em 0 0;
+	vertical-align: -0.3em;
+	object-fit: contain;
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
+}
+
 .stat-effect .stat-delta,
 .stat-effect .stat-name {
 	color: inherit;
@@ -383,6 +394,129 @@
 	font-size: 1.05em;
 	font-weight: 400;
 	color: var(--gold);
+}
+
+#ui-dialog-body.skills-dialog .skills-section-life {
+	margin-top: 1.35em;
+}
+
+#ui-dialog-body.skills-dialog .skills-daily-dash {
+	display: inline-block;
+	min-width: 3.6em;
+	text-align: center;
+	color: var(--text-muted, #aaa);
+	letter-spacing: 0.12em;
+	font-size: 1.1em;
+}
+
+#ui-dialog-body.skills-dialog .life-skills-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.65rem;
+}
+
+#ui-dialog-body.skills-dialog .life-skill-card {
+	flex: 1 1 10.5rem;
+	min-width: 9.5rem;
+	max-width: 14rem;
+	padding: 0.65rem 0.75rem 0.55rem;
+	border: 1px solid var(--border-strong, #888);
+	border-radius: var(--radius, 3px);
+	box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.02);
+}
+
+#ui-dialog-body.skills-dialog .life-skill-card-top {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.5rem;
+}
+
+#ui-dialog-body.skills-dialog .life-skill-card-name {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	min-width: 0;
+}
+
+#ui-dialog-body.skills-dialog .life-skill-label {
+	font-weight: 600;
+	font-size: 1.05em;
+	color: var(--text-primary, #eee);
+}
+
+#ui-dialog-body.skills-dialog .life-skill-grade {
+	font-weight: 700;
+	font-size: 1.1em;
+	line-height: 1.2;
+	flex-shrink: 0;
+}
+
+#ui-dialog-body.skills-dialog .life-skill-card-bottom {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 0.85em;
+}
+
+#ui-dialog-body.skills-dialog .life-skill-pct {
+	font-variant-numeric: tabular-nums;
+	font-size: 0.9em;
+	opacity: 0.9;
+}
+
+#ui-dialog-body.skills-dialog .life-skill-bar {
+	display: block;
+	width: 100%;
+	height: 3px;
+	margin-top: 0.35em;
+	background-color: rgba(140, 140, 160, 0.28);
+	overflow: hidden;
+}
+
+#ui-dialog-body.skills-dialog .life-skill-bar-fill {
+	height: 100%;
+	width: 0;
+	background-color: var(--green);
+}
+
+#ui-dialog-body.skills-dialog .life-skill-bar-fill.red {
+	background-color: var(--red);
+}
+
+#ui-dialog-body.skills-dialog .life-skill-bar-fill.pink {
+	background-color: var(--pink);
+}
+
+#ui-dialog-body.skills-dialog .life-skill-bar-fill.purple {
+	background-color: var(--purple);
+}
+
+#ui-dialog-body.skills-dialog .life-skill-bar-fill.blue {
+	background-color: var(--blue);
+}
+
+#ui-dialog-body.skills-dialog .life-skill-bar-fill.teal {
+	background-color: var(--teal);
+}
+
+#ui-dialog-body.skills-dialog .life-skill-bar-fill.green {
+	background-color: var(--green);
+}
+
+#ui-dialog-body.skills-dialog .life-skill-bar-fill.lime {
+	background-color: var(--lime);
+}
+
+#ui-dialog-body.skills-dialog img.icon.icon-skill {
+	display: inline-block;
+	width: 1.35em;
+	height: 1.35em;
+	margin: 0;
+	vertical-align: middle;
+	object-fit: contain;
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
 }
 
 #ui-dialog-body.skills-dialog .skills-table {

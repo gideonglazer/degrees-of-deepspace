@@ -3,13 +3,13 @@
 <<widget "schoolEarly">>\
 <<set _early to School.earlyArrival(_args[0])>>\
 <<if _early>>\
-<<= _early.enter>>
+<div class="school-early">\
+<div><<= _early.enter>></div>\
 <<if _early.letter>>\
-
-Your current <<= _early.subject>> grade is <span @class="School.gradeColourClass(_early.letter)"><<= _early.letter>></span>. <<= _early.comment>>
+<div>Your current <<= _early.subject>> grade is <span @class="School.gradeColourClass(_early.letter)"><<= _early.letter>></span>. <<= _early.comment>></div>\
 <</if>>\
-
-Your <<= _early.lesson>> starts at <<= _early.startLabel>>.
+<div>Your <<= _early.lesson>> starts at <<= _early.startLabel>>.</div>\
+</div>\
 <</if>>\
 <</widget>>
 
@@ -18,13 +18,10 @@ Your <<= _early.lesson>> starts at <<= _early.startLabel>>.
 <<if $schoolStudyBefore && $schoolStudyBefore.roomKey === _studyRoom>>\
 <<set _sb to $schoolStudyBefore>>\
 <<unset $schoolStudyBefore>>\
-<<= _sb.general>>
-
-<<= _sb.detail>> <<= _sb.effectMarkup>>
-<<gap>>
+<<= _sb.general>> <<= _sb.detail>> <<= _sb.effectMarkup>>
 <<elseif School.canStudyBeforeClass(_studyRoom)>>\
 <<set _sbMins to School.studyBeforeMinutes(_studyRoom)>>\
-<<gap>>
+<<gap "sm">>
 <<link `"Study before class <span class='action-time'>(" + School.formatActionMinutes(_sbMins) + ")</span>"`>>\
 <<run School.studyBeforeClass(_studyRoom)>>\
 <<goto `passage()`>>\
@@ -40,7 +37,30 @@ Your <<= _early.lesson>> starts at <<= _early.startLabel>>.
 <<if School.canFocus(_focusPeriod.key) || School.canTakeExam(_focusPeriod.key)>>\
 <<set _focusMins to School.turnMinutes(_focusPeriod.key)>>\
 <<set _examChance to School.examPassChance(_focusPeriod.gradeKey)>>\
-<<gap>>
+<<if _focusRoom === "computerLab">>\
+<<if School.canFocus(_focusPeriod.key)>>\
+<<set _techChoices to TechClass.focusChoices()>>\
+<<gap "sm">>
+<div class="class-focus-choices">\
+<<for _choice range _techChoices>>\
+<<capture _choice, _focusMins>>\
+<div class="class-focus-choice"><<link `_choice.label + " <span class='action-time'>(0:" + String(_focusMins).padStart(2, "0") + ")</span>"`>>\
+<<run TechClass.chooseFocus(_choice.id)>>\
+<<goto "Tech Focus Result">>\
+<</link>><<= _choice.previewMarkup>></div>\
+<</capture>>\
+<</for>>\
+</div>\
+<</if>>\
+<<if School.canTakeExam(_focusPeriod.key)>>\
+<<gap "sm">>
+<<link `"Take the exam <span class='action-time'>(rest of class)</span> — pass chance: " + Math.round(_examChance) + "%"`>>\
+<<run School.takeExam(_focusPeriod.key)>>\
+<<goto "Campus Exam Result">>\
+<</link>>\
+<</if>>\
+<<else>>\
+<<gap "sm">>
 <div class="school-focus">\
 <<= School.dailyStarsMarkup(_focusStars)>>\
 <<if School.canFocus(_focusPeriod.key)>>\
@@ -76,12 +96,13 @@ Your <<= _early.lesson>> starts at <<= _early.startLabel>>.
 </div>
 <</if>>\
 <</if>>\
+<</if>>\
 <</widget>>
 
 <<widget "schoolStudy">>\
 <<set _studyOpts to School.studyOptions()>>\
 <<if _studyOpts.length>>\
-<<gap>>
+<<gap>>\
 Study
 <<for _opt range _studyOpts>>\
 <<schoolIcon _opt.icon>><<link `"Study " + _opt.label + " <span class='action-time'>(" + School.formatActionMinutes(_opt.minutes) + ")</span>"`>>\

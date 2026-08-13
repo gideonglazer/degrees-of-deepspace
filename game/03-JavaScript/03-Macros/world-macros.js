@@ -67,7 +67,8 @@
 	});
 
 	/**
-	 * Vertical spacer between link groups, e.g. room actions vs leave links.
+	 * Vertical spacer between action/link groups only (e.g. room actions vs leave).
+	 * Do not use after flavor text, vignettes, or status copy.
 	 * <<gap>> / <<gap "sm">> / <<gap "md">> / <<gap "lg">> — or <<gap 1>>–<<gap 3>>.
 	 */
 	DefineMacroS("gap", function (args) {

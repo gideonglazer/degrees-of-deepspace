@@ -4,9 +4,90 @@
 <<run World.setLocation("campus-computer-lab", "Bloomshore District — Linkon University")>>\
 <<if School.earlyArrival("computerLab")>>\
 <<schoolEarly "computerLab">>\
+<<if TechClass.canSetupStation()>>\
+<<set _setupMins to TechClass.setupStationMinutes()>>\
+<<gap "sm">>
+<<link `"Set up your station <span class='action-time'>(" + School.formatActionMinutes(_setupMins) + ")</span>"`>>\
+<<run TechClass.setupStation()>>\
+<<goto "Campus Computer Lab">>\
+<</link>>
+<</if>>\
+<<actionIcon "exit">><<link "Leave the lab <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>
+<<elseif $techSetupStation && $techSetupStation.roomKey === "computerLab">>\
+<<goto "Tech Setup Transition">>\
+<<elseif !Flags.get(TechClass.FIRST_FLAG) && TechClass.isInSession()>>\
+<<goto "Tech Class Begin">>\
+<<elseif TechClass.needsEnd()>>\
+<<run TechClass.rollEnd()>>\
+<<run TechClass.markEndDone()>>\
+<<goto "Tech Class End">>\
 <<else>>\
-You stand in the computer lab. Rows of monitors glow under cold fluorescent light; cables snake behind desks toward a server rack humming in the corner.
-<</if>>
-<<schoolFocus "computerLab">>
+You are in the computer lab.<<if TechClass.isInSession()>>\
+<<run TechClass.rollDuring()>>\
+ <<= $techDuringText>><<= $techDuringEffects>>\
+<<schoolFocus "computerLab">>\
+<<else>>
 
 <<actionIcon "exit">><<link "Leave the lab <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Linkon University">><</link>>
+<</if>>\
+<</if>>
+
+:: Tech Setup Transition
+<<initPlayState>>\
+<<if !$techSetupStation || $techSetupStation.roomKey !== "computerLab">><<goto "Campus Computer Lab">><</if>>\
+<<run World.setLocation("campus-computer-lab", "Bloomshore District — Linkon University")>>\
+<<set _setup to $techSetupStation>>\
+<<unset $techSetupStation>>\
+<<= _setup.text>>
+
+<<link "Next">>\
+<<if !Flags.get(TechClass.FIRST_FLAG) && TechClass.isInSession()>>\
+<<goto "Tech Class Begin">>\
+<<else>>\
+<<goto "Campus Computer Lab">>\
+<</if>>\
+<</link>>
+
+:: Tech Class Begin
+<<initPlayState>>\
+<<if !School.isSchoolDay() || !TechClass.isInSession()>><<goto "Campus Computer Lab">><</if>>\
+<<run Flags.set(TechClass.FIRST_FLAG)>>\
+<<run World.setLocation("campus-computer-lab", "Bloomshore District — Linkon University")>>\
+The bell rings, signalling that class has begun. You situate yourself in front of one of the computers. With the final signal, the instructor comes in, a smile on their face.
+
+Their hair is as red as apples, eyes a gentle brown hue. They speak quietly: “Good morning, class. Welcome to Tech Skills 101. I will be your instructor, Yaya… I’d prefer if you all just… call me that.” They walk towards the back of the room, flipping on the projector.
+
+“In this class we won’t focus on silly little things like typing and remembering the keyboard. You’ll learn how to build your own machines, code, troubleshoot computers, and navigate databases. We <i>might</i> dabble a bit in cybersecurity and ethical hacking towards the end of the year, but you won’t have to worry about that for now.” Yaya excitedly goes on about what everyone can expect, before clearing their throat.
+
+“If you find yourself interested in what this class has to offer- and perhaps even want to break into the tech industry yourself- <<important>>you’ll certainly enjoy the lectures offered here some Fridays by EonCore’s own Chairman. He is <i>extremely</i> knowledgable. In fact, every year he looks for new student interns hoping to learn a thing or two through one on ones he offers.<</important>>”
+
+Half of the class immediately perk up at the opportunity to work at Eoncore.
+
+Perhaps you would be more excited yourself, if you weren’t so set on being a Deepspace Hunter…
+
+“Well then! Enough about that, why don’t we get into things?”
+
+<<link "Next">><<goto "Campus Computer Lab">><</link>>
+
+:: Tech Class End
+<<initPlayState>>\
+<<if !$techEnd>><<goto "Linkon University">><</if>>\
+<<run World.setLocation("campus-computer-lab", "Bloomshore District — Linkon University")>>\
+<<print $techEnd.text>>
+<<gap>>
+<<link `"Next <span class='action-time'>(" + School.formatActionMinutes($techEnd.minutes) + ")</span>"`>>\
+<<run World.advance($techEnd.minutes)>>\
+<<unset $techEnd>>\
+<<goto "Linkon University">>\
+<</link>>
+
+:: Tech Focus Result
+<<initPlayState>>\
+<<if !$techFocusResult>><<goto "Campus Computer Lab">><</if>>\
+<<run World.setLocation("campus-computer-lab", "Bloomshore District — Linkon University")>>\
+<<= $techFocusResult.text>><<= $techFocusResult.effectsMarkup>>
+<<gap>>
+<<link "Next">>\
+<<run TechClass.clearFocusEvent()>>\
+<<goto "Campus Computer Lab">>\
+<</link>>

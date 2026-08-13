@@ -112,7 +112,7 @@ defineGlobalNamespaces("PhysicsClass");
 		{
 			id: "stomach",
 			text: "Your stomach growls. You hope nobody heard that…",
-			effects: { hunger: "-" },
+			effects: { hunger: "+" },
 		},
 	];
 

@@ -4,11 +4,7 @@
 <<run School.ensure()>>\
 <<if Player.isYounger()>>\
 <<if School.isSchoolDay()>>\
-You are outside of Linkon University. The clock tower reads <<= World.formatTime()>>.<<if !World.isBefore(7, 0) && World.isBefore(9, 0)>> Class starts at <<= World.formatTimeAt(9, 0)>>.<</if>>
-<<if School.isCalebWaitingWindow()>>\
-<<gap>>
-<<important>><<Caleb>> will be waiting outside the gates around <<= World.formatTimeAt(15, 0)>> — don't keep <<him>> too long.<</important>>
-<</if>>\
+You are outside of Linkon University. The clock tower reads <<= World.formatTime()>>.<<if !World.isBefore(7, 0) && World.isBefore(9, 0)>> Class starts at <<= World.formatTimeAt(9, 0)>>.<</if>><<if School.isCalebWaitingWindow()>> <<important>><<Caleb>> will be waiting outside the gates around <<= World.formatTimeAt(15, 0)>> — don't keep <<him>> too long.<</important>><</if>>
 <<set _outside to School.campusRooms("outside")>>\
 <<set _facilities to School.campusRooms("facilities")>>\
 <<set _classrooms to School.campusRooms("classrooms")>>\
@@ -16,6 +12,10 @@ You are outside of Linkon University. The clock tower reads <<= World.formatTime
 <<if _attend>>\
 <<gap>>
 <<schoolIcon _attend.icon>><<link `_attend.attendLabel + " <span class='action-time'>(0:" + String(_attend.minutes).padStart(2, "0") + ")</span>"` `_attend.passage`>><<run World.advance(_attend.minutes)>><</link>><br>\
+<<set _elective to School.gateElective()>>\
+<<if _elective>>\
+<<schoolIcon _elective.icon>><<link `_elective.goLabel + " <span class='action-time'>(0:" + String(_elective.minutes).padStart(2, "0") + ")</span>"` `_elective.passage`>><<run World.advance(_elective.minutes)>><</link>><br>\
+<</if>>\
 <</if>>\
 <<gap>>
 Outside
