@@ -38,7 +38,6 @@ Drinks:
 <<foodIcon "breakfast" "coffee">><<link `"Buy coffee (" + Money.format(3) + ") <span class='action-time'>(0:05)</span>"`>><<set $breakfastBuy to { kind: "drink", id: "coffee", name: "coffee", price: 3, minutes: 5, hunger: "-", energy: "++", text: "You drink a cup of coffee." }>><<goto "Breakfast Restaurant Buy">><</link>> <<= Stats.effectMarkup("hunger", "-") + Stats.effectMarkup("energy", "++")>>
 <</if>>\
 
-<<gap>>
 <<actionIcon "exit">><<link "Exit <span class='action-time'>(0:01)</span>">><<run World.advance(1)>><<goto "Garden South Street">><</link>>
 <<else>>\
 <<run World.setLocation("garden-south-street", "Garden South Street")>>\

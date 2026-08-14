@@ -6,5 +6,4 @@ You enter the Hunter's Association.
 <<else>>\
 You enter the Hunter's Association. Someday, you hope you can work here...
 <</if>>
-
 <<link "Go back to Azure Square <span class='action-time'>(0:05)</span>">><<goto "Azure Square">><</link>>
