@@ -63,27 +63,52 @@ defineGlobalNamespaces("GameSettings");
 	}
 
 	/**
-	 * Seeds left/right eye colours from the shared colour when heterochromia turns on, and copies
-	 * left back to the shared colour when it turns off.
+	 * Seeds left/right eye colours when heterochromia turns on, always as two different colours.
+	 * Copies left back to the shared colour when it turns off.
 	 */
 	function syncHeterochromia(enabled) {
 		const player = V().player;
 		if (!player) return;
 		if (enabled) {
-			const base = player.eyeColor || "gold";
-			if (!player.eyeColorLeft) player.eyeColorLeft = base;
-			if (!player.eyeColorRight) player.eyeColorRight = base;
+			const base = player.eyeColor || player.eyeColorLeft || "gold";
+			player.eyeColorLeft = base;
+			player.eyeColorRight = Player.otherEyeColor(base);
 		} else if (player.eyeColorLeft) {
 			player.eyeColor = player.eyeColorLeft;
 		}
 	}
 
 	/**
-	 * Re-renders the eye-colour fieldsets after heterochromia toggles.
+	 * Re-renders the eye-colour fieldsets after heterochromia toggles or a left/right pick.
 	 */
 	function refreshEyeColors() {
 		const $target = jQuery("#ccEyeColors");
 		if ($target.length) $target.empty().wiki("<<ccEyeColors>>");
+	}
+
+	/**
+	 * After a left/right eye pick, keep the two colours different and rebuild the lists
+	 * so the other eye's current colour is not offered twice.
+	 */
+	function bindHeterochromiaEyes() {
+		setTimeout(function () {
+			const $panel = jQuery("#ccEyeColors");
+			$panel.off("change.dodHeterochromia").on("change.dodHeterochromia", "input[type='radio']", function () {
+				const name = String(this.name || "");
+				setTimeout(function () {
+					const player = V().player;
+					if (!player || !player.heterochromia) return;
+					if (player.eyeColorLeft === player.eyeColorRight) {
+						if (name.indexOf("eyeColorRight") !== -1) {
+							player.eyeColorLeft = Player.otherEyeColor(player.eyeColorRight);
+						} else {
+							player.eyeColorRight = Player.otherEyeColor(player.eyeColorLeft);
+						}
+					}
+					refreshEyeColors();
+				}, 0);
+			});
+		}, 0);
 	}
 
 	/**
@@ -252,6 +277,7 @@ defineGlobalNamespaces("GameSettings");
 		randomizeCreator,
 		resetCreator,
 		refreshEyeColors,
+		bindHeterochromiaEyes,
 		syncHeterochromia,
 		syncLiListbox,
 		onLiListboxChange,
@@ -354,7 +380,9 @@ defineGlobalNamespaces("GameSettings");
 		if (!varPath || !listKey) throw new Error("<<ccRadios>> needs a variable path and a catalogue key");
 		const options = C().character[listKey];
 		if (!Array.isArray(options)) throw new Error(`<<ccRadios>>: unknown catalogue "${listKey}"`);
-		return `<div class="cc-options">${radiosMarkup(varPath, options)}</div>`;
+		const exclude = args[2] != null && String(args[2]).trim() !== "" ? String(args[2]) : "";
+		const list = exclude ? options.filter(entry => entry.value !== exclude) : options;
+		return `<div class="cc-options">${radiosMarkup(varPath, list)}</div>`;
 	});
 
 	/**

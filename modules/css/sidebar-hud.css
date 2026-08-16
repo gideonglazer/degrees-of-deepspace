@@ -356,6 +356,19 @@
 	color: var(--gold);
 }
 
+#ui-dialog-body.journal-dialog .journal-section:first-child {
+	margin-top: 0;
+}
+
+#ui-dialog-body.journal-dialog .about-me-body {
+	margin: 0;
+}
+
+#ui-dialog-body.journal-dialog .about-me-body p {
+	margin: 0.5em 0;
+	line-height: 1.5;
+}
+
 #ui-dialog-body.journal-dialog .journal-entry {
 	margin: 0.5em 0;
 	padding: 0.4em 0.75em;

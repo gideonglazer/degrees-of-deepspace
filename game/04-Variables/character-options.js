@@ -238,7 +238,7 @@
 			bodyShape: "balanced",
 			faceShape: "oval",
 			freckles: false,
-			heterochromia: true,
+			heterochromia: false,
 			eyeColor: "gold",
 			eyeColorLeft: "gold",
 			eyeColorRight: "gold",

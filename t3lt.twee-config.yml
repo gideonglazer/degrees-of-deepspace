@@ -24,6 +24,7 @@ sugarcube-2:
             description: Renders labelled radiobuttons from a Constants.character catalogue.
             parameters:
                 - text &+ text
+                - text &+ text &+ text
         ccCheck:
             name: ccCheck
             description: Renders a checkbox bound to a boolean story variable.

@@ -84,12 +84,11 @@
 
 :: Journal Widgets [widget]
 <<widget "journalContents">>\
-<<run Journal.ensure()>>\
+<<run Journal.ensure()>><<run Player.ensure()>>\
 <div class="journal">\
+<h3 class="journal-section">About Me</h3>\
+<<= Player.aboutMeMarkup()>>\
 <<set _notes to Journal.listSorted()>>\
-<<if !_notes.length>>\
-<p class="journal-empty">Your journal is empty.</p>\
-<<else>>\
 <<set _shownPermanent to false>>\
 <<set _shownOther to false>>\
 <<for _note range _notes>>\
@@ -103,6 +102,5 @@
 <</if>>\
 <div class="journal-entry<<if _note.permanent>> journal-permanent<</if>>"><<= _note.text>></div>\
 <</for>>\
-<</if>>\
 </div>\
 <</widget>>

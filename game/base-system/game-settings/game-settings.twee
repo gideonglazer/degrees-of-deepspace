@@ -69,8 +69,9 @@
 </div><</widget>>
 
 <<widget "ccEyeColors">><<if $player.heterochromia>>\
-<fieldset class="cc-fieldset"><legend class="cc-legend">Eye Color (Left)</legend><<ccRadios "$player.eyeColorLeft" "eyeColors">></fieldset>\
-<fieldset class="cc-fieldset"><legend class="cc-legend">Eye Color (Right)</legend><<ccRadios "$player.eyeColorRight" "eyeColors">></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Eye Color (Left)</legend><<ccRadios "$player.eyeColorLeft" "eyeColors" `$player.eyeColorRight`>></fieldset>\
+<fieldset class="cc-fieldset"><legend class="cc-legend">Eye Color (Right)</legend><<ccRadios "$player.eyeColorRight" "eyeColors" `$player.eyeColorLeft`>></fieldset>\
+<<run GameSettings.bindHeterochromiaEyes()>>\
 <<else>>\
 <fieldset class="cc-fieldset"><legend class="cc-legend">Eye Color</legend><<ccRadios "$player.eyeColor" "eyeColors">></fieldset>\
 <</if>><</widget>>
