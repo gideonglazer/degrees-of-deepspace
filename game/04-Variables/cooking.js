@@ -842,19 +842,28 @@ defineGlobalNamespaces("Cooking");
 			if (state.madeRecipes.indexOf(id) < 0) state.madeRecipes.push(id);
 		}
 		state.lastResult = step.description + " " + storageLine(step.output.id);
+		refresh(vars);
 		return { text: state.lastResult, last };
 	}
 
 	function select(id, variables) {
-		const state = ensure(variables);
-		if (!unlocked(id, variables)) return;
+		const vars = variables || V();
+		const state = ensure(vars);
+		if (!unlocked(id, vars)) return;
 		state.selectedId = id;
 		state.lastResult = "";
+		refreshSelection(vars);
 	}
 
 	function open(returnPassage, variables) {
 		const state = ensure(variables);
 		state.returnPassage = returnPassage || "Apartment Kitchen";
+		state.lastResult = "";
+	}
+
+	function close(variables) {
+		const state = ensure(variables);
+		state.selectedId = "";
 		state.lastResult = "";
 	}
 
@@ -906,16 +915,16 @@ defineGlobalNamespaces("Cooking");
 			(openable ? "" : " cooking-card-locked") +
 			(selected ? " cooking-card-selected" : "");
 		const img = kitchenImg("recipes", row.id);
+		const attrs = `class="${cls}" data-recipe="${row.id}"`;
 		if (!openable) {
 			const name = known ? row.name : "-";
-			return `<div class="${cls}">${img}<span class="cooking-card-name">${name}</span></div>`;
+			return `<div ${attrs}>${img}<span class="cooking-card-name">${name}</span></div>`;
 		}
 		return (
-			`<div class="${cls}">${img}` +
+			`<div ${attrs}>${img}` +
 			`<span class="cooking-card-name">` +
 			`<<link ${JSON.stringify(row.name)}>>` +
 			`<<run Cooking.select(${JSON.stringify(row.id)})>>` +
-			`<<goto "Kitchen Cook">>` +
 			`<</link>>` +
 			`</span>` +
 			`</div>`
@@ -946,7 +955,6 @@ defineGlobalNamespaces("Cooking");
 				html +=
 					`<<link "Make ${step.name} <span class='action-time'>(${formatMinutes(step.minutes)})</span>">>` +
 					`<<run Cooking.make(${JSON.stringify(row.id)}, ${index})>>` +
-					`<<goto "Kitchen Cook">>` +
 					`<</link>>`;
 			} else {
 				html += missingWarningWiki(step, vars);
@@ -956,22 +964,18 @@ defineGlobalNamespaces("Cooking");
 		return html;
 	}
 
-	function screenMarkup(variables) {
+	function bannerWiki(variables) {
+		const state = ensure(variables);
+		return state.lastResult ? `<p class="cooking-banner">${state.lastResult}</p>` : "";
+	}
+
+	function mainWiki(variables) {
 		const vars = variables || V();
-		ensure(vars);
-		Inventory.ensure(vars);
-		Skills.ensure(vars);
-		const state = ensure(vars);
 		const byDiff = { easy: [], medium: [], hard: [] };
 		RECIPES.forEach(row => {
 			if (byDiff[row.difficulty]) byDiff[row.difficulty].push(row);
 		});
-
-		let html = `<div class="cooking-screen"><h2 class="cooking-title">Let's Cook!</h2>`;
-		if (state.lastResult) {
-			html += `<p class="cooking-banner">${state.lastResult}</p>`;
-		}
-		html += `<div class="cooking-layout"><div class="cooking-main">`;
+		let html = "";
 		["easy", "medium", "hard"].forEach(diff => {
 			html += `<h3 class="cooking-section">${diff}</h3><div class="cooking-grid">`;
 			byDiff[diff].forEach(row => {
@@ -986,9 +990,77 @@ defineGlobalNamespaces("Cooking");
 			html +=
 				`<span class="cooking-ing${n < 1 ? " cooking-ing-empty" : ""}">` + kitchenImg("ingredients", it.image || it.id) + `${it.name} ${qty}</span>`;
 		});
-		html += `</div></div><div class="cooking-sidebar">${sidebarWiki(vars)}</div></div>`;
-		html += `<div class="cooking-finish">` + `<<link "Finish">>` + `<<goto ${JSON.stringify(state.returnPassage)}>>` + `<</link>>` + `</div></div>`;
+		html += `</div>`;
 		return html;
+	}
+
+	function screenMarkup(variables) {
+		const vars = variables || V();
+		const state = ensure(vars);
+		Inventory.ensure(vars);
+		Skills.ensure(vars);
+
+		return (
+			`<div class="cooking-screen"><h2 class="cooking-title">Let's Cook!</h2>` +
+			`<div class="cooking-banner-slot">${bannerWiki(vars)}</div>` +
+			`<div class="cooking-layout">` +
+			`<div class="cooking-main">${mainWiki(vars)}</div>` +
+			`<div class="cooking-sidebar">${sidebarWiki(vars)}</div>` +
+			`</div>` +
+			`<div class="cooking-finish"><<link "Finish">><<run Cooking.close()>><<goto ${JSON.stringify(state.returnPassage)}>><</link>></div>` +
+			`</div>`
+		);
+	}
+
+	function screenNode() {
+		const $screen = jQuery("#passages").find(".cooking-screen");
+		return $screen.length ? $screen : null;
+	}
+
+	function redraw($target, wiki) {
+		if (!$target || !$target.length) return;
+		$target.empty();
+		if (wiki) $target.wiki(wiki);
+	}
+
+	function markSelected($screen, state) {
+		$screen.find(".cooking-card").each(function () {
+			const $card = jQuery(this);
+			$card.toggleClass("cooking-card-selected", $card.attr("data-recipe") === state.selectedId);
+		});
+	}
+
+	function renumber() {
+		if (typeof LinkNumberify !== "undefined" && LinkNumberify.numberify) LinkNumberify.numberify();
+	}
+
+	/**
+	 * Picking a recipe leaves the recipe grid and ingredient list alone, so only the card
+	 * highlight and the sidebar are redrawn.
+	 */
+	function refreshSelection(variables) {
+		const $screen = screenNode();
+		if (!$screen) return;
+		const vars = variables || V();
+		markSelected($screen, ensure(vars));
+		redraw($screen.find(".cooking-banner-slot"), bannerWiki(vars));
+		redraw($screen.find(".cooking-sidebar"), sidebarWiki(vars));
+		renumber();
+	}
+
+	/**
+	 * Cooking a step changes counts, unlocks, and the clock, so the whole screen and the HUD
+	 * are redrawn in place rather than revisiting the passage.
+	 */
+	function refresh(variables) {
+		const $screen = screenNode();
+		if (!$screen) return;
+		const vars = variables || V();
+		redraw($screen.find(".cooking-banner-slot"), bannerWiki(vars));
+		redraw($screen.find(".cooking-main"), mainWiki(vars));
+		redraw($screen.find(".cooking-sidebar"), sidebarWiki(vars));
+		if (typeof GameSettings !== "undefined" && GameSettings.refreshHud) GameSettings.refreshHud();
+		renumber();
 	}
 
 	Object.assign(Cooking, {
@@ -1011,7 +1083,10 @@ defineGlobalNamespaces("Cooking");
 		make,
 		select,
 		open,
+		close,
 		screenMarkup,
+		refresh,
+		refreshSelection,
 		learnMarkup,
 		storageFor,
 		eatable,
