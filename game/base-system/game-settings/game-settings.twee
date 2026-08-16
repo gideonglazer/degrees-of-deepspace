@@ -4,9 +4,17 @@
 
 <<widget "initPlayState">><<run Player.ensure()>><<run LoveInterests.ensure()>><<run Options.ensure()>><<run World.ensure()>><<run Stats.ensure()>><<run Journal.ensure()>><<run Flags.ensure()>><<run School.ensure()>><<run Money.get()>><<if ndef $saveName>><<set $saveName to "">><</if>><<run Options.applyTypography()>><<run jQuery("#passages").removeClass("cc-wide")>><</widget>>
 
-<<widget "gameSettings">><div class="cc"><div class="cc-shell"><div class="cc-tabs" role="tablist"><<button "Character Creator">><<ccPanelSwitch "creator">><</button>><<button "Love Interest Modifier">><<ccPanelSwitch "loveInterest">><</button>><<button "General">><<ccPanelSwitch "general">><</button>><<button "Themes">><<ccPanelSwitch "themes">><</button>></div><div id="ccPanel" class="cc-panel" role="tabpanel"><<ccPanel>></div></div><div id="ccActions" class="cc-actions"><<ccActions>></div></div><<run GameSettings.bindShell()>><</widget>>
+<<widget "gameSettings">><<gameSettingsShell "start">><</widget>>
 
-<<widget "ccPanel">><<switch $ccPanel>><<case "loveInterest">><<ccLoveInterest>><<case "general">><<ccGeneral>><<case "themes">><<ccThemes>><<default>><<ccSelf>><</switch>><</widget>>
+<<widget "gameSettingsShell">>\
+<<run GameSettings.setContext($args[0] || "start")>>\
+<<run GameSettings.ensurePanel()>>\
+<div class="cc"><div class="cc-shell"><div class="cc-tabs" role="tablist"><<gsTabs>></div><div id="ccPanel" class="cc-panel" role="tabpanel"><<ccPanel>></div></div>\
+<<if GameSettings.context() === "start">><div id="ccActions" class="cc-actions"><<ccActions>></div><</if>>\
+</div><<run GameSettings.bindShell()>>\
+<</widget>>
+
+<<widget "ccPanel">><<gsPanel>><</widget>>
 
 <<widget "ccActions">>\
 <div class="cc-save-name" id="ccSaveName">\
@@ -103,6 +111,7 @@
 <</if>><</widget>>
 
 <<widget "ccGeneral">><div id="ccGeneral" class="cc-general">\
+<<if GameSettings.context() === "start">>\
 <div class="settingsGrid">\
 <div class="settingsHeader options">Starting Season</div>\
 <div class="settingsToggleItemWide">\
@@ -117,6 +126,7 @@
 \
 <hr>\
 \
+<</if>>\
 <div class="settingsGrid">\
 <div class="settingsHeader options">Date Format</div>\
 <div class="settingsToggleItemWide">\
@@ -172,7 +182,7 @@
 <div class="small-description">When enabled, contextual hints and tips can appear in the sidebar during play.</div>\
 </div>\
 </div>\
-</div><</widget>>
+</div><<run GameSettings.bindGeneral()>><</widget>>
 
 <<widget "ccThemes">><div id="ccThemes" class="cc-themes">\
 <div class="cc-themes-toolbar"><<button "Save Current As Default">><<run Options.saveCurrentAsDefault()>><</button>> <<button "Reset Defaults">><<run Options.resetDefaults()>><</button>></div>\

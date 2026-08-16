@@ -96,7 +96,7 @@ body {
 	grid-column: 1 / -1;
 }
 
-#menu-story > li:nth-child(3) {
+#menu-story > li:nth-child(2n + 1):not(:first-child) {
 	border-left: 1px solid var(--border-subtle);
 }
 
@@ -114,6 +114,13 @@ body {
 	background-color: var(--surface-raised);
 	border-color: var(--accent);
 	color: var(--accent-strong);
+}
+
+#menu-story a.is-disabled,
+#menu-story a[aria-disabled="true"] {
+	cursor: not-allowed;
+	opacity: 0.45;
+	pointer-events: none;
 }
 
 #ui-dialog-body {

@@ -22,6 +22,50 @@ defineGlobalNamespaces("GameSettings");
 		return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 	}
 
+	const PANELS = [
+		{ id: "creator", label: "Character Creator", widget: "<<ccSelf>>", contexts: ["start"] },
+		{ id: "loveInterest", label: "Love Interest Modifier", widget: "<<ccLoveInterest>>", contexts: ["start", "ingame"] },
+		{ id: "general", label: "General", widget: "<<ccGeneral>>", contexts: ["start", "ingame"] },
+		{ id: "themes", label: "Themes", widget: "<<ccThemes>>", contexts: ["start", "ingame"] },
+	];
+
+	let currentContext = "start";
+
+	function setContext(value) {
+		currentContext = value === "ingame" ? "ingame" : "start";
+		return currentContext;
+	}
+
+	function context() {
+		return currentContext;
+	}
+
+	function visiblePanels(ctx) {
+		const c = ctx || currentContext;
+		return PANELS.filter(panel => panel.contexts.indexOf(c) !== -1);
+	}
+
+	function panelAllowed(id, ctx) {
+		return visiblePanels(ctx).some(panel => panel.id === id);
+	}
+
+	function fallbackPanelId(ctx) {
+		const allowed = visiblePanels(ctx);
+		const general = allowed.find(panel => panel.id === "general");
+		return (general || allowed[0] || PANELS[0]).id;
+	}
+
+	/**
+	 * Clamps `$ccPanel` to a tab allowed in the current (or given) context.
+	 */
+	function ensurePanel(ctx) {
+		const vars = V();
+		if (!panelAllowed(vars.ccPanel, ctx)) {
+			vars.ccPanel = fallbackPanelId(ctx);
+		}
+		return vars.ccPanel;
+	}
+
 	/**
 	 * Builds a labelled radiobutton row from a Constants.character option list.
 	 */
@@ -119,13 +163,78 @@ defineGlobalNamespaces("GameSettings");
 		setTimeout(function () {
 			const $tabs = jQuery(".cc-tabs button");
 			$tabs.addClass("cc-tab");
-			$tabs.eq(0).attr("data-panel", "creator");
-			$tabs.eq(1).attr("data-panel", "loveInterest");
-			$tabs.eq(2).attr("data-panel", "general");
-			$tabs.eq(3).attr("data-panel", "themes");
+			visiblePanels().forEach((panel, index) => {
+				$tabs.eq(index).attr("data-panel", panel.id);
+			});
 			$tabs.removeClass("is-active");
-			jQuery('.cc-tab[data-panel="' + (V().ccPanel || "creator") + '"]').addClass("is-active");
+			const active = V().ccPanel || fallbackPanelId();
+			jQuery('.cc-tab[data-panel="' + active + '"]').addClass("is-active");
 		}, 0);
+	}
+
+	function tabsMarkup() {
+		return visiblePanels()
+			.map(panel => `<<button "${escapeAttr(panel.label)}">><<ccPanelSwitch "${panel.id}">><</button>>`)
+			.join("");
+	}
+
+	/**
+	 * Re-wikifies StoryCaption so clock / date / money / hints pick up `$options` immediately.
+	 */
+	function refreshHud() {
+		const $cap = jQuery("#story-caption");
+		if (!$cap.length || typeof Story === "undefined") return;
+		const passage = Story.get("StoryCaption");
+		if (!passage) return;
+		const source = typeof passage.processText === "function" ? passage.processText() : passage.text;
+		$cap.empty().wiki(source);
+	}
+
+	/**
+	 * Wires General-tab radios so HUD formatters update without a passage change.
+	 */
+	function bindGeneral() {
+		setTimeout(function () {
+			const $general = jQuery("#ccGeneral");
+			$general.off("change.dodGeneral").on("change.dodGeneral", "select, input[type='radio'], input[type='checkbox']", function () {
+				setTimeout(refreshHud, 0);
+			});
+		}, 0);
+	}
+
+	/**
+	 * StoryMenu is built once at startup, so Options cannot be gated with `passage()` in twee.
+	 * Keep it visible on Start but unclickable.
+	 */
+	function syncOptionsMenuState() {
+		const onStart = typeof passage === "function" && passage() === "Start";
+		jQuery("#menu-story li").each(function () {
+			const $item = jQuery(this);
+			const label = $item.text().replace(/\s+/g, " ").trim();
+			if (label !== "Options") return;
+			const $link = $item.find("a");
+			$link.toggleClass("is-disabled", onStart);
+			if (onStart) {
+				$link.attr({ "aria-disabled": "true", tabindex: "-1" });
+			} else {
+				$link.removeAttr("aria-disabled").removeAttr("tabindex");
+			}
+		});
+	}
+
+	/**
+	 * Opens the in-game Options dialog (no Character Creator, no Starting Season).
+	 */
+	function openDialog() {
+		if (typeof passage === "function" && passage() === "Start") return;
+		if (typeof Options !== "undefined") Options.ensure();
+		if (typeof LoveInterests !== "undefined") LoveInterests.ensure();
+		setContext("ingame");
+		ensurePanel("ingame");
+		Dialog.setup("Options", "options-dialog");
+		Dialog.wiki('<<gameSettingsShell "ingame">>');
+		Dialog.open();
+		if (typeof Options !== "undefined") Options.applyTypography();
 	}
 
 	/**
@@ -270,8 +379,16 @@ defineGlobalNamespaces("GameSettings");
 	}
 
 	Object.assign(GameSettings, {
+		PANELS,
+		setContext,
+		context,
+		visiblePanels,
+		ensurePanel,
 		bindShell,
 		bindThemes,
+		bindGeneral,
+		refreshHud,
+		openDialog,
 		styleBegin,
 		begin,
 		randomizeCreator,
@@ -285,12 +402,41 @@ defineGlobalNamespaces("GameSettings");
 		refreshLiListboxLabels,
 	});
 
+	jQuery(document).on(":dialogclosing", function () {
+		const body = typeof Dialog !== "undefined" && Dialog.body ? Dialog.body() : null;
+		if (body && body.classList && body.classList.contains("options-dialog")) {
+			refreshHud();
+		}
+	});
+
+	jQuery(document).on(":storyready :passagedisplay", syncOptionsMenuState);
+
+	/**
+	 * <<gsTabs>>
+	 * Renders the Character Creator / Options tab buttons for the current context.
+	 */
+	DefineMacro("gsTabs", function () {
+		jQuery(this.output).wiki(tabsMarkup());
+	});
+
+	/**
+	 * <<gsPanel>>
+	 * Wikifies the widget for `$ccPanel` if that tab is allowed in the current context.
+	 */
+	DefineMacro("gsPanel", function () {
+		ensurePanel();
+		const id = V().ccPanel;
+		const panel = visiblePanels().find(entry => entry.id === id) || visiblePanels()[0];
+		if (panel) jQuery(this.output).wiki(panel.widget);
+	});
+
 	/**
 	 * <<ccPanelSwitch "creator">>
-	 * Switches the Start-page tab and re-renders #ccPanel without a full passage reload.
+	 * Switches the Start-page / Options tab and re-renders #ccPanel without a full passage reload.
 	 */
 	DefineMacro("ccPanelSwitch", function (args) {
-		const panel = args[0] || "creator";
+		let panel = args[0] || fallbackPanelId();
+		if (!panelAllowed(panel)) panel = fallbackPanelId();
 		V().ccPanel = panel;
 		const $panel = jQuery("#ccPanel");
 		if ($panel.length) $panel.empty().wiki("<<ccPanel>>");

@@ -131,6 +131,7 @@ defineGlobalNamespaces("Options");
 		const $html = jQuery(document.documentElement);
 		const $passages = jQuery("#passages");
 		const $sidebar = jQuery("#ui-bar-body, #story-caption");
+		const $overlay = jQuery("#ui-dialog-body");
 
 		FONT_CLASSES.forEach(name => $html.removeClass(name));
 		if (options.font) $html.addClass(String(options.font));
@@ -138,10 +139,12 @@ defineGlobalNamespaces("Options");
 		LINE_HEIGHT_CLASSES.forEach(name => {
 			$passages.removeClass(name);
 			$sidebar.removeClass(name);
+			$overlay.removeClass(name);
 		});
 		FONT_SIZE_CLASSES.forEach(name => {
 			$passages.removeClass(name);
 			$sidebar.removeClass(name);
+			$overlay.removeClass(name);
 		});
 
 		const passageLh = lineHeightClass(options.passageLineHeight);
@@ -153,6 +156,11 @@ defineGlobalNamespaces("Options");
 		const sidebarFs = fontSizeClass(options.sidebarFontSize);
 		if (sidebarLh) $sidebar.addClass(sidebarLh);
 		if (sidebarFs) $sidebar.addClass(sidebarFs);
+
+		const overlayLh = lineHeightClass(options.overlayLineHeight);
+		const overlayFs = fontSizeClass(options.overlayFontSize);
+		if (overlayLh) $overlay.addClass(overlayLh);
+		if (overlayFs) $overlay.addClass(overlayFs);
 	}
 
 	/**
@@ -188,6 +196,15 @@ defineGlobalNamespaces("Options");
 		if ($hypno.length) $hypno.attr("class", basicHypnoCss());
 	}
 
+	/**
+	 * Opens the in-game Options modal.
+	 */
+	function openDialog() {
+		if (typeof GameSettings !== "undefined" && GameSettings.openDialog) {
+			GameSettings.openDialog();
+		}
+	}
+
 	Object.assign(Options, {
 		DEFAULTS_KEY,
 		createDefaults,
@@ -200,9 +217,14 @@ defineGlobalNamespaces("Options");
 		basicJitterCss,
 		basicHypnoCss,
 		refreshAnimPreviews,
+		openDialog,
 	});
 
 	window.basicDrunkCss = basicDrunkCss;
 	window.basicJitterCss = basicJitterCss;
 	window.basicHypnoCss = basicHypnoCss;
+
+	jQuery(document).on(":dialogopened", function () {
+		applyTypography();
+	});
 })();

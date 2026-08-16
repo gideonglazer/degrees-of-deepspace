@@ -469,8 +469,56 @@
 	color: #b49ae0;
 }
 
+#ui-dialog:has(#ui-dialog-body.options-dialog) {
+	width: min(72rem, 94vw) !important;
+	max-width: min(72rem, 94vw) !important;
+	min-width: min(56rem, 94vw) !important;
+}
+
+#ui-dialog-body.options-dialog {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	max-height: min(80vh, 48rem);
+	overflow: hidden;
+	padding: 1.25rem 1.5rem 1.5rem;
+}
+
+#ui-dialog-body.options-dialog .cc {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--space-3);
+	min-height: 0;
+}
+
+#ui-dialog-body.options-dialog .cc-shell {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-height: 0;
+	overflow: hidden;
+}
+
+#ui-dialog-body.options-dialog .cc-tabs {
+	background-color: var(--surface-hull);
+	flex-shrink: 0;
+	margin-bottom: var(--space-3);
+}
+
+#ui-dialog-body.options-dialog .cc-panel {
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+	text-align: left;
+}
+
 @media screen and (max-width: 60rem) {
 	#passages.cc-wide {
 		max-width: 46rem;
+	}
+
+	#ui-dialog:has(#ui-dialog-body.options-dialog) {
+		min-width: min(40rem, 94vw) !important;
 	}
 }

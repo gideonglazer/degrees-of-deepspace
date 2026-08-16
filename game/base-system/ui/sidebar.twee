@@ -3,6 +3,7 @@
 <<link "Skills">><<run Skills.openDialog()>><</link>>
 <<link "Inventory">><<run Inventory.openDialog()>><</link>>
 <<link "Journal">><<run Journal.openDialog()>><</link>>
+<<link "Options">><<run Options.openDialog()>><</link>>
 
 :: StoryCaption
 <<if passage() !== "Start">>\

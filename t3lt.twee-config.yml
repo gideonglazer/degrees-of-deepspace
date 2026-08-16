@@ -33,9 +33,17 @@ sugarcube-2:
                 - text |+ text
         ccPanelSwitch:
             name: ccPanelSwitch
-            description: Switches the Start-page creator tab and re-renders the panel.
+            description: Switches the Start-page or Options tab and re-renders the panel.
             parameters:
                 - text
+        gsTabs:
+            name: gsTabs
+            description: Renders game-settings tabs for the current Start or in-game Options context.
+            parameters: []
+        gsPanel:
+            name: gsPanel
+            description: Renders the active game-settings panel widget for the current context.
+            parameters: []
         ccLiListbox:
             name: ccLiListbox
             description: Renders the love-interest dropdown bound to $liFocus.
