@@ -143,6 +143,17 @@ sugarcube-2:
             parameters:
                 - "|+ text"
                 - "|+ number"
+        kitchenIcon:
+            name: kitchenIcon
+            description: Prints an icon from img/kitchen-icons/{folder}/{name}.png.
+            parameters:
+                - text &+ text
+                - text &+ text |+ text
+        kitchenCookActions:
+            name: kitchenCookActions
+            description: Kitchen Cook a Meal and Read a Cookbook actions.
+            widget: true
+            parameters: []
         hudTip:
             name: hudTip
             description: Prints a tip block when sidebar hints are enabled.

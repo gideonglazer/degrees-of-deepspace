@@ -1,0 +1,94 @@
+:: Kitchen Widgets [widget]
+<<widget "kitchenCookActions">>\
+<<run Cooking.ensure()>><<run Inventory.ensure()>><<run Skills.ensure()>>\
+Cook
+<<= Skills.iconImg("cooking")>><<link "Cook a meal">><<run Cooking.open(passage())>><<goto "Kitchen Cook">><</link>>
+<<if Cooking.canLearn()>>\
+<<icon "kitchen">><<link "Read a cookbook <span class='action-time'>(0:10)</span>">>\
+<<run Cooking.open(passage())>>\
+<<goto "Kitchen Cookbook">>\
+<</link>>
+<<elseif !Cooking.hasMoreToLearn()>>\
+<<blue>>You've already learned every beginner recipe.<</blue>>
+<<else>>\
+<<blue>>You've already learned a recipe today.<</blue>>
+<</if>>\
+
+Eat
+<<if typeof CalebBreakfast !== "undefined" && CalebBreakfast.available()>>\
+<<run CalebBreakfast.ensure()>>\
+<<set _meal to CalebBreakfast.meal($calebBreakfast.id)>>\
+<<foodIcon "breakfast" `$calebBreakfast.id`>><<link `"Eat " + _meal.name + " <span class='action-time'>(0:" + String(_meal.minutes).padStart(2, "0") + ")</span>"`>><<goto "Bloomshore Kitchen Breakfast">><</link>> <<= Stats.effectMarkup("hunger", _meal.hunger) + Stats.effectMarkup("stress", _meal.stress)>>
+<</if>>\
+<<kitchenIcon "pantry">><<link "Raid the pantry">><<run Cooking.open(passage())>><<set $inventory.lastEat to "">><<goto "Kitchen Pantry">><</link>>
+<<kitchenIcon "fridge">><<link "Open the refrigerator">><<run Cooking.open(passage())>><<set $inventory.lastEat to "">><<goto "Kitchen Fridge">><</link>>\
+<</widget>>
+
+<<widget "livingRoomTvActions">>\
+<<run Cooking.ensure()>><<run Inventory.ensure()>><<run Skills.ensure()>>\
+<<if Cooking.canLearn()>>\
+<<icon "living-room">><<link "Watch TV <span class='action-time'>(0:10)</span>">>\
+<<run Cooking.open(passage())>>\
+<<goto "Living Room TV">>\
+<</link>>\
+<<elseif !Cooking.hasMoreToLearn()>>\
+<<blue>>You've already learned every beginner recipe.<</blue>>
+<<else>>\
+<<blue>>You've already learned a recipe today.<</blue>>
+<</if>>\
+<</widget>>
+
+:: Kitchen Cook
+<<initPlayState>>\
+<<run Cooking.ensure()>><<run Inventory.ensure()>><<run Skills.ensure()>>\
+<<cookingScreen>>
+
+:: Kitchen Cookbook
+<<initPlayState>>\
+<<run Cooking.ensure()>><<run Inventory.ensure()>>\
+<<if Cooking.canLearn()>>\
+<<set _learned to Cooking.learn("book")>>\
+<<learnedRecipeText _learned>>
+<<gap>>
+<<link "Put the cookbook away">><<goto $cooking.returnPassage>><</link>>
+<<elseif !Cooking.hasMoreToLearn()>>\
+<<blue>>You've already learned every beginner recipe.<</blue>>
+<<gap>>
+<<link "Put the cookbook away">><<goto $cooking.returnPassage>><</link>>
+<<else>>\
+<<blue>>You've already learned a recipe today.<</blue>>
+<<gap>>
+<<link "Put the cookbook away">><<goto $cooking.returnPassage>><</link>>
+<</if>>
+
+:: Living Room TV
+<<initPlayState>>\
+<<run Cooking.ensure()>><<run Inventory.ensure()>>\
+<<if Cooking.canLearn()>>\
+<<set _learned to Cooking.learn("tv")>>\
+<<learnedRecipeText _learned>>
+<<gap>>
+<<link "Turn off the TV">><<goto $cooking.returnPassage>><</link>>
+<<elseif !Cooking.hasMoreToLearn()>>\
+<<blue>>You've already learned every beginner recipe.<</blue>>
+<<gap>>
+<<link "Turn off the TV">><<goto $cooking.returnPassage>><</link>>
+<<else>>\
+<<blue>>You've already learned a recipe today.<</blue>>
+<<gap>>
+<<link "Turn off the TV">><<goto $cooking.returnPassage>><</link>>
+<</if>>
+
+:: Kitchen Pantry
+<<initPlayState>>\
+<<run Cooking.ensure()>><<run Inventory.ensure()>>\
+You raid the pantry.
+<<kitchenStorage "pantry">>
+<<link "Leave the pantry">><<goto $cooking.returnPassage>><</link>>
+
+:: Kitchen Fridge
+<<initPlayState>>\
+<<run Cooking.ensure()>><<run Inventory.ensure()>>\
+You open the refrigerator.
+<<kitchenStorage "fridge">>
+<<link "Close the refrigerator">><<goto $cooking.returnPassage>><</link>>

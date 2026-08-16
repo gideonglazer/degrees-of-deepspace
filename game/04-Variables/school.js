@@ -128,10 +128,11 @@ defineGlobalNamespaces("School");
 	 * `section` groups gate links: outside, facilities, then classrooms.
 	 * `minutes` is travel time from the gates (and back).
 	 * `icon` is the school-icons basename when one exists.
+	 * `actionIcon` is an action-icons basename used instead (e.g. rear courtyard).
 	 */
 	const ROOMS = [
 		{ key: "frontCourtyard", label: "Front courtyard", passage: "Campus Front Courtyard", section: "outside", minutes: 2 },
-		{ key: "rearCourtyard", label: "Rear courtyard", passage: "Campus Rear Courtyard", section: "outside", minutes: 2 },
+		{ key: "rearCourtyard", label: "Rear courtyard", passage: "Campus Rear Courtyard", section: "outside", minutes: 2, actionIcon: "entrance" },
 		{ key: "lectureHall", label: "Lecture Hall", passage: "Campus Lecture Hall", section: "facilities", minutes: 1, icon: "lecture" },
 		{ key: "lunch", label: "Cafeteria", passage: "Campus Lunch", section: "facilities", minutes: 1, icon: "cafeteria" },
 		{ key: "track", label: "Track Field", passage: "Campus PE Track", section: "facilities", minutes: 1, icon: "track" },
@@ -767,10 +768,13 @@ defineGlobalNamespaces("School");
 	}
 
 	/**
-	 * Opens the Skills modal (school skills / timetable grades). Younger PC only.
+	 * Opens the Skills modal. Life skills are always shown; school table is younger-only.
 	 */
 	function openDialog() {
-		if (!applies()) return;
+		if (typeof Skills !== "undefined" && Skills.openDialog) {
+			Skills.openDialog();
+			return;
+		}
 		ensure();
 		Dialog.setup("Skills", "skills-dialog");
 		Dialog.wiki("<<skillsContents>>");
@@ -941,6 +945,7 @@ defineGlobalNamespaces("School");
 			passage: r.passage,
 			minutes: r.minutes,
 			icon: r.icon || "",
+			actionIcon: r.actionIcon || "",
 		}));
 	}
 

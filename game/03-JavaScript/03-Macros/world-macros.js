@@ -30,6 +30,8 @@
 	 * <<icon "apartment-door" "gif">> → .gif in the same folder
 	 * <<actionIcon "sleep-apt">> → img/action-icons/sleep-apt.png
 	 * <<foodIcon "breakfast" "pancakes">> → img/food-icons/breakfast/pancakes.png
+	 * <<kitchenIcon "ingredients" "flour">> → img/kitchen-icons/ingredients/flour.png
+	 * <<kitchenIcon "fridge">> → img/kitchen-icons/fridge.png
 	 * <<schoolIcon "math">> → img/school-icons/math.png
 	 */
 	function iconImg(folder, args) {
@@ -64,6 +66,14 @@
 		const place = args[0] != null ? String(args[0]).trim().replace(/[^a-zA-Z0-9_-]/g, "") : "";
 		if (!place) return "";
 		return iconImg(`food-icons/${place}`, [args[1], args[2]]);
+	});
+
+	DefineMacroS("kitchenIcon", function (args) {
+		const place = args[0] != null ? String(args[0]).trim().replace(/[^a-zA-Z0-9_-]/g, "") : "";
+		if (!place) return "";
+		const nested = args[1] != null && String(args[1]).trim() !== "";
+		if (!nested) return iconImg("kitchen-icons", [place, args[2]]);
+		return iconImg(`kitchen-icons/${place}`, [args[1], args[2]]);
 	});
 
 	/**

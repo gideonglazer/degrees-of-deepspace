@@ -9,6 +9,6 @@ You stand in the front courtyard of Linkon University.
 <</if>>
 
 <<icon "linkon-university">><<link "Enter the school <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Linkon University">><</link>>
-<<link "Rear courtyard <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Campus Rear Courtyard">><</link>>
+<<actionIcon "entrance">><<link "Rear courtyard <span class='action-time'>(0:02)</span>">><<run World.advance(2)>><<goto "Campus Rear Courtyard">><</link>>
 
 <<actionIcon "exit">><<link "Leave campus <span class='action-time'>(0:03)</span>">><<run World.advance(3)>><<goto "Bloomshore District">><</link>>

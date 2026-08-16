@@ -952,3 +952,228 @@
 	font-size: 1em;
 	line-height: 1;
 }
+
+#ui-dialog:has(#ui-dialog-body.inventory-dialog) {
+	width: min(48rem, 94vw) !important;
+	max-width: min(48rem, 94vw) !important;
+	min-width: min(36rem, 94vw) !important;
+}
+
+#ui-dialog-body.inventory-dialog {
+	padding: 1rem 1.15rem 1.15rem;
+	box-sizing: border-box;
+}
+
+#ui-dialog-body.inventory-dialog .inventory {
+	display: flex;
+	flex-direction: column;
+	height: min(52vh, 24rem);
+	min-height: 0;
+	overflow: hidden;
+	padding: 0;
+	text-align: left;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-section {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	margin: 0;
+	padding: 0.45rem 0.55rem 0.4rem;
+	font-size: 0.95em;
+	font-weight: 400;
+	color: var(--gold);
+	background-color: var(--surface-panel);
+}
+
+#ui-dialog-body.inventory-dialog .inventory-empty,
+#ui-dialog-body.inventory-dialog .inventory-eat-result {
+	flex-shrink: 0;
+	margin: 0.25em 0 0.75em;
+	opacity: 0.85;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-empty {
+	font-style: italic;
+	opacity: 0.7;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-skill {
+	display: flex;
+	flex-wrap: wrap;
+	flex-shrink: 0;
+	align-items: center;
+	gap: 0.35rem 0.55rem;
+	margin-bottom: 0.55rem;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-skill-label {
+	font-weight: 600;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-skill-grade {
+	font-weight: 700;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-skill-meta {
+	opacity: 0.75;
+	font-size: 0.95em;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(12rem, 14rem);
+	flex: 1;
+	min-height: 0;
+	gap: 0.65rem;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-side {
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	gap: 0.65rem;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-pane {
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+	padding: 0;
+	border: 1px solid var(--border-strong, #666);
+	box-sizing: border-box;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe-list,
+#ui-dialog-body.inventory-dialog .inventory-grid,
+#ui-dialog-body.inventory-dialog .inventory-empty {
+	padding: 0 0.55rem 0.45rem;
+}
+
+@media (max-width: 50rem) {
+	#ui-dialog-body.inventory-dialog .inventory {
+		height: min(60vh, 32rem);
+	}
+
+	#ui-dialog-body.inventory-dialog .inventory-layout {
+		grid-template-columns: 1fr;
+	}
+
+	#ui-dialog-body.inventory-dialog .inventory-recipes {
+		max-height: 12rem;
+	}
+
+	#ui-dialog-body.inventory-dialog .inventory-side {
+		min-height: 12rem;
+	}
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.55rem;
+	padding: 0.4rem 0.1rem 0.45rem;
+	border-bottom: 1px solid var(--border-subtle, #444);
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe img.icon {
+	flex-shrink: 0;
+	width: 2.5em;
+	height: 2.5em;
+	image-rendering: pixelated;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe-copy {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	flex: 1;
+	gap: 0.15rem;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe-name {
+	font-weight: 600;
+	line-height: 1.25;
+	min-height: 1.25em;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe-desc {
+	margin: 0;
+	opacity: 0.75;
+	font-size: 0.82em;
+	line-height: 1.3;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem 0.85rem;
+	margin-top: 0.2rem;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe-qty {
+	font-size: 0.9em;
+	opacity: 0.8;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe-empty {
+	opacity: 0.28;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe-empty img.icon {
+	filter: grayscale(1) brightness(0.55);
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe-unknown img.icon,
+#ui-dialog-body.inventory-dialog .inventory-card-unknown img.icon {
+	filter: brightness(0);
+}
+
+#ui-dialog-body.inventory-dialog .inventory-recipe-unmade img.icon,
+#ui-dialog-body.inventory-dialog .inventory-card-unmade img.icon {
+	opacity: 0.22;
+	filter: brightness(0.55) saturate(0.65);
+}
+
+#ui-dialog-body.inventory-dialog .inventory-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(4.6rem, 1fr));
+	gap: 0.35rem;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.2rem;
+	min-width: 0;
+	padding: 0.45rem 0.3rem;
+	border: 1px solid var(--border-strong, #666);
+	text-align: center;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-card-empty {
+	opacity: 0.28;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-card-empty img.icon {
+	filter: grayscale(1) brightness(0.55);
+}
+
+#ui-dialog-body.inventory-dialog .inventory-card img.icon {
+	width: 2.25em;
+	height: 2.25em;
+	image-rendering: pixelated;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-card-name {
+	min-height: 1.2em;
+	font-size: 0.85em;
+	line-height: 1.2;
+}
+
+#ui-dialog-body.inventory-dialog .inventory-card-qty {
+	font-size: 0.85em;
+	opacity: 0.8;
+}

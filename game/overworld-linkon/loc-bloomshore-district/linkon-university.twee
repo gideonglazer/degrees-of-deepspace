@@ -20,7 +20,7 @@ You are outside of Linkon University. The clock tower reads <<= World.formatTime
 <<gap>>
 Outside
 <<for _r range _outside>>\
-<<schoolIcon _r.icon>><<link `_r.label + " <span class='action-time'>(0:" + String(_r.minutes).padStart(2, "0") + ")</span>"` `_r.passage`>><<run World.advance(_r.minutes)>><</link>><br>\
+<<if _r.actionIcon>><<actionIcon _r.actionIcon>><<else>><<schoolIcon _r.icon>><</if>><<link `_r.label + " <span class='action-time'>(0:" + String(_r.minutes).padStart(2, "0") + ")</span>"` `_r.passage`>><<run World.advance(_r.minutes)>><</link>><br>\
 <</for>>\
 
 Facilities

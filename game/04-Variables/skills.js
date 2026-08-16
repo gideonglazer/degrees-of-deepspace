@@ -1,5 +1,5 @@
 /**
- * Life skills (Handiness, Programming): letter grades, progress bars,
+ * Life skills (Handiness, Programming, Cooking): letter grades, progress bars,
  * Skills-modal cards, and | [icon] Skill effect chips.
  */
 
@@ -23,6 +23,7 @@ defineGlobalNamespaces("Skills");
 	const SKILL_DEFS = [
 		{ key: "handiness", label: "Handiness", icon: "handiness" },
 		{ key: "programming", label: "Programming", icon: "programming" },
+		{ key: "cooking", label: "Cooking", icon: "cooking" },
 	];
 
 	function createDefaults() {
@@ -176,6 +177,19 @@ defineGlobalNamespaces("Skills");
 		);
 	}
 
+	/**
+	 * Skills modal: life-skill cards for every PC; school table when it applies.
+	 */
+	function openDialog() {
+		ensure();
+		if (typeof School !== "undefined" && School.applies && School.applies()) {
+			School.ensure();
+		}
+		Dialog.setup("Skills", "skills-dialog");
+		Dialog.wiki("<<skillsContents>>");
+		Dialog.open();
+	}
+
 	Object.assign(Skills, {
 		ensure,
 		get,
@@ -185,6 +199,7 @@ defineGlobalNamespaces("Skills");
 		effectsMarkup,
 		iconImg,
 		skillsSectionMarkup,
+		openDialog,
 		SKILL_DEFS,
 		GRADE_ORDER,
 	});

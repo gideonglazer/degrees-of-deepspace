@@ -5,7 +5,7 @@
 (function () {
 	"use strict";
 
-	const COLOUR_CODE_DIALOGS = ["skills-dialog", "social-dialog", "journal-dialog"];
+	const COLOUR_CODE_DIALOGS = ["skills-dialog", "social-dialog", "journal-dialog", "inventory-dialog"];
 
 	function wantsColourCodes(body) {
 		if (!body || !body.classList) return false;

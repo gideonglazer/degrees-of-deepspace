@@ -1,6 +1,7 @@
 :: StoryMenu
 <<link "Social">><<run Social.openDialog()>><</link>>
-<<if School.applies()>><<link "Skills">><<run School.openDialog()>><</link>><</if>>
+<<link "Skills">><<run Skills.openDialog()>><</link>>
+<<link "Inventory">><<run Inventory.openDialog()>><</link>>
 <<link "Journal">><<run Journal.openDialog()>><</link>>
 
 :: StoryCaption
@@ -75,7 +76,10 @@
 
 :: Skills Widgets [widget]
 <<widget "skillsContents">>\
-<<if School.applies()>><<run School.ensure()>><<run Skills.ensure()>><<= School.skillsMarkup()>><</if>>\
+<<run Skills.ensure()>>\
+<<if School.applies()>><<run School.ensure()>><<= School.skillsMarkup()>>\
+<<else>><div class="skills"><<= Skills.skillsSectionMarkup()>></div>\
+<</if>>\
 <</widget>>
 
 :: Journal Widgets [widget]
