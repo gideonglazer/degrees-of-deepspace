@@ -101,6 +101,7 @@ style.css                 Fetched at runtime, not compiled in — edit and refre
 
 Folder names follow DoL's convention. Numeric prefixes control load order; unprefixed folders
 (`base-system`, `overworld-*`, and so on) sort after them alphabetically and are for content.
+Tweego passage names are file **basenames**, so `04-constants/` and `05-variables/` must never share a filename (catalogs use a `-catalog.js` suffix).
 
 ## What the framework gives you
 
