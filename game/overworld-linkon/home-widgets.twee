@@ -1,0 +1,35 @@
+:: Home Widgets [widget]
+
+<<widget "sleepChoices">>\
+<<set _wakePassage to _args[0]>>\
+<<set _bedPassage to _args[1]>>\
+<<for _h to 1; _h lte 10; _h++>>\
+<<capture _h, _wakePassage>>\
+<<link `"Sleep for " + _h + " hour" + (_h === 1 ? "" : "s") + " <span class='action-time'>(" + World.wakeTimeFor(_h) + ")</span>"`>><<set $sleepHours to _h>><<unset $sleepResult>><<goto _wakePassage>><</link>> <<= Stats.effectMarkup("fatigue", "-")>>
+<</capture>>\
+<</for>>\
+<<capture _wakePassage>>\
+<<link "Just sleep <span class='action-time'>(??:??)</span>">><<set $sleepHours to getRandomIntInclusive(4, 8)>><<unset $sleepResult>><<goto _wakePassage>><</link>> <<= Stats.effectMarkup("fatigue", "-")>>
+<</capture>>\
+<<capture _bedPassage>>\
+<<link "Get out of bed">><<goto _bedPassage>><</link>>
+<</capture>>\
+<</widget>>
+
+<<widget "sleepWake">>\
+<<set _bedPassage to _args[0]>>\
+<<if def $sleepHours>>\
+<<set $sleepResult to World.sleepFor($sleepHours)>>\
+<<unset $sleepHours>>\
+<<elseif ndef $sleepResult>>\
+<<set $sleepResult to { hours: 0, forcedWake: false }>>\
+<</if>>\
+You sleep for <<= $sleepResult.hours>> hour<<if $sleepResult.hours !== 1>>s<</if>> and wake at <<= World.formatTime()>>. <<= Stats.effectMarkup("fatigue", "-")>>\
+<<if $sleepResult.forcedWake>>
+
+Exhaustion pulled you under until the weekday morning arrived.<</if>>
+
+<<capture _bedPassage>>\
+<<link "Get up">><<unset $sleepResult>><<goto _bedPassage>><</link>>
+<</capture>>\
+<</widget>>

@@ -90,6 +90,8 @@ game/                     Story source: .twee passages, .js logic, loaded in pat
   00-framework-tools/     Namespaces, error reporting, save migration, perf logging
   01-config/              StoryData, engine config, build switches
   03-JavaScript/          Helpers and macro plumbing
+  04-constants/           Frozen catalogs (`ConstantsLoader.add` / `C()`)
+  05-variables/           Game engines: ensure(), mutators, ClassLesson.create
 modules/                  Polyfills and prototype extensions, embedded before game/
   css/                    All compiled-in CSS
 devTools/                 Tweego, the vendored story format, the injected <head>

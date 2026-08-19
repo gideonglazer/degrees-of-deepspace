@@ -10,44 +10,14 @@ defineGlobalNamespaces("Cafeteria");
 	const EAT_MINUTES = 15;
 	const EAT_EFFECTS = { hunger: "---", stress: "-" };
 
-	const DURING = [
-		{
-			id: "chatter",
-			text: "The cafeteria buzzes with the usual lunchtime chatter.",
-		},
-		{
-			id: "dropped-tray",
-			text: "Someone drops a tray across the cafeteria, followed by a chorus of jeers. The student that dropped the tray frantically starts cleaning up the mess.",
-		},
-		{
-			id: "overlapping-noise",
-			text: "The cafeteria is filled with the overlapping noise of conversation, chairs scraping against the floor, and utensils clattering against trays.",
-		},
-		{
-			id: "quieter",
-			text: "The cafeteria is surprisingly quieter today than usual.",
-		},
-		{
-			id: "club-posters",
-			text: "There are multiple groups of students handing out posters today, promoting their clubs and electives.",
-		},
-		{
-			id: "come-and-go",
-			text: "Groups of students come and go. Some rush out the doors to get to their classes on time, some scurry in, hoping to be first in line to get lunch before the cafeteria packs with people.",
-		},
-	];
-
-	function dayKey(variables) {
-		const world = World.ensure(variables);
-		return world.year + "-" + world.month + "-" + world.day;
-	}
+	const DURING = C().cafeteria.during;
 
 	/**
 	 * Ensures today's cafeteria meal flag. Safe to call from lunch passages.
 	 */
 	function ensure(variables) {
 		const vars = variables || V();
-		const key = dayKey(vars);
+		const key = World.dayKey(vars);
 		if (!vars.cafeteriaDaily || typeof vars.cafeteriaDaily !== "object" || vars.cafeteriaDaily.day !== key) {
 			vars.cafeteriaDaily = { day: key, eaten: false };
 		}

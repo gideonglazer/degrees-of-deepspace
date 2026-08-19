@@ -8,23 +8,10 @@ defineGlobalNamespaces("Skills");
 (function () {
 	"use strict";
 
-	const GRADE_ORDER = ["F", "D", "C", "B", "A", "A*", "S"];
-	const GRADE_COLOUR = {
-		F: "red",
-		D: "pink",
-		C: "purple",
-		B: "blue",
-		A: "teal",
-		"A*": "green",
-		S: "lime",
-	};
-	const PROGRESS_MAX = 100;
-
-	const SKILL_DEFS = [
-		{ key: "handiness", label: "Handiness", icon: "handiness" },
-		{ key: "programming", label: "Programming", icon: "programming" },
-		{ key: "cooking", label: "Cooking", icon: "cooking" },
-	];
+	const GRADE_ORDER = C().grades.order;
+	const GRADE_COLOUR = C().grades.colour;
+	const PROGRESS_MAX = C().skills.progressMax;
+	const SKILL_DEFS = C().skills.defs;
 
 	function createDefaults() {
 		const skills = {};

@@ -8,63 +8,10 @@ defineGlobalNamespaces("KitchenFlavor");
 (function () {
 	"use strict";
 
-	const BANDS = [
-		{ id: "night", until: 6 * 60 },
-		{ id: "morning", until: 12 * 60 },
-		{ id: "afternoon", until: 17 * 60 },
-		{ id: "evening", until: 21 * 60 },
-		{ id: "night", until: 24 * 60 },
-	];
-
-	const KITCHENS = {
-		"bloomshore-kitchen": {
-			opener: "You stand in the kitchen.",
-			breakfast: true,
-			times: {
-				night: [
-					"The kitchen is empty. Everyone in the house is asleep."
-				],
-				morning: [
-					"Morning light streams into the room, casting hues of gold and orange onto the countertops."
-				],
-				afternoon: [
-					"The kitchen is quiet. Looks like nobody is around."
-				],
-				evening: [
-					"You notice a plate with an apple on the counter. Looks like Caleb got distracted again."
-				],
-			},
-		},
-		"apartment-kitchen": {
-			opener: "You stand in the kitchen of your apartment.",
-			times: {
-				night: [
-					"The apartment kitchen is dim. The fridge hums in the quiet. Nothing is out of place but you."
-				],
-				morning: [
-					"The kitchen is clean and ready for the day."
-				],
-				afternoon: [
-					"The apartment kitchen is as you left it."
-				],
-				evening: [
-					"Fresh, Linkon City light leaks in through the windows.",
-				],
-			},
-		},
-	};
-
-	function dayKey(variables) {
-		const world = World.ensure(variables);
-		return world.year + "-" + world.month + "-" + world.day;
-	}
+	const KITCHENS = C().kitchen.kitchens;
 
 	function timeBand(variables) {
-		const minutes = World.minutesOfDay(variables);
-		for (let i = 0; i < BANDS.length; i++) {
-			if (minutes < BANDS[i].until) return BANDS[i].id;
-		}
-		return "night";
+		return World.timeBand(variables);
 	}
 
 	function hashPick(list, salt) {
@@ -141,7 +88,7 @@ defineGlobalNamespaces("KitchenFlavor");
 	function timeBody(kitchen, kitchenId, variables) {
 		const band = timeBand(variables);
 		const pool = (kitchen.times && kitchen.times[band]) || (kitchen.times && kitchen.times.afternoon) || [];
-		return fillTimes(hashPick(pool, dayKey(variables) + ":" + kitchenId + ":" + band), variables);
+		return fillTimes(hashPick(pool, World.dayKey(variables) + ":" + kitchenId + ":" + band), variables);
 	}
 
 	/**

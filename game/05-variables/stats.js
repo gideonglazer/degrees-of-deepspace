@@ -3,34 +3,15 @@ defineGlobalNamespaces("Stats");
 (function () {
 	"use strict";
 
-	const FATIGUE_MAX = 2000;
-	const AROUSAL_MAX = 10000;
-	const PAIN_MAX = 200;
-	const STRESS_MAX = 10000;
-	const CONTROL_MAX = 10000;
-	const PERCENT_MAX = 100;
-
-	const TIERS = {
-		stress: { "+": 100, "++": 250, "+++": 500 },
-		arousal: { "+": 200, "++": 500, "+++": 1000 },
-		pain: { "+": 5, "++": 15, "+++": 30 },
-		control: { "+": 50, "++": 150, "+++": 300 },
-		energy: { "+": 5, "++": 10, "+++": 20 },
-		fatigue: { "+": 100, "++": 300, "+++": 600 },
-		hygiene: { "+": 50, "++": 100, "+++": 100 },
-		hunger: { "+": 5, "++": 10, "+++": 20 },
-	};
-
-	const LABELS = {
-		stress: "Stress",
-		arousal: "Arousal",
-		pain: "Pain",
-		control: "Control",
-		energy: "Energy",
-		fatigue: "Fatigue",
-		hygiene: "Hygiene",
-		hunger: "Hunger",
-	};
+	const ST = C().stats;
+	const FATIGUE_MAX = ST.fatigueMax;
+	const AROUSAL_MAX = ST.arousalMax;
+	const PAIN_MAX = ST.painMax;
+	const STRESS_MAX = ST.stressMax;
+	const CONTROL_MAX = ST.controlMax;
+	const PERCENT_MAX = ST.percentMax;
+	const TIERS = ST.tiers;
+	const LABELS = ST.labels;
 
 	function createDefaults() {
 		return {

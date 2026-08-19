@@ -15,13 +15,6 @@ defineGlobalNamespaces("GameSettings");
 		return String(value).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 	}
 
-	/**
-	 * Escapes text for use as HTML body content.
-	 */
-	function escapeHtml(value) {
-		return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-	}
-
 	const PANELS = [
 		{ id: "creator", label: "Character Creator", widget: "<<ccSelf>>", contexts: ["start"] },
 		{ id: "loveInterest", label: "Love Interest Modifier", widget: "<<ccLoveInterest>>", contexts: ["start", "ingame"] },
@@ -79,7 +72,7 @@ defineGlobalNamespaces("GameSettings");
 				return (
 					`<label class="cc-option">` +
 					`<<radiobutton "${escapeAttr(varPath)}" "${escapeAttr(entry.value)}" autocheck>>` +
-					`<span class="${classes.join(" ")}"${style}>${escapeHtml(entry.label)}</span>` +
+					`<span class="${classes.join(" ")}"${style}>${Utils.escapeHtml(entry.label)}</span>` +
 					`</label>`
 				);
 			})
@@ -500,7 +493,7 @@ defineGlobalNamespaces("GameSettings");
 			const $label = jQuery(
 				`<label class="cc-option">` +
 					`<input type="radio" name="ccLiNameLocale" value="${escapeAttr(locale.value)}"${current === locale.value ? " checked" : ""}>` +
-					`<span class="cc-option-label">${escapeHtml(name)} (${escapeHtml(locale.code)})</span>` +
+					`<span class="cc-option-label">${Utils.escapeHtml(name)} (${Utils.escapeHtml(locale.code)})</span>` +
 					`</label>`
 			);
 			$wrap.append($label);
@@ -546,7 +539,7 @@ defineGlobalNamespaces("GameSettings");
 		const $label = jQuery(
 			`<label class="cc-option">` +
 				`<input type="checkbox"${isOn ? " checked" : ""}>` +
-				`<span class="cc-option-label">${escapeHtml(labelText)}</span>` +
+				`<span class="cc-option-label">${Utils.escapeHtml(labelText)}</span>` +
 				`</label>`
 		);
 

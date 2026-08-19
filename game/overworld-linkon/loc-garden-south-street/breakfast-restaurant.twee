@@ -1,6 +1,6 @@
 :: Breakfast Restaurant
 <<initPlayState>>\
-<<set _dayKey to $world.year + "-" + $world.month + "-" + $world.day>>\
+<<set _dayKey to World.dayKey()>>\
 <<if ndef $breakfastDaily || $breakfastDaily.day !== _dayKey>>\
 <<set $breakfastDaily to { day: _dayKey, food: false, drink: false }>>\
 <</if>>\
@@ -48,7 +48,7 @@ The restaurant is closed. A sign on the door reads: "Opening hours: <<= World.fo
 
 :: Breakfast Restaurant Buy
 <<initPlayState>>\
-<<set _dayKey to $world.year + "-" + $world.month + "-" + $world.day>>\
+<<set _dayKey to World.dayKey()>>\
 <<if ndef $breakfastDaily || $breakfastDaily.day !== _dayKey>>\
 <<set $breakfastDaily to { day: _dayKey, food: false, drink: false }>>\
 <</if>>\

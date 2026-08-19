@@ -64,24 +64,12 @@
 <div class="school-focus">\
 <<= School.dailyStarsMarkup(_focusStars)>>\
 <<if School.canFocus(_focusPeriod.key)>>\
-<<capture _focusRoom, _focusPeriod>>\
+<<capture _focusRoom>>\
 <<link `"Focus on the lesson <span class='action-time'>(0:" + String(_focusMins).padStart(2, "0") + ")</span>"`>>\
-<<if _focusRoom === "physics">>\
-<<run PhysicsClass.focus()>>\
-<<if $physicsFocus>>\
-<<goto "Physics Focus Event">>\
+<<set _focusGoto to ClassLesson.focusAndRoute(_focusRoom)>>\
+<<if _focusGoto>>\
+<<goto _focusGoto>>\
 <<else>>\
-<<goto `passage()`>>\
-<</if>>\
-<<elseif _focusRoom === "math">>\
-<<run MathClass.focus()>>\
-<<if $mathFocus>>\
-<<goto "Math Focus Event">>\
-<<else>>\
-<<goto `passage()`>>\
-<</if>>\
-<<else>>\
-<<run School.focus(_focusPeriod.key)>>\
 <<goto `passage()`>>\
 <</if>>\
 <</link>>\

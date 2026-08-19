@@ -133,13 +133,6 @@ defineGlobalNamespaces("Player");
 		return isYounger(variables) ? String(youngerText || "") : String(olderText || "");
 	}
 
-	function escapeHtml(value) {
-		return String(value || "")
-			.replace(/&/g, "&amp;")
-			.replace(/</g, "&lt;")
-			.replace(/>/g, "&gt;");
-	}
-
 	function catalogueEntry(listKey, value) {
 		const options = (C().character && C().character[listKey]) || [];
 		return options.find(entry => entry.value === value) || null;
@@ -161,14 +154,14 @@ defineGlobalNamespaces("Player");
 	}
 
 	function toneWrap(tone, text) {
-		return `<span class="${toneClass(tone)}">${escapeHtml(text)}</span>`;
+		return `<span class="${toneClass(tone)}">${Utils.escapeHtml(text)}</span>`;
 	}
 
 	function swatchWrap(listKey, value, text) {
 		const entry = catalogueEntry(listKey, value);
-		const display = escapeHtml(text != null ? text : lowerLabel(listKey, value));
+		const display = Utils.escapeHtml(text != null ? text : lowerLabel(listKey, value));
 		if (entry && entry.color) {
-			return `<span class="cc-swatch" style="color:${escapeHtml(entry.color)}">${display}</span>`;
+			return `<span class="cc-swatch" style="color:${Utils.escapeHtml(entry.color)}">${display}</span>`;
 		}
 		return display;
 	}
@@ -196,8 +189,8 @@ defineGlobalNamespaces("Player");
 		const height = heightPhrase(player);
 		const voice = lowerLabel("vocalTones", player.vocalTone);
 		return (
-			`I'm a ${escapeHtml(height)}, ${escapeHtml(age)} ${genderPhrase(player)}. ` +
-			`I prefer ${clothingPhrase(player)} clothing, and my voice is ${escapeHtml(voice)}.`
+			`I'm a ${Utils.escapeHtml(height)}, ${Utils.escapeHtml(age)} ${genderPhrase(player)}. ` +
+			`I prefer ${clothingPhrase(player)} clothing, and my voice is ${Utils.escapeHtml(voice)}.`
 		);
 	}
 
@@ -208,8 +201,8 @@ defineGlobalNamespaces("Player");
 		const type = lowerLabel("hairTypes", hair.type);
 		const color = swatchWrap("hairColors", hair.color);
 		return (
-			`I have ${escapeHtml(length)}, ${escapeHtml(type)}, ${color} hair ` +
-			`that is usually styled as ${escapeHtml(style)}.`
+			`I have ${Utils.escapeHtml(length)}, ${Utils.escapeHtml(type)}, ${color} hair ` +
+			`that is usually styled as ${Utils.escapeHtml(style)}.`
 		);
 	}
 
@@ -219,12 +212,12 @@ defineGlobalNamespaces("Player");
 			const left = swatchWrap("eyeColors", player.eyeColorLeft);
 			const right = swatchWrap("eyeColors", player.eyeColorRight);
 			return (
-				`My eyes are ${escapeHtml(shape)}, and I have heterochromia — ` +
+				`My eyes are ${Utils.escapeHtml(shape)}, and I have heterochromia — ` +
 				`my left eye is ${left}, while the right eye is ${right}.`
 			);
 		}
 		const color = player.eyeColor || player.eyeColorLeft;
-		return `My eyes are ${escapeHtml(shape)} shaped and ${swatchWrap("eyeColors", color)} in color.`;
+		return `My eyes are ${Utils.escapeHtml(shape)} shaped and ${swatchWrap("eyeColors", color)} in color.`;
 	}
 
 	function bodyParagraph(player) {
@@ -233,7 +226,7 @@ defineGlobalNamespaces("Player");
 		const skin = swatchWrap("skinTones", player.skinTone);
 		const freckles = player.freckles ? "I have freckles." : "I don't have freckles.";
 		return (
-			`I have a ${escapeHtml(face)} face, ${escapeHtml(body)} body, ` +
+			`I have a ${Utils.escapeHtml(face)} face, ${Utils.escapeHtml(body)} body, ` +
 			`and ${skin} skin. ${freckles}`
 		);
 	}

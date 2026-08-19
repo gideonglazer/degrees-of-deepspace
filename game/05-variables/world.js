@@ -7,32 +7,15 @@ defineGlobalNamespaces("World");
 (function () {
 	"use strict";
 
-	const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-	const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	const W = C().world;
+	const WEEKDAYS = W.weekdays;
+	const MONTH_NAMES = W.monthNames;
+	const WEATHER_TEXT = W.weatherText;
+	const SEASON_STARTS = W.seasonStarts;
+	const SEASON_IDS = W.seasonIds;
+	const TIME_BANDS = W.timeBands;
+	const HOME_BY_AGE = W.homeByAge;
 
-	const WEATHER_TEXT = {
-		clear: "clear",
-		fair: "fair",
-		cloudy: "cloudy",
-		overcast: "overcast",
-		rain: "rainy",
-		storm: "stormy",
-		fog: "foggy",
-		snow: "snowy",
-	};
-
-	const SEASON_STARTS = {
-		spring: { month: 3, day: 21, weather: "fair", temperatureC: 16 },
-		summer: { month: 6, day: 21, weather: "clear", temperatureC: 26 },
-		autumn: { month: 9, day: 21, weather: "cloudy", temperatureC: 14 },
-		winter: { month: 12, day: 21, weather: "overcast", temperatureC: 2 },
-	};
-
-	const SEASON_IDS = ["spring", "summer", "autumn", "winter"];
-
-	/**
-	 * Moves a calendar date forward to the Monday on or after it.
-	 */
 	function mondayOnOrAfter(year, month, day) {
 		const date = new Date(year, month - 1, day, 12, 0, 0, 0);
 		const weekday = date.getDay(); /* 0 Sun … 1 Mon … 6 Sat */
@@ -77,36 +60,6 @@ defineGlobalNamespaces("World");
 		world.minute = 0;
 		return world;
 	}
-
-	const HOME_BY_AGE = {
-		older: {
-			id: "apartment-bedroom",
-			label: "Garden South Street — Apartment",
-			passage: "Apartment Bedroom",
-			locationIds: [
-				"apartment-bedroom",
-				"apartment-living-room",
-				"apartment-kitchen",
-				"apartment-hallway",
-				"apartment-hallway-upper",
-				"apartment-hallway-lower",
-			],
-		},
-		younger: {
-			id: "bloomshore-bedroom",
-			label: "Bloomshore District — Home",
-			passage: "Bloomshore Bedroom",
-			locationIds: [
-				"bloomshore-bedroom",
-				"bloomshore-hallway",
-				"bloomshore-caleb-bedroom",
-				"bloomshore-grandma-bedroom",
-				"bloomshore-downstairs",
-				"bloomshore-living-room",
-				"bloomshore-kitchen",
-			],
-		},
-	};
 
 	/**
 	 * Home spawn / identity for the player's age.
@@ -413,12 +366,42 @@ defineGlobalNamespaces("World");
 		world.locationLabel = label || id || "";
 	}
 
+	/**
+	 * Stable calendar key for once-a-day flags, e.g. "2048-3-23".
+	 */
+	function dayKey(variables) {
+		const world = ensure(variables);
+		return world.year + "-" + world.month + "-" + world.day;
+	}
+
+	/**
+	 * Time-of-day band for location flavor: night / morning / afternoon / evening.
+	 */
+	function timeBand(variables) {
+		const minutes = minutesOfDay(variables);
+		for (let i = 0; i < TIME_BANDS.length; i++) {
+			if (minutes < TIME_BANDS[i].until) return TIME_BANDS[i].id;
+		}
+		return "night";
+	}
+
+	/**
+	 * Duration for action links, e.g. "0:15" or "1:05".
+	 */
+	function formatActionMinutes(minutes) {
+		const n = Math.max(0, Math.floor(Number(minutes) || 0));
+		const h = Math.floor(n / 60);
+		const m = n % 60;
+		return `${h}:${String(m).padStart(2, "0")}`;
+	}
+
 	Object.assign(World, {
 		WEEKDAYS,
 		MONTH_NAMES,
 		WEATHER_TEXT,
 		SEASON_STARTS,
 		SEASON_IDS,
+		TIME_BANDS,
 		HOME_BY_AGE,
 		mondayOnOrAfter,
 		homeForAge,
@@ -450,5 +433,8 @@ defineGlobalNamespaces("World");
 		weatherText,
 		formatTemperature,
 		setLocation,
+		dayKey,
+		timeBand,
+		formatActionMinutes,
 	});
 })();

@@ -182,6 +182,13 @@ defineGlobalNamespaces("Pronouns");
 	}
 
 	/**
+	 * Replaces `{honorific}` in JS vignette strings (passage macros still use `<<honorific>>`).
+	 */
+	function fill(text, variables) {
+		return String(text || "").split("{honorific}").join(honorific(variables));
+	}
+
+	/**
 	 * Picks masc / femme / neutral wording for a gender.
 	 */
 	function gendered(gender, masc, femme, neutral) {
@@ -360,6 +367,7 @@ defineGlobalNamespaces("Pronouns");
 		form,
 		activeForm,
 		honorific,
+		fill,
 		gendered,
 		activeGendered,
 		usesPluralVerb,

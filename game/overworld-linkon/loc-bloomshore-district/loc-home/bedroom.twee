@@ -15,27 +15,10 @@ You stand in your bedroom.
 <<run World.setLocation("bloomshore-bedroom", "Bloomshore District — Home")>>\
 You climb in bed, cuddling a stuffed animal.
 
-<<for _h to 1; _h lte 10; _h++>>\
-<<capture _h>>\
-<<link `"Sleep for " + _h + " hour" + (_h === 1 ? "" : "s") + " <span class='action-time'>(" + World.wakeTimeFor(_h) + ")</span>"`>><<set $sleepHours to _h>><<unset $sleepResult>><<goto "Bloomshore Bedroom Wake">><</link>> <<= Stats.effectMarkup("fatigue", "-")>>
-<</capture>>\
-<</for>>\
-<<link "Just sleep <span class='action-time'>(??:??)</span>">><<set $sleepHours to getRandomIntInclusive(4, 8)>><<unset $sleepResult>><<goto "Bloomshore Bedroom Wake">><</link>> <<= Stats.effectMarkup("fatigue", "-")>>
-<<link "Get out of bed">><<goto "Bloomshore Bedroom">><</link>>
+<<sleepChoices "Bloomshore Bedroom Wake" "Bloomshore Bedroom">>
 
 :: Bloomshore Bedroom Wake
 <<initPlayState>>\
 <<if !Player.isYounger()>><<goto "Bloomshore District">><</if>>\
 <<run World.setLocation("bloomshore-bedroom", "Bloomshore District — Home")>>\
-<<if def $sleepHours>>\
-<<set $sleepResult to World.sleepFor($sleepHours)>>\
-<<unset $sleepHours>>\
-<<elseif ndef $sleepResult>>\
-<<set $sleepResult to { hours: 0, forcedWake: false }>>\
-<</if>>\
-You sleep for <<= $sleepResult.hours>> hour<<if $sleepResult.hours !== 1>>s<</if>> and wake at <<= World.formatTime()>>. <<= Stats.effectMarkup("fatigue", "-")>>\
-<<if $sleepResult.forcedWake>>
-
-Exhaustion pulled you under until the weekday morning arrived.<</if>>
-
-<<link "Get up">><<unset $sleepResult>><<goto "Bloomshore Bedroom">><</link>>
+<<sleepWake "Bloomshore Bedroom">>

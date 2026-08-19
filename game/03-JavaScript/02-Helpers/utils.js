@@ -87,24 +87,63 @@ defineGlobalNamespaces("Utils");
 	}
 
 	/**
-	 * Sentence-cases a string without touching the rest of it, so "Vesna's cabin" survives intact.
+	 * Escapes text for HTML body content.
 	 */
-	function sentenceCase(text) {
-		const value = String(selfOr(text, ""));
-		return value.charAt(0).toUpperCase() + value.slice(1);
+	function escapeHtml(value) {
+		return String(value || "")
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;");
+	}
+
+	function shuffleIds(ids) {
+		const bag = ids.slice();
+		if (typeof bag.shuffle === "function") {
+			bag.shuffle();
+			return bag;
+		}
+		for (let i = bag.length - 1; i > 0; i -= 1) {
+			const j = getRandomIntInclusive(0, i);
+			const swap = bag[i];
+			bag[i] = bag[j];
+			bag[j] = swap;
+		}
+		return bag;
 	}
 
 	/**
-	 * Joins a list into prose: "a", "a and b", "a, b, and c".
+	 * Random pool entry without repeats until every id has been used.
+	 * Stores bags on `vars[storeKey + "PoolBags"]` and last ids on `vars[storeKey + "PoolLast"]`
+	 * (storeKey `"tech"` keeps existing `$techPoolBags` / `$techPoolLast`).
 	 */
-	function listToProse(items, conjunction) {
-		const parts = ensureIsArray(items).filter(Boolean).map(String);
-		const word = conjunction || "and";
-		if (parts.length <= 1) return parts.join("");
-		if (parts.length === 2) return `${parts[0]} ${word} ${parts[1]}`;
-		return `${parts.slice(0, -1).join(", ")}, ${word} ${parts[parts.length - 1]}`;
+	function pickFromPool(pool, storeKey, bagKey, variables) {
+		const vars = variables || V();
+		if (!Array.isArray(pool) || !pool.length) return undefined;
+		const bagsName = storeKey + "PoolBags";
+		const lastName = storeKey + "PoolLast";
+		if (!vars[bagsName] || typeof vars[bagsName] !== "object") vars[bagsName] = {};
+		if (!vars[lastName] || typeof vars[lastName] !== "object") vars[lastName] = {};
+
+		const ids = pool.map(entry => entry.id);
+		let bag = vars[bagsName][bagKey];
+		if (Array.isArray(bag)) bag = bag.filter(id => ids.indexOf(id) >= 0);
+		if (!Array.isArray(bag) || !bag.length) {
+			bag = shuffleIds(ids);
+			const last = vars[lastName][bagKey];
+			if (last && bag.length > 1 && bag[bag.length - 1] === last) {
+				const swapAt = getRandomIntInclusive(0, bag.length - 2);
+				const swap = bag[bag.length - 1];
+				bag[bag.length - 1] = bag[swapAt];
+				bag[swapAt] = swap;
+			}
+		}
+
+		const id = bag.pop();
+		vars[bagsName][bagKey] = bag;
+		vars[lastName][bagKey] = id;
+		return pool.find(entry => entry.id === id) || pool[0];
 	}
 
-	Object.assign(Utils, { sentenceCase, listToProse });
+	Object.assign(Utils, { pickFromPool, escapeHtml });
 	Object.assign(window, { between, getRandomIntInclusive, pickRandomItemInArray, selfOr, ensure, ensureIsArray, element, stringFrom });
 })();
